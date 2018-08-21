@@ -52,6 +52,9 @@
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
+<li>
+  <a href="news/index.html">Changelog</a>
+</li>
       </ul>
 <ul class="nav navbar-nav navbar-right"></ul>
 </div>
@@ -64,15 +67,68 @@
       
       </header><div class="row">
   <div class="contents col-md-9">
-    Example software for the analysis of data from designed 
-	experiments, especially agricultural crop experiments. The basics 
-	of the analysis of designed experiments are discussed 
-	using real examples from agricultural field trials. 
-	A range of statistical methods using a range
-	of R statistical packages are  exemplified . The experimental
-	data is made available as separate data sets for each example
-	and the R analysis code is made available as example code.
-	The example code can be readily extended, as required.
+    <div id="agritutorial-tutorial-analysis-of-some-agricultural-experiments" class="section level1">
+<div class="page-header"><h1 class="hasAnchor">
+<a href="#agritutorial-tutorial-analysis-of-some-agricultural-experiments" class="anchor"></a>agriTutorial: Tutorial Analysis of Some Agricultural Experiments</h1></div>
+<div id="introduction" class="section level2">
+<h2 class="hasAnchor">
+<a href="#introduction" class="anchor"></a>Introduction</h2>
+<p>The \code{agriTutorial} package provides R software for the analysis of five agricultural example data sets as discussed in the paper: <em>A tutorial on the statistical analysis of factorial experiments with qualitative and quantitative treatment factor levels</em> by Piepho and Edmondson (2018).</p>
+<p>The example code produces statistical analysis for the five agricultural data sets in Piepho &amp; Edmondson (2018) and also produces additional graphical analysis. The data for each example is provided as a data frame which loads automatically whenever the package is loaded and the code for each analysis is provided as a set of examples.</p>
+<p>Printed output defaults to the device terminal window but can be diverted to a suitable text file by using a sink file command: see help(sink), if required. Similarly, graphical output defaults to the device graphics window but can be diverted to a suitable graphics device if required: see vignette for further details,</p>
+<p>The example code demonstrates some basic methodology for the analysis of data from designed experiments but there are other methods available in R and it is straightforward to extend the example code by adding functionality from other packages.</p>
+<div id="polynomials" class="section level3">
+<h3 class="hasAnchor">
+<a href="#polynomials" class="anchor"></a>Polynomials</h3>
+<p>The polynomials used in this tutorial are either raw polynomials or orthogonal polynomials.</p>
+<p>A raw polynomial is a weighted sum of the powers and cross-products of a set of treatment or nuisance effect vectors.</p>
+<p>An orthogonal polynomial is a weighted sum of orthogonal combinations of the powers and cross-products of a set of treatment or nuisance effect vectors.</p>
+<p>Raw polynomials have a direct interpretation as a fitted polynomial model but can be numerically unstable whereas orthogonal polynomials are numerically stable but give coefficients which are linear combinations of the required polynomial model coefficients and are difficult to interpret.</p>
+<p>Raw polynomials are the polynomials of choice for most analyses but sometimes orthogonal polynomials can be useful when, for example, fitting higher-degree polynomials in a long series of repeated measures (see example 4).</p>
+</div>
+<div id="functional-marginality" class="section level3">
+<h3 class="hasAnchor">
+<a href="#functional-marginality" class="anchor"></a>Functional marginality</h3>
+<p>Polynomial expansions are based on a Taylor series expansion and normally must include all polynomial terms up to and including the maximum degree of the expansion. This is the property of functional marginality and applies to any polynomial or response surface model including models with polynomial interaction effects (Nelder, 2000). In this tutorial, all polynomial and response surface models will be assumed to conform with the requirements of functional marginality.</p>
+</div>
+<div id="packages" class="section level3">
+<h3 class="hasAnchor">
+<a href="#packages" class="anchor"></a>Packages</h3>
+<p>The example code depends on a number of R packages each of which must be installed on the user machine before the example code can be properly executed. The required packages are lmerTest, emmeans, pbkrtest, lattice, nlme and ggplot2, all of which should install automatically. If, for any reason, packages need to be installed by hand, this can be done by using install.packages(“PackageName”).</p>
+<p>NB. It is important to keep packages updated using the update.packages() command.</p>
+</div>
+</div>
+<div id="examples" class="section level2">
+<h2 class="hasAnchor">
+<a href="#examples" class="anchor"></a>Examples</h2>
+<ul>
+<li><p><strong>example1</strong> : split-plot design with one quantitative and one qualitative treatment factor\cr</p></li>
+<li><p><strong>example2</strong> : block design with one qualitative treatment factor\cr</p></li>
+<li><p><strong>example3</strong> : response surface design with two quantitative treatment factors\cr</p></li>
+<li><p><strong>example4</strong> : repeated measures design with one quantitative treatment factor\cr</p></li>
+<li><p><strong>example5</strong> : block design with transformed quantitative treatment levels\cr</p></li>
+</ul>
+</div>
+<div id="references" class="section level2">
+<h2 class="hasAnchor">
+<a href="#references" class="anchor"></a>References</h2>
+<ol>
+<li><p>Piepho, H. P, and Edmondson. R. N. (2018). A tutorial on the statistical analysis of factorial experiments with qualitative and quantitative treatment factor levels. Journal of Agronomy and Crop Science. DOI: 10.1111/jac.12267.</p></li>
+<li><p>Nelder, J. A. (2000). Functional marginality and response-surface fitting. Journal of Applied Statistics, 26, 109-122.</p></li>
+</ol>
+</div>
+<div id="installation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#installation" class="anchor"></a>Installation</h2>
+<p>Use <strong>CRAN</strong> to install the package:</p>
+<pre class="{r}"><code>install.packages("agriTutorial")</code></pre>
+</div>
+<div id="license" class="section level2">
+<h2 class="hasAnchor">
+<a href="#license" class="anchor"></a>License</h2>
+<p>This package is free and open source software, licensed under GPL.</p>
+</div>
+</div>
   </div>
 
   <div class="col-md-3" id="sidebar">
