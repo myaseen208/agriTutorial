@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The \code{agriTutorial} package provides R software for the analysis of five agricultural example data sets as discussed in the paper:
+The agriTutorial package provides R software for the analysis of five agricultural example data sets as discussed in the paper:
 *A tutorial on the statistical analysis of factorial experiments with qualitative and quantitative treatment factor levels* by Piepho and Edmondson (2018).
  
 The example code produces statistical analysis for the five agricultural data sets in Piepho & Edmondson (2018) and also produces additional graphical analysis.
