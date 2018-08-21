@@ -242,8 +242,6 @@ in isolation from the research workers who conducted the experiment.</p>
 #&gt; <span class='message'>    intersect, setdiff, setequal, union</span></div><div class='input'><span class='fu'>library</span>(<span class='no'>emmeans</span>)</div><div class='output co'>#&gt; <span class='message'>NOTE: As of emmeans versions &gt; 1.2.3,</span>
 #&gt; <span class='message'>      The 'cld' function will be deprecated in favor of 'CLD'.</span>
 #&gt; <span class='message'>      You may use 'cld' only if you have package:multcomp attached.</span></div><div class='input'><span class='fu'>library</span>(<span class='no'>ggfortify</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required package: ggplot2</span></div><div class='input'><span class='fu'>library</span>(<span class='no'>ggplot2</span>)
-<span class='fu'>library</span>(<span class='no'>kableExtra</span>)
-<span class='fu'>library</span>(<span class='no'>knitr</span>)
 <span class='fu'>library</span>(<span class='no'>lmerTest</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required package: lme4</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: Matrix</span></div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Attaching package: ‘lme4’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:agriTutorial’:</span>
 #&gt; <span class='message'></span>
@@ -267,223 +265,36 @@ in isolation from the research workers who conducted the experiment.</p>
                <span class='fu'>Error</span>(<span class='no'>Replicate</span>/<span class='no'>nitrogen</span>/<span class='no'>management</span>), <span class='no'>rice</span>)
 
 <span class='no'>fm1.1.Summary</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>broom</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/broom/topics/tidy'>tidy</a></span>(<span class='no'>fm1.1</span>)
-
-<span class='co'>##----fm1.1.Summary----</span>
-<span class='kw pkg'>kableExtra</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/kableExtra/topics/reexports'>kable</a></span>(
-  <span class='no'>fm1.1.Summary</span>
-  , <span class='kw'>caption</span>   <span class='kw'>=</span> <span class='st'>"ANOVA Table"</span>
-)</div><div class='output co'>#&gt; &lt;table&gt;
-#&gt; &lt;caption&gt;ANOVA Table&lt;/caption&gt;
-#&gt;  &lt;thead&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;th style="text-align:left;"&gt; stratum &lt;/th&gt;
-#&gt;    &lt;th style="text-align:left;"&gt; term &lt;/th&gt;
-#&gt;    &lt;th style="text-align:right;"&gt; df &lt;/th&gt;
-#&gt;    &lt;th style="text-align:right;"&gt; sumsq &lt;/th&gt;
-#&gt;    &lt;th style="text-align:right;"&gt; meansq &lt;/th&gt;
-#&gt;    &lt;th style="text-align:right;"&gt; statistic &lt;/th&gt;
-#&gt;    &lt;th style="text-align:right;"&gt; p.value &lt;/th&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;  &lt;/thead&gt;
-#&gt; &lt;tbody&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; Replicate &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; Replicate &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.7319945 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.3659973 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; Replicate:nitrogen &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; nitrogen &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 61.6408218 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 15.4102055 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 27.6953339 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.0000973 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; Replicate:nitrogen &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; Residuals &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 4.4513507 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.5564188 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; Replicate:nitrogen:management &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; management &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 42.9361070 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 21.4680535 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 81.9964891 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.0000000 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; Replicate:nitrogen:management &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; nitrogen:management &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 1.1029733 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.1378717 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.5265960 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.8226476 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; Replicate:nitrogen:management &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; Residuals &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 20 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 5.2363348 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.2618167 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; Within &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; variety &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 206.0131597 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 103.0065799 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 207.8667118 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.0000000 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; Within &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; nitrogen:variety &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 14.1445063 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 1.7680633 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 3.5679420 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.0019157 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; Within &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; management:variety &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 3.8517692 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.9629423 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 1.9432123 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.1148989 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; Within &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; nitrogen:management:variety &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 16 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 3.6992321 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.2312020 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.4665644 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.9537588 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; Within &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; Residuals &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 60 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 29.7324893 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.4955415 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt; &lt;/tbody&gt;
-#&gt; &lt;/table&gt;</div><div class='input'>
-<span class='co'>##----fm1.2----</span>
+<span class='no'>fm1.1.Summary</span></div><div class='output co'>#&gt; # A tibble: 11 x 7
+#&gt;    stratum            term               df   sumsq  meansq statistic   p.value
+#&gt;    &lt;chr&gt;              &lt;chr&gt;           &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+#&gt;  1 Replicate          Replicate           2   0.732   0.366    NA     NA       
+#&gt;  2 Replicate:nitrogen nitrogen            4  61.6    15.4      27.7    9.73e- 5
+#&gt;  3 Replicate:nitrogen Residuals           8   4.45    0.556    NA     NA       
+#&gt;  4 Replicate:nitroge… management          2  42.9    21.5      82.0    2.30e-10
+#&gt;  5 Replicate:nitroge… nitrogen:manag…     8   1.10    0.138     0.527  8.23e- 1
+#&gt;  6 Replicate:nitroge… Residuals          20   5.24    0.262    NA     NA       
+#&gt;  7 Within             variety             2 206.    103.      208.     1.06e-27
+#&gt;  8 Within             nitrogen:varie…     8  14.1     1.77      3.57   1.92e- 3
+#&gt;  9 Within             management:var…     4   3.85    0.963     1.94   1.15e- 1
+#&gt; 10 Within             nitrogen:manag…    16   3.70    0.231     0.467  9.54e- 1
+#&gt; 11 Within             Residuals          60  29.7     0.496    NA     NA       </div><div class='input'><span class='co'>##----fm1.2----</span>
 <span class='no'>fm1.2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/lmerTest/topics/lmer'>lmer</a></span>(<span class='no'>yield</span> ~ <span class='no'>Replicate</span> + <span class='no'>nitrogen</span> * <span class='no'>management</span> * <span class='no'>variety</span> +
                 (<span class='fl'>1</span><span class='kw'>|</span><span class='no'>Replicate</span>:<span class='no'>Main</span>) + (<span class='fl'>1</span><span class='kw'>|</span><span class='no'>Replicate</span>:<span class='no'>Main</span>:<span class='no'>Sub</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>rice</span>)
 <span class='no'>fm1.2.ANOVA</span> <span class='kw'>&lt;-</span> <span class='fu'>anova</span>(<span class='no'>fm1.2</span>, <span class='kw'>ddf</span> <span class='kw'>=</span> <span class='st'>"Kenward-Roger"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+<span class='no'>fm1.2.ANOVA</span></div><div class='output co'>#&gt; Type I Analysis of Variance Table with Kenward-Roger's method
+#&gt;                              Sum Sq Mean Sq NumDF DenDF  F value    Pr(&gt;F)    
+#&gt; Replicate                     0.575   0.288     2     8   0.6578 0.5439096    
+#&gt; nitrogen                     48.424  12.106     4     8  27.6953 9.734e-05 ***
+#&gt; management                   42.936  21.468     2    20  49.1136 1.919e-08 ***
+#&gt; variety                     206.013 103.007     2    60 235.6535 &lt; 2.2e-16 ***
+#&gt; nitrogen:management           1.103   0.138     8    20   0.3154 0.9508797    
+#&gt; nitrogen:variety             14.145   1.768     8    60   4.0449 0.0006765 ***
+#&gt; management:variety            3.852   0.963     4    60   2.2030 0.0793657 .  
+#&gt; nitrogen:management:variety   3.699   0.231    16    60   0.5289 0.9210465    
+#&gt; ---
+#&gt; Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</div><div class='input'>
 
-<span class='co'>##----fm1.2.ANOVA----</span>
-<span class='kw pkg'>kableExtra</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/kableExtra/topics/reexports'>kable</a></span>(
-  <span class='no'>fm1.2.ANOVA</span>
-  , <span class='kw'>caption</span> <span class='kw'>=</span> <span class='st'>"Mixed Model ANOVA"</span>
-)</div><div class='output co'>#&gt; &lt;table&gt;
-#&gt; &lt;caption&gt;Mixed Model ANOVA&lt;/caption&gt;
-#&gt;  &lt;thead&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
-#&gt;    &lt;th style="text-align:right;"&gt; Sum Sq &lt;/th&gt;
-#&gt;    &lt;th style="text-align:right;"&gt; Mean Sq &lt;/th&gt;
-#&gt;    &lt;th style="text-align:right;"&gt; NumDF &lt;/th&gt;
-#&gt;    &lt;th style="text-align:right;"&gt; DenDF &lt;/th&gt;
-#&gt;    &lt;th style="text-align:right;"&gt; F value &lt;/th&gt;
-#&gt;    &lt;th style="text-align:right;"&gt; Pr(&amp;gt;F) &lt;/th&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;  &lt;/thead&gt;
-#&gt; &lt;tbody&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; Replicate &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.5750387 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.2875193 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.6577729 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.5439096 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; nitrogen &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 48.4236632 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 12.1059158 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 27.6953340 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.0000973 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; management &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 42.9361070 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 21.4680535 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 20 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 49.1135840 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.0000000 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; variety &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 206.0131597 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 103.0065799 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 60 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 235.6535168 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.0000000 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; nitrogen:management &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 1.1029733 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.1378717 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 20 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.3154162 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.9508797 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; nitrogen:variety &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 14.1445063 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 1.7680633 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 60 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 4.0448905 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.0006765 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; management:variety &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 3.8517692 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.9629423 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 60 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 2.2029732 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.0793657 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; nitrogen:management:variety &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 3.6992321 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.2312020 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 16 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 60 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.5289329 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.9210465 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt; &lt;/tbody&gt;
-#&gt; &lt;/table&gt;</div><div class='input'>
 
 <span class='co'>##----fm1.3----</span>
 <span class='no'>fm1.3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/lmerTest/topics/lmer'>lmer</a></span>(<span class='no'>yield</span> ~ <span class='no'>Replicate</span> + <span class='no'>nitrogen</span> + <span class='no'>management</span> + <span class='no'>variety</span> + <span class='no'>nitrogen</span>:<span class='no'>variety</span> +
@@ -624,333 +435,54 @@ in isolation from the research workers who conducted the experiment.</p>
                 (<span class='fl'>1</span><span class='kw'>|</span><span class='no'>Replicate</span>:<span class='no'>Main</span>:<span class='no'>Sub</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>rice</span>)
 <span class='no'>fm1.4.ANOVA</span> <span class='kw'>&lt;-</span> <span class='fu'>anova</span>(<span class='no'>fm1.4</span>, <span class='kw'>ddf</span> <span class='kw'>=</span> <span class='st'>"Kenward-Roger"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fl'>1</span>)
 
-<span class='co'>##----fm1.4.ANOVA----</span>
-<span class='kw pkg'>kableExtra</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/kableExtra/topics/reexports'>kable</a></span>(
-  <span class='no'>fm1.4.ANOVA</span>
-  , <span class='kw'>caption</span> <span class='kw'>=</span> <span class='st'>"Mixed Model ANOVA"</span>
-)</div><div class='output co'>#&gt; &lt;table&gt;
-#&gt; &lt;caption&gt;Mixed Model ANOVA&lt;/caption&gt;
-#&gt;  &lt;thead&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
-#&gt;    &lt;th style="text-align:right;"&gt; Sum Sq &lt;/th&gt;
-#&gt;    &lt;th style="text-align:right;"&gt; Mean Sq &lt;/th&gt;
-#&gt;    &lt;th style="text-align:right;"&gt; NumDF &lt;/th&gt;
-#&gt;    &lt;th style="text-align:right;"&gt; DenDF &lt;/th&gt;
-#&gt;    &lt;th style="text-align:right;"&gt; F value &lt;/th&gt;
-#&gt;    &lt;th style="text-align:right;"&gt; Pr(&amp;gt;F) &lt;/th&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;  &lt;/thead&gt;
-#&gt; &lt;tbody&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; Replicate &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.5750387 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.2875193 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.6577729 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.5439096 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; nitrogen &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 48.4236632 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 12.1059158 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 27.6953340 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.0000973 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; management &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 42.9361070 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 21.4680535 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 20 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 49.1135840 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.0000000 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; variety &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 206.0131597 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 103.0065799 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 60 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 235.6535168 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.0000000 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; nitrogen:management &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 1.1029733 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.1378717 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 20 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.3154162 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.9508797 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; nitrogen:variety &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 14.1445063 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 1.7680633 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 60 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 4.0448905 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.0006765 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; management:variety &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 3.8517692 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.9629423 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 60 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 2.2029732 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.0793657 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; nitrogen:management:variety &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 3.6992321 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.2312020 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 16 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 60 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.5289329 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.9210465 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt; &lt;/tbody&gt;
-#&gt; &lt;/table&gt;</div><div class='input'>
-
+<span class='no'>fm1.4.ANOVA</span></div><div class='output co'>#&gt; Type I Analysis of Variance Table with Kenward-Roger's method
+#&gt;                              Sum Sq Mean Sq NumDF DenDF  F value    Pr(&gt;F)    
+#&gt; Replicate                     0.575   0.288     2     8   0.6578 0.5439096    
+#&gt; nitrogen                     48.424  12.106     4     8  27.6953 9.734e-05 ***
+#&gt; management                   42.936  21.468     2    20  49.1136 1.919e-08 ***
+#&gt; variety                     206.013 103.007     2    60 235.6535 &lt; 2.2e-16 ***
+#&gt; nitrogen:management           1.103   0.138     8    20   0.3154 0.9508797    
+#&gt; nitrogen:variety             14.145   1.768     8    60   4.0449 0.0006765 ***
+#&gt; management:variety            3.852   0.963     4    60   2.2030 0.0793657 .  
+#&gt; nitrogen:management:variety   3.699   0.231    16    60   0.5289 0.9210465    
+#&gt; ---
+#&gt; Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</div><div class='input'>
 <span class='co'>##----fm1.5----</span>
 <span class='no'>fm1.5</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/lmerTest/topics/lmer'>lmer</a></span>(<span class='no'>yield</span> ~ <span class='no'>Replicate</span> + <span class='no'>management</span> + <span class='no'>variety</span> * (<span class='no'>nrate</span> + <span class='fu'>I</span>(<span class='no'>nrate</span>^<span class='fl'>2</span>) +
                                                             <span class='fu'>I</span>(<span class='no'>nrate</span>^<span class='fl'>3</span>) + <span class='fu'>I</span>(<span class='no'>nrate</span>^<span class='fl'>4</span>)) +
                 (<span class='fl'>1</span><span class='kw'>|</span><span class='no'>Replicate</span>:<span class='no'>Main</span>) + (<span class='fl'>1</span><span class='kw'>|</span><span class='no'>Replicate</span>:<span class='no'>Main</span>:<span class='no'>Sub</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>rice</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Some predictor variables are on very different scales: consider rescaling</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Some predictor variables are on very different scales: consider rescaling</span></div><div class='input'><span class='no'>fm1.5.ANOVA</span> <span class='kw'>&lt;-</span> <span class='fu'>anova</span>(<span class='no'>fm1.5</span>, <span class='kw'>ddf</span> <span class='kw'>=</span> <span class='st'>"Kenward-Roger"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fl'>1</span>)
 
-<span class='co'>##----fm1.5.ANOVA----</span>
-<span class='kw pkg'>kableExtra</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/kableExtra/topics/reexports'>kable</a></span>(
-  <span class='no'>fm1.5.ANOVA</span>
-  , <span class='kw'>caption</span> <span class='kw'>=</span> <span class='st'>"Mixed Model ANOVA"</span>
-)</div><div class='output co'>#&gt; &lt;table&gt;
-#&gt; &lt;caption&gt;Mixed Model ANOVA&lt;/caption&gt;
-#&gt;  &lt;thead&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
-#&gt;    &lt;th style="text-align:right;"&gt; Sum Sq &lt;/th&gt;
-#&gt;    &lt;th style="text-align:right;"&gt; Mean Sq &lt;/th&gt;
-#&gt;    &lt;th style="text-align:right;"&gt; NumDF &lt;/th&gt;
-#&gt;    &lt;th style="text-align:right;"&gt; DenDF &lt;/th&gt;
-#&gt;    &lt;th style="text-align:right;"&gt; F value &lt;/th&gt;
-#&gt;    &lt;th style="text-align:right;"&gt; Pr(&amp;gt;F) &lt;/th&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;  &lt;/thead&gt;
-#&gt; &lt;tbody&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; Replicate &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.5313684 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.2656842 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.6577729 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.5439096 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; management &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 42.9361070 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 21.4680535 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 28 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 53.1499552 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.0000000 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; variety &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 206.0131597 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 103.0065799 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 80 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 255.0205635 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.0000000 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; nrate &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 40.6243075 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 40.6243075 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 100.5764273 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.0000083 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; I(nrate^2) &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 2.4897972 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 2.4897972 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 6.1641643 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.0379472 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; I(nrate^3) &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.0379172 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.0379172 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.0938744 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.7671307 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; I(nrate^4) &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 1.5941951 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 1.5941951 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 3.9468599 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.0821956 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; variety:nrate &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 9.8607580 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 4.9303790 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 80 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 12.2064827 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.0000236 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; variety:I(nrate^2) &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.8039690 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.4019845 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 80 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.9952210 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.3741712 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; variety:I(nrate^3) &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 2.7833936 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 1.3916968 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 80 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 3.4455207 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.0366944 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; variety:I(nrate^4) &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.6963857 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.3481929 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 80 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.8620453 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.4261825 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt; &lt;/tbody&gt;
-#&gt; &lt;/table&gt;</div><div class='input'>
+<span class='no'>fm1.5.ANOVA</span></div><div class='output co'>#&gt; Type I Analysis of Variance Table with Kenward-Roger's method
+#&gt;                     Sum Sq Mean Sq NumDF DenDF  F value    Pr(&gt;F)    
+#&gt; Replicate            0.531   0.266     2     8   0.6578   0.54391    
+#&gt; management          42.936  21.468     2    28  53.1500 2.932e-10 ***
+#&gt; variety            206.013 103.007     2    80 255.0206 &lt; 2.2e-16 ***
+#&gt; nrate               40.624  40.624     1     8 100.5764 8.308e-06 ***
+#&gt; I(nrate^2)           2.490   2.490     1     8   6.1642   0.03795 *  
+#&gt; I(nrate^3)           0.038   0.038     1     8   0.0939   0.76713    
+#&gt; I(nrate^4)           1.594   1.594     1     8   3.9469   0.08220 .  
+#&gt; variety:nrate        9.861   4.930     2    80  12.2065 2.363e-05 ***
+#&gt; variety:I(nrate^2)   0.804   0.402     2    80   0.9952   0.37417    
+#&gt; variety:I(nrate^3)   2.783   1.392     2    80   3.4455   0.03669 *  
+#&gt; variety:I(nrate^4)   0.696   0.348     2    80   0.8620   0.42618    
+#&gt; ---
+#&gt; Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</div><div class='input'>
 <span class='co'>##----fm1.6----</span>
 <span class='no'>fm1.6</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/lmerTest/topics/lmer'>lmer</a></span>(<span class='no'>yield</span> ~ <span class='no'>Replicate</span> + <span class='no'>management</span> + <span class='no'>variety</span> * <span class='no'>nrate</span> + <span class='fu'>I</span>(<span class='no'>nrate</span>^<span class='fl'>2</span>) +
                 (<span class='fl'>1</span><span class='kw'>|</span><span class='no'>Replicate</span>:<span class='no'>Main</span>) + (<span class='fl'>1</span><span class='kw'>|</span><span class='no'>Replicate</span>:<span class='no'>Main</span>:<span class='no'>Sub</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>rice</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Some predictor variables are on very different scales: consider rescaling</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Some predictor variables are on very different scales: consider rescaling</span></div><div class='input'>
 <span class='no'>fm1.6.Coef</span> <span class='kw'>&lt;-</span> <span class='fu'>summary</span>(<span class='no'>fm1.6</span>, <span class='kw'>ddf</span> <span class='kw'>=</span> <span class='st'>"Kenward-Roger"</span>)$<span class='no'>coef</span>
-
-
-<span class='co'>##----fm1.6.Coef----</span>
-<span class='kw pkg'>kableExtra</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/kableExtra/topics/reexports'>kable</a></span>(<span class='no'>fm1.6.Coef</span>)</div><div class='output co'>#&gt; &lt;table&gt;
-#&gt;  &lt;thead&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
-#&gt;    &lt;th style="text-align:right;"&gt; Estimate &lt;/th&gt;
-#&gt;    &lt;th style="text-align:right;"&gt; Std. Error &lt;/th&gt;
-#&gt;    &lt;th style="text-align:right;"&gt; df &lt;/th&gt;
-#&gt;    &lt;th style="text-align:right;"&gt; t value &lt;/th&gt;
-#&gt;    &lt;th style="text-align:right;"&gt; Pr(&amp;gt;|t|) &lt;/th&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;  &lt;/thead&gt;
-#&gt; &lt;tbody&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; (Intercept) &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 3.8387418 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.2478500 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 31.46271 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 15.4881672 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.0000000 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; ReplicateR2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.1179333 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.1725584 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 10.00000 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.6834401 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.5098535 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; ReplicateR3 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; -0.0592222 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.1725584 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 10.00000 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; -0.3432010 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.7385530 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; managementOptimum &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.5857778 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.1366639 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 28.00000 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 4.2862662 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.0001942 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; managementIntensive &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 1.3763333 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.1366639 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 28.00000 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 10.0709370 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.0000000 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; varietyV2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.5374285 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.2543624 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 86.00000 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 2.1128455 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.0375125 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; varietyV3 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 2.0086109 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.2543624 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 86.00000 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 7.8966495 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.0000000 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; nrate &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.0161292 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.0051084 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 12.37614 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 3.1573803 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.0079820 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; I(nrate^2) &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; -0.0000753 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.0000333 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 10.00000 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; -2.2626148 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.0471586 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; varietyV2:nrate &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.0096300 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.0028228 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 86.00000 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 3.4115590 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.0009863 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; varietyV3:nrate &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.0132218 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.0028228 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 86.00000 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 4.6839816 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.0000104 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt; &lt;/tbody&gt;
-#&gt; &lt;/table&gt;</div><div class='input'>
-
+<span class='no'>fm1.6.Coef</span></div><div class='output co'>#&gt;                          Estimate   Std. Error       df    t value     Pr(&gt;|t|)
+#&gt; (Intercept)          3.838742e+00 2.478500e-01 31.46271 15.4881672 2.847136e-16
+#&gt; ReplicateR2          1.179333e-01 1.725584e-01 10.00000  0.6834401 5.098535e-01
+#&gt; ReplicateR3         -5.922222e-02 1.725584e-01 10.00000 -0.3432010 7.385530e-01
+#&gt; managementOptimum    5.857778e-01 1.366639e-01 28.00000  4.2862662 1.941972e-04
+#&gt; managementIntensive  1.376333e+00 1.366639e-01 28.00000 10.0709370 8.232324e-11
+#&gt; varietyV2            5.374285e-01 2.543624e-01 86.00000  2.1128455 3.751250e-02
+#&gt; varietyV3            2.008611e+00 2.543624e-01 86.00000  7.8966495 8.555669e-12
+#&gt; nrate                1.612922e-02 5.108418e-03 12.37614  3.1573803 7.981951e-03
+#&gt; I(nrate^2)          -7.528912e-05 3.327527e-05 10.00000 -2.2626148 4.715859e-02
+#&gt; varietyV2:nrate      9.630034e-03 2.822766e-03 86.00000  3.4115590 9.862975e-04
+#&gt; varietyV3:nrate      1.322179e-02 2.822766e-03 86.00000  4.6839816 1.043415e-05</div><div class='input'>
 <span class='co'>##----fm1.6.Coefs----</span>
 <span class='co'># fm1.6.Coef[ ,1, drop = FALSE]</span>
 
@@ -966,409 +498,52 @@ in isolation from the research workers who conducted the experiment.</p>
 <span class='no'>fm1.7</span> <span class='kw'>&lt;-</span> <span class='fu'>aov</span>(<span class='no'>yield</span> ~ <span class='no'>Replicate</span>*<span class='no'>management</span> * <span class='no'>variety</span> * <span class='no'>nitrogen</span>, <span class='no'>rice</span>)
 <span class='no'>fm1.7.Summary</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>broom</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/broom/topics/tidy'>tidy</a></span>(<span class='no'>fm1.7</span>)
 
-
-<span class='co'>##----fm1.7.Summary----</span>
-<span class='kw pkg'>kableExtra</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/kableExtra/topics/reexports'>kable</a></span>(
-  <span class='no'>fm1.7.Summary</span>
-  , <span class='kw'>caption</span>   <span class='kw'>=</span> <span class='st'>"ANOVA"</span>
-)</div><div class='output co'>#&gt; &lt;table&gt;
-#&gt; &lt;caption&gt;ANOVA&lt;/caption&gt;
-#&gt;  &lt;thead&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;th style="text-align:left;"&gt; term &lt;/th&gt;
-#&gt;    &lt;th style="text-align:right;"&gt; df &lt;/th&gt;
-#&gt;    &lt;th style="text-align:right;"&gt; sumsq &lt;/th&gt;
-#&gt;    &lt;th style="text-align:right;"&gt; meansq &lt;/th&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;  &lt;/thead&gt;
-#&gt; &lt;tbody&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; Replicate &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.7319945 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.3659973 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; management &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 42.9361070 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 21.4680535 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; variety &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 206.0131597 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 103.0065799 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; nitrogen &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 61.6408218 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 15.4102055 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; Replicate:management &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.4597212 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.1149303 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; Replicate:variety &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 6.1528929 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 1.5382232 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; management:variety &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 3.8517692 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.9629423 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; Replicate:nitrogen &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 4.4513507 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.5564188 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; management:nitrogen &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 1.1029733 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.1378717 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; variety:nitrogen &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 14.1445063 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 1.7680633 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; Replicate:management:variety &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 2.2212941 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.2776618 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; Replicate:management:nitrogen &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 16 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 4.7766136 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.2985383 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; Replicate:variety:nitrogen &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 16 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 13.1249375 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.8203086 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; management:variety:nitrogen &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 16 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 3.6992321 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.2312020 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; Replicate:management:variety:nitrogen &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 32 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 8.2333648 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.2572927 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt; &lt;/tbody&gt;
-#&gt; &lt;/table&gt;</div><div class='input'>
+<span class='no'>fm1.7.Summary</span></div><div class='output co'>#&gt; # A tibble: 15 x 4
+#&gt;    term                                     df   sumsq  meansq
+#&gt;    &lt;chr&gt;                                 &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+#&gt;  1 Replicate                                 2   0.732   0.366
+#&gt;  2 management                                2  42.9    21.5  
+#&gt;  3 variety                                   2 206.    103.   
+#&gt;  4 nitrogen                                  4  61.6    15.4  
+#&gt;  5 Replicate:management                      4   0.460   0.115
+#&gt;  6 Replicate:variety                         4   6.15    1.54 
+#&gt;  7 management:variety                        4   3.85    0.963
+#&gt;  8 Replicate:nitrogen                        8   4.45    0.556
+#&gt;  9 management:nitrogen                       8   1.10    0.138
+#&gt; 10 variety:nitrogen                          8  14.1     1.77 
+#&gt; 11 Replicate:management:variety              8   2.22    0.278
+#&gt; 12 Replicate:management:nitrogen            16   4.78    0.299
+#&gt; 13 Replicate:variety:nitrogen               16  13.1     0.820
+#&gt; 14 management:variety:nitrogen              16   3.70    0.231
+#&gt; 15 Replicate:management:variety:nitrogen    32   8.23    0.257</div><div class='input'>
 <span class='co'>##----fm1.7.Rice----</span>
 <span class='no'>Rice1</span> <span class='kw'>&lt;-</span>
   <span class='no'>rice</span> <span class='kw'>%&gt;%</span>
   <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>Replicate</span>, <span class='no'>nitrogen</span>, <span class='no'>variety</span>) <span class='kw'>%&gt;%</span>
   <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></span>(<span class='kw'>Yield</span> <span class='kw'>=</span> <span class='fu'>mean</span>(<span class='no'>yield</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))
 
+<span class='no'>Rice1</span></div><div class='output co'>#&gt; # A tibble: 45 x 4
+#&gt; # Groups:   Replicate, nitrogen [?]
+#&gt;    Replicate nitrogen variety Yield
+#&gt;    &lt;fct&gt;     &lt;fct&gt;    &lt;fct&gt;   &lt;dbl&gt;
+#&gt;  1 R1        0        V1       3.92
+#&gt;  2 R1        0        V2       5.92
+#&gt;  3 R1        0        V3       6.60
+#&gt;  4 R1        50       V1       4.02
+#&gt;  5 R1        50       V2       6.32
+#&gt;  6 R1        50       V3       7.93
+#&gt;  7 R1        80       V1       5.81
+#&gt;  8 R1        80       V2       6.26
+#&gt;  9 R1        80       V3       8.74
+#&gt; 10 R1        110      V1       5.44
+#&gt; # ... with 35 more rows</div><div class='input'>
 <span class='no'>WideRice1</span> <span class='kw'>&lt;-</span>
   <span class='no'>Rice1</span> <span class='kw'>%&gt;%</span>
   <span class='kw pkg'>tidyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/tidyr/topics/spread'>spread</a></span>(<span class='kw'>key</span> <span class='kw'>=</span> <span class='no'>nitrogen</span>, <span class='kw'>value</span> <span class='kw'>=</span> <span class='no'>Yield</span>) <span class='kw'>%&gt;%</span>
   <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/group_by.html'>ungroup</a></span>() <span class='kw'>%&gt;%</span>
   <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/select.html'>select</a></span>(-<span class='no'>Replicate</span>, -<span class='no'>variety</span>)
 
-<span class='co'>##----fm1.7.Rice1----</span>
-<span class='kw pkg'>kableExtra</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/kableExtra/topics/reexports'>kable</a></span>(<span class='no'>Rice1</span>)</div><div class='output co'>#&gt; &lt;table&gt;
-#&gt;  &lt;thead&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;th style="text-align:left;"&gt; Replicate &lt;/th&gt;
-#&gt;    &lt;th style="text-align:left;"&gt; nitrogen &lt;/th&gt;
-#&gt;    &lt;th style="text-align:left;"&gt; variety &lt;/th&gt;
-#&gt;    &lt;th style="text-align:right;"&gt; Yield &lt;/th&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;  &lt;/thead&gt;
-#&gt; &lt;tbody&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; R1 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; 0 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; V1 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 3.915333 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; R1 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; 0 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; V2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 5.923333 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; R1 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; 0 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; V3 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 6.605000 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; R1 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; 50 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; V1 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 4.015000 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; R1 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; 50 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; V2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 6.322667 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; R1 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; 50 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; V3 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 7.926000 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; R1 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; 80 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; V1 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 5.814000 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; R1 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; 80 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; V2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 6.264333 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; R1 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; 80 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; V3 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 8.742000 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; R1 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; 110 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; V1 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 5.443333 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; R1 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; 110 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; V2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 6.922000 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; R1 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; 110 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; V3 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 8.927333 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; R1 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; 140 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; V1 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 4.579333 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; R1 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; 140 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; V2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 6.990333 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; R1 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; 140 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; V3 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 9.632667 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; R2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; 0 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; V1 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 4.696667 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; R2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; 0 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; V2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 5.163333 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; R2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; 0 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; V3 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 6.672667 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; R2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; 50 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; V1 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 4.910333 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; R2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; 50 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; V2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 6.715667 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; R2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; 50 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; V3 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 8.044667 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; R2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; 80 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; V1 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 6.341333 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; R2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; 80 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; V2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 6.478333 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; R2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; 80 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; V3 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 8.121333 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; R2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; 110 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; V1 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 5.484333 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; R2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; 110 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; V2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 7.416667 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; R2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; 110 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; V3 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 8.465333 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; R2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; 140 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; V1 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 4.693000 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; R2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; 140 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; V2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 7.226667 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; R2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; 140 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; V3 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 9.361333 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; R3 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; 0 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; V1 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 4.927333 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; R3 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; 0 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; V2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 4.402000 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; R3 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; 0 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; V3 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 6.156667 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; R3 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; 50 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; V1 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 5.365667 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; R3 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; 50 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; V2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 5.010333 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; R3 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; 50 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; V3 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 7.672667 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; R3 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; 80 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; V1 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 5.349333 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; R3 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; 80 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; V2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 7.023000 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; R3 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; 80 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; V3 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 8.828000 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; R3 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; 110 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; V1 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 5.406333 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; R3 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; 110 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; V2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 6.435000 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; R3 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; 110 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; V3 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 7.936000 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; R3 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; 140 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; V1 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 5.961000 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; R3 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; 140 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; V2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 7.648333 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; R3 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; 140 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; V3 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 9.012667 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt; &lt;/tbody&gt;
-#&gt; &lt;/table&gt;</div><div class='input'>
+
 <span class='co'>##----fm1.7.Plot1----</span>
 <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggplot'>ggplot</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>Rice1</span>, <span class='kw'>mapping</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>nitrogen</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>Yield</span>,  <span class='kw'>group</span> <span class='kw'>=</span> <span class='no'>Replicate</span>)) +
   <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_path'>geom_line</a></span>() +
@@ -1381,6 +556,7 @@ in isolation from the research workers who conducted the experiment.</p>
   <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggtheme'>theme_bw</a></span>() +
   <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/theme'>theme</a></span>(<span class='kw'>plot.title</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/element'>element_text</a></span>(<span class='kw'>hjust</span> <span class='kw'>=</span> <span class='fl'>0.5</span>))</div><div class='img'><img src='example1-2.png' alt='' width='700' height='433' /></div><div class='input'>
 
+
 <span class='co'>##----fm1.8----</span>
 <span class='no'>riceV2V3</span> <span class='kw'>&lt;-</span>
   <span class='no'>rice</span> <span class='kw'>%&gt;%</span>
@@ -1390,233 +566,42 @@ in isolation from the research workers who conducted the experiment.</p>
 <span class='no'>fm1.8</span> <span class='kw'>&lt;-</span> <span class='fu'>aov</span>(<span class='no'>yield</span> ~ <span class='no'>Replicate</span>*<span class='no'>management</span> * <span class='no'>variety</span> * <span class='no'>nitrogen</span>, <span class='no'>riceV2V3</span>)
 <span class='no'>fm1.8.ANOVA</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>broom</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/broom/topics/tidy'>tidy</a></span>(<span class='no'>fm1.8</span>)
 
-<span class='co'>##----fm1.8.ANOVA----</span>
-<span class='kw pkg'>kableExtra</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/kableExtra/topics/reexports'>kable</a></span>(
-  <span class='no'>fm1.8.ANOVA</span>
-  , <span class='kw'>caption</span>   <span class='kw'>=</span> <span class='st'>"ANOVA Table"</span>
-)</div><div class='output co'>#&gt; &lt;table&gt;
-#&gt; &lt;caption&gt;ANOVA Table&lt;/caption&gt;
-#&gt;  &lt;thead&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;th style="text-align:left;"&gt; term &lt;/th&gt;
-#&gt;    &lt;th style="text-align:right;"&gt; df &lt;/th&gt;
-#&gt;    &lt;th style="text-align:right;"&gt; sumsq &lt;/th&gt;
-#&gt;    &lt;th style="text-align:right;"&gt; meansq &lt;/th&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;  &lt;/thead&gt;
-#&gt; &lt;tbody&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; Replicate &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 2.9953910 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 1.4976955 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; management &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 26.1362474 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 13.0681237 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; variety &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 68.4467685 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 68.4467685 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; nitrogen &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 63.9892344 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 15.9973086 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; Replicate:management &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.8676236 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.2169059 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; Replicate:variety &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.5175662 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.2587831 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; management:variety &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 3.6819768 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 1.8409884 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; Replicate:nitrogen &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 6.9752348 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.8719044 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; management:nitrogen &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.8423971 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.1052996 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; variety:nitrogen &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 1.7762845 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.4440711 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; Replicate:management:variety &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 1.2427996 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.3106999 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; Replicate:management:nitrogen &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 16 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 5.2884453 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.3305278 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; Replicate:variety:nitrogen &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 4.4349596 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.5543700 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; management:variety:nitrogen &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 3.2192836 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.4024105 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; Replicate:management:variety:nitrogen &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 16 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 4.0298286 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.2518643 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt; &lt;/tbody&gt;
-#&gt; &lt;/table&gt;</div><div class='input'>
+<span class='no'>fm1.8.ANOVA</span></div><div class='output co'>#&gt; # A tibble: 15 x 4
+#&gt;    term                                     df  sumsq meansq
+#&gt;    &lt;chr&gt;                                 &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+#&gt;  1 Replicate                                 2  3.00   1.50 
+#&gt;  2 management                                2 26.1   13.1  
+#&gt;  3 variety                                   1 68.4   68.4  
+#&gt;  4 nitrogen                                  4 64.0   16.0  
+#&gt;  5 Replicate:management                      4  0.868  0.217
+#&gt;  6 Replicate:variety                         2  0.518  0.259
+#&gt;  7 management:variety                        2  3.68   1.84 
+#&gt;  8 Replicate:nitrogen                        8  6.98   0.872
+#&gt;  9 management:nitrogen                       8  0.842  0.105
+#&gt; 10 variety:nitrogen                          4  1.78   0.444
+#&gt; 11 Replicate:management:variety              4  1.24   0.311
+#&gt; 12 Replicate:management:nitrogen            16  5.29   0.331
+#&gt; 13 Replicate:variety:nitrogen                8  4.43   0.554
+#&gt; 14 management:variety:nitrogen               8  3.22   0.402
+#&gt; 15 Replicate:management:variety:nitrogen    16  4.03   0.252</div><div class='input'>
 <span class='co'>##----fm1.9----</span>
 <span class='no'>fm1.9</span> <span class='kw'>&lt;-</span> <span class='fu'>aov</span>(<span class='no'>yield</span> ~ <span class='no'>Replicate</span> + <span class='no'>management</span> * <span class='no'>variety</span> * <span class='no'>nitrogen</span> +
                <span class='fu'>Error</span>(<span class='no'>Replicate</span>/<span class='no'>Main</span>/<span class='no'>Sub</span>), <span class='no'>riceV2V3</span>)
 <span class='no'>fm1.9.ANOVA</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>broom</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/broom/topics/tidy'>tidy</a></span>(<span class='no'>fm1.9</span>)
-
-<span class='co'>##----fm1.9.ANOVA----</span>
-<span class='kw pkg'>kableExtra</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/kableExtra/topics/reexports'>kable</a></span>(<span class='no'>fm1.9.ANOVA</span>)</div><div class='output co'>#&gt; &lt;table&gt;
-#&gt;  &lt;thead&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;th style="text-align:left;"&gt; stratum &lt;/th&gt;
-#&gt;    &lt;th style="text-align:left;"&gt; term &lt;/th&gt;
-#&gt;    &lt;th style="text-align:right;"&gt; df &lt;/th&gt;
-#&gt;    &lt;th style="text-align:right;"&gt; sumsq &lt;/th&gt;
-#&gt;    &lt;th style="text-align:right;"&gt; meansq &lt;/th&gt;
-#&gt;    &lt;th style="text-align:right;"&gt; statistic &lt;/th&gt;
-#&gt;    &lt;th style="text-align:right;"&gt; p.value &lt;/th&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;  &lt;/thead&gt;
-#&gt; &lt;tbody&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; Replicate &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; Replicate &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 2.9953910 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 1.4976955 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; Replicate:Main &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; nitrogen &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 63.9892344 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 15.9973086 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 18.3475499 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.0004300 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; Replicate:Main &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; Residuals &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 6.9752348 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.8719044 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; Replicate:Main:Sub &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; management &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 26.1362474 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 13.0681237 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 42.4560671 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.0000001 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; Replicate:Main:Sub &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; management:nitrogen &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.8423971 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.1052996 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.3421003 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.9385714 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; Replicate:Main:Sub &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; Residuals &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 20 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 6.1560689 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.3078034 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; Within &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; variety &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 68.4467685 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 68.4467685 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 200.8187902 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.0000000 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; Within &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; management:variety &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 3.6819768 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 1.8409884 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 5.4013516 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.0099194 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; Within &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; variety:nitrogen &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 1.7762845 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.4440711 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 1.3028786 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.2913508 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; Within &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; management:variety:nitrogen &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 3.2192836 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.4024105 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 1.1806486 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.3428793 &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt;   &lt;tr&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; Within &lt;/td&gt;
-#&gt;    &lt;td style="text-align:left;"&gt; Residuals &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 30 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 10.2251540 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; 0.3408385 &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
-#&gt;    &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
-#&gt;   &lt;/tr&gt;
-#&gt; &lt;/tbody&gt;
-#&gt; &lt;/table&gt;</div><div class='input'>
+<span class='no'>fm1.9.ANOVA</span></div><div class='output co'>#&gt; # A tibble: 11 x 7
+#&gt;    stratum         term                    df  sumsq meansq statistic   p.value
+#&gt;    &lt;chr&gt;           &lt;chr&gt;                &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+#&gt;  1 Replicate       Replicate                2  3.00   1.50     NA     NA       
+#&gt;  2 Replicate:Main  nitrogen                 4 64.0   16.0      18.3    4.30e- 4
+#&gt;  3 Replicate:Main  Residuals                8  6.98   0.872    NA     NA       
+#&gt;  4 Replicate:Main… management               2 26.1   13.1      42.5    6.34e- 8
+#&gt;  5 Replicate:Main… management:nitrogen      8  0.842  0.105     0.342  9.39e- 1
+#&gt;  6 Replicate:Main… Residuals               20  6.16   0.308    NA     NA       
+#&gt;  7 Within          variety                  1 68.4   68.4     201.     7.87e-15
+#&gt;  8 Within          management:variety       2  3.68   1.84      5.40   9.92e- 3
+#&gt;  9 Within          variety:nitrogen         4  1.78   0.444     1.30   2.91e- 1
+#&gt; 10 Within          management:variety:…     8  3.22   0.402     1.18   3.43e- 1
+#&gt; 11 Within          Residuals               30 10.2    0.341    NA     NA       </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
