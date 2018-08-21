@@ -126,6 +126,8 @@ library(dplyr)
 library(emmeans) 
 library(ggfortify) 
 library(ggplot2)
+library(kableExtra)
+library(knitr)
 library(lmerTest) 
 library(magrittr) 
 library(nlme) 
@@ -136,15 +138,25 @@ options(contrasts = c('contr.treatment', 'contr.poly'))
 ##----fm1.1----
 fm1.1 <- aov(yield ~ Replicate + nitrogen * management * variety +
                Error(Replicate/nitrogen/management), rice)
-               
+
 fm1.1.Summary <- broom::tidy(fm1.1)
-fm1.1.Summary
+
+##----fm1.1.Summary----
+kableExtra::kable(
+  fm1.1.Summary
+  , caption   = "ANOVA Table"
+)
+
 ##----fm1.2----
 fm1.2 <- lmer(yield ~ Replicate + nitrogen * management * variety +
                 (1|Replicate:Main) + (1|Replicate:Main:Sub), data = rice)
 fm1.2.ANOVA <- anova(fm1.2, ddf = "Kenward-Roger", type = 1)
-fm1.2.ANOVA
 
+##----fm1.2.ANOVA----
+kableExtra::kable(
+  fm1.2.ANOVA
+  , caption = "Mixed Model ANOVA"
+)
 
 
 ##----fm1.3----
@@ -186,7 +198,12 @@ fm1.4 <- lmer(yield ~ Replicate + nitrogen * management * variety + (1|Replicate
                 (1|Replicate:Main:Sub), data = rice)
 fm1.4.ANOVA <- anova(fm1.4, ddf = "Kenward-Roger", type = 1)
 
-fm1.4.ANOVA
+##----fm1.4.ANOVA----
+kableExtra::kable(
+  fm1.4.ANOVA
+  , caption = "Mixed Model ANOVA"
+)
+
 
 ##----fm1.5----
 fm1.5 <- lmer(yield ~ Replicate + management + variety * (nrate + I(nrate^2) +
@@ -194,14 +211,22 @@ fm1.5 <- lmer(yield ~ Replicate + management + variety * (nrate + I(nrate^2) +
                 (1|Replicate:Main) + (1|Replicate:Main:Sub), data = rice)
 fm1.5.ANOVA <- anova(fm1.5, ddf = "Kenward-Roger", type = 1)
 
-fm1.5.ANOVA
+##----fm1.5.ANOVA----
+kableExtra::kable(
+  fm1.5.ANOVA
+  , caption = "Mixed Model ANOVA"
+)
 
 ##----fm1.6----
 fm1.6 <- lmer(yield ~ Replicate + management + variety * nrate + I(nrate^2) +
                 (1|Replicate:Main) + (1|Replicate:Main:Sub), data = rice)
 
 fm1.6.Coef <- summary(fm1.6, ddf = "Kenward-Roger")$coef
-fm1.6.Coef
+
+
+##----fm1.6.Coef----
+kableExtra::kable(fm1.6.Coef)
+
 
 ##----fm1.6.Coefs----
 # fm1.6.Coef[ ,1, drop = FALSE]
@@ -225,7 +250,12 @@ fm1.6.Coef[9, 1]
 fm1.7 <- aov(yield ~ Replicate*management * variety * nitrogen, rice)
 fm1.7.Summary <- broom::tidy(fm1.7)
 
-fm1.7.Summary
+
+##----fm1.7.Summary----
+kableExtra::kable(
+  fm1.7.Summary
+  , caption   = "ANOVA"
+)
 
 ##----fm1.7.Rice----
 Rice1 <-
@@ -233,14 +263,14 @@ Rice1 <-
   dplyr::group_by(Replicate, nitrogen, variety) \%>\%
   dplyr::summarise(Yield = mean(yield, na.rm = TRUE))
 
-Rice1
-
 WideRice1 <-
   Rice1 \%>\%
   tidyr::spread(key = nitrogen, value = Yield) \%>\%
   dplyr::ungroup() \%>\%
   dplyr::select(-Replicate, -variety)
 
+##----fm1.7.Rice1----
+kableExtra::kable(Rice1)
 
 ##----fm1.7.Plot1----
 ggplot(data = Rice1, mapping = aes(x = nitrogen, y = Yield,  group = Replicate)) +
@@ -255,7 +285,6 @@ ggplot(data = Rice1, mapping = aes(x = nitrogen, y = Yield,  group = Replicate))
   theme(plot.title = element_text(hjust = 0.5)) 
 
 
-
 ##----fm1.8----
 riceV2V3 <- 
   rice \%>\%
@@ -265,13 +294,19 @@ riceV2V3 <-
 fm1.8 <- aov(yield ~ Replicate*management * variety * nitrogen, riceV2V3)
 fm1.8.ANOVA <- broom::tidy(fm1.8)
 
-fm1.8.ANOVA
+##----fm1.8.ANOVA----
+kableExtra::kable(
+  fm1.8.ANOVA
+  , caption   = "ANOVA Table"
+)
 
 ##----fm1.9----
 fm1.9 <- aov(yield ~ Replicate + management * variety * nitrogen +
                Error(Replicate/Main/Sub), riceV2V3)
 fm1.9.ANOVA <- broom::tidy(fm1.9)
-fm1.9.ANOVA
+
+##----fm1.9.ANOVA----
+kableExtra::kable(fm1.9.ANOVA)
 
 }
 \references{
