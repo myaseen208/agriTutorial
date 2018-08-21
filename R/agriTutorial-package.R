@@ -12,7 +12,7 @@
 #'
 #' @details
 #'
-#' Code\cr
+#' \strong{Code}\cr
 #'
 #'  The example code produces statistical analysis for the five agricultural data sets
 #'  in Piepho & Edmondson (2018) and also produces additional graphical analysis.
@@ -30,7 +30,7 @@
 #' extend the example code by adding functionality from other packages. One source of package information
 #' is the set of 'task views' available at: \href{https://cran.r-project.org/}{Task Views}.
 #'
-#' Polynomials\cr
+#' \strong{Polynomials}\cr
 #'
 #' The polynomials used in this tutorial are either raw polynomials or orthogonal polynomials.
 #'
@@ -49,7 +49,7 @@
 #' for most analyses but sometimes orthogonal polynomials can be useful when, for example, fitting
 #' higher-degree polynomials in a long series of repeated measures (see example 4).
 #'
-#' Functional marginality\cr
+#' \strong{Functional marginality}\cr
 #'
 #' Polynomial expansions are based on a Taylor series expansion and normally
 #' must include all polynomial terms up to and including the maximum degree of the expansion.
@@ -58,7 +58,7 @@
 #' all polynomial and response surface models will be assumed to conform with the requirements of
 #' functional marginality.
 #'
-#' Packages\cr
+#' \strong{Packages}\cr
 #'
 #' The example code depends on a number of R packages each of which must be installed on the user machine before
 #' the example code can be properly executed. The required packages are lmerTest, emmeans, pbkrtest, lattice, nlme and
@@ -67,7 +67,7 @@
 #'
 #' NB. It is important to keep packages updated using the update.packages() command.
 #'
-#' Examples:
+#' \strong{Examples:}
 #'
 #' \enumerate{
 #' \item \code{\link[agriTutorial]{example1}} : split-plot design
