@@ -27,9 +27,4 @@ RoxygenNote: 6.1.0
 Suggests: R.rsp
 VignetteBuilder: R.rsp
 NeedsCompilation: no
-Packaged: 2018-08-20 18:19:22 UTC; rne
-Author: Rodney Edmondson [aut, cre],
-  Hans-Peter Piepho [aut, ctb],
-  Muhammad Yaseen [aut, ctb]
-Repository: CRAN
-Date/Publication: 2018-08-20 18:40:02 UTC
+Note: Biostatistics Unit, Institute of Crop Science, University of Hohenheim, Stuttgart, Germany; Rana House, Wellesbourne, UK; and Department of Mathematics and Statistics, University of Agriculture Faisalabad, Faisalabad-Pakistan.
