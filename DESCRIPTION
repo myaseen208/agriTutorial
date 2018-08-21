@@ -1,0 +1,35 @@
+Package: agriTutorial
+Type: Package
+Title: Tutorial Analysis of Some Agricultural Experiments
+Version: 0.1.4
+Date: 2018-08-19
+Authors@R: c(
+              person(c("Rodney Edmondson"),  email = "rodney.edmondson@gmail.com", role = c("aut", "cre"))
+            , person(c("Hans-Peter",  "Piepho"),  email = "piepho@uni-hohenheim.de", role = c("aut", "ctb"))
+            , person(c("Muhammad",  "Yaseen"),  email = "myaseen208@gmail.com ", role = c("aut", "ctb"))
+            )
+Maintainer: Rodney Edmondson <rodney.edmondson@gmail.com>
+Depends: R (>= 3.1.0)
+Description: Example software for the analysis of data from designed 
+	experiments, especially agricultural crop experiments. The basics 
+	of the analysis of designed experiments are discussed 
+	using real examples from agricultural field trials. 
+	A range of statistical methods using a range
+	of R statistical packages are  exemplified . The experimental
+	data is made available as separate data sets for each example
+	and the R analysis code is made available as example code.
+	The example code can be readily extended, as required.
+License: GPL (>= 2)
+Imports: lmerTest, emmeans, pbkrtest, lattice, nlme, ggplot2
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.1.0
+Suggests: R.rsp
+VignetteBuilder: R.rsp
+NeedsCompilation: no
+Packaged: 2018-08-20 18:19:22 UTC; rne
+Author: Rodney Edmondson [aut, cre],
+  Hans-Peter Piepho [aut, ctb],
+  Muhammad Yaseen [aut, ctb]
+Repository: CRAN
+Date/Publication: 2018-08-20 18:40:02 UTC
