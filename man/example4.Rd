@@ -93,149 +93,258 @@ this tutorial and will not be discussed further here.
 \code{\link[agriTutorial]{agriTutorial}}: return to home page if you want to select a different example \cr
 }
 \examples{
+library(broom) 
+library(broom.mixed) 
+library(dplyr)
+library(emmeans) 
+library(ggfortify) 
+library(ggplot2)
+library(lmerTest) 
+library(magrittr) 
+library(nlme) 
+library(pbkrtest)
 
-## *************************************************************************************
-##                       How to run the code
-## *************************************************************************************
+options(contrasts = c('contr.treatment', 'contr.poly'))
 
-## Either type example("example4") to run ALL the examples succesively
-## or copy and paste examples sucessively, as required
+##---------sorghumData-------
+sorghum$factblock <- factor(sorghum$varblock)
+sorghum$rawWeeks  <- poly(sorghum$varweek, degree = 4, raw = TRUE)
+sorghum$polWeeks  <- poly(sorghum$varweek, degree = 4, raw = FALSE)
+sorghum$polBlocks <- poly(sorghum$varblock, degree = 4, raw = FALSE)
 
-## *************************************************************************************
-##                          Options and required packages
-## *************************************************************************************
-
-options(contrasts = c('contr.treatment','contr.poly'))
-require(nlme)
-
-## *************************************************************************************
-##            Section 1:  Polynomials for weeks and blocks contrasts
-## *************************************************************************************
-
-sorghum$rawWeeks = poly(sorghum$varweek, degree = 4, raw = TRUE)
-sorghum$polWeeks = poly(sorghum$varweek, degree = 4, raw = FALSE)
-sorghum$polBlocks = poly(sorghum$varblock, degree = 4, raw = FALSE)
-sorghum$factblock = factor(sorghum$varblock)
-
-## *************************************************************************************
-## Section 2: Various correlation models assuming full factorial blocks and weeks model
-## *************************************************************************************
-
-AIC = NULL
-logLik = NULL
-Model = c("ID", "CS", "AR(1)", "AR(1) + nugget", "UN")
-
+##-------fm4.1-------
 ## independent uncorrelated random plots
-full_indy = gls(y ~ factweek * (Replicate + variety), sorghum)
-anova(full_indy)
-AIC = c(AIC, AIC(full_indy))
-logLik = c(logLik, logLik(full_indy))
+fm4.1 <- nlme::gls(y ~ factweek * (Replicate + variety), sorghum)
+fm4.1.ANOVA <- anova(fm4.1)
+fm4.1.glance <- broom::glance(fm4.1)
+fm4.1.Variogram <- nlme::Variogram(fm4.1)
 
+##----fm4.1.ANOVA----
+ fm4.1.ANOVA
+
+##----fm4.1.glance----
+ fm4.1.glance
+
+##----fm4.1.Variogram----
+fm4.1.Variogram
+
+##-------fm4.2-------
 ## corCompSymm compound symmetry
-corCompSymm = gls(y ~ factweek * (Replicate + variety),
-corr = corCompSymm(form = ~ varweek|factplot), sorghum)
-anova(corCompSymm)
-AIC = c(AIC, AIC(corCompSymm))
-logLik = c(logLik, logLik(corCompSymm))
-Variogram(corCompSymm)
+fm4.2 <- nlme::gls(y ~ factweek * (Replicate + variety),
+                   corr = corCompSymm(form = ~ varweek|factplot), sorghum)
+fm4.2.ANOVA <- anova(fm4.2)
+fm4.2.glance <- broom::glance(fm4.2)
+fm4.2.Variogram <- nlme::Variogram(fm4.2)
 
+##----fm4.2.ANOVA----
+ fm4.2.ANOVA
+
+##----fm4.2.glance----
+ fm4.2.glance
+
+##----fm4.2.Variogram----
+ fm4.2.Variogram
+
+##-------fm4.3-------
 ## corExp without nugget
-corExp = gls(y ~ factweek * (Replicate + variety),
- corr = corExp(form = ~ varweek|factplot), sorghum)
-anova(corExp)
-AIC = c(AIC, AIC(corExp))
-logLik = c(logLik, logLik(corExp))
-Variogram(corExp)
+fm4.3 <- nlme::gls(y ~ factweek * (Replicate + variety),
+                   corr = corExp(form = ~ varweek|factplot), sorghum)
+fm4.3.ANOVA <- anova(fm4.3)
+fm4.3.glance <- broom::glance(fm4.3)
+fm4.3.Variogram <- nlme::Variogram(fm4.3)
 
+##----fm4.3.ANOVA----
+ fm4.3.ANOVA
+
+##----fm4.3.glance----
+ fm4.3.glance
+
+##----fm4.3.Variogram----
+ fm4.3.Variogram
+
+##-------fm4.4-------
 ##  corExp with nugget
-corExp_nugget = gls(y ~ factweek * (Replicate + variety),
- corr = corExp(form = ~ varweek|factplot, nugget = TRUE), sorghum)
-anova(corExp_nugget)
-AIC = c(AIC, AIC(corExp_nugget))
-logLik = c(logLik, logLik(corExp_nugget))
-Variogram(corExp)
+fm4.4 <- nlme::gls(y ~ factweek * (Replicate + variety),
+                   corr = corExp(form = ~ varweek|factplot, nugget = TRUE), sorghum)
+fm4.4.ANOVA <- anova(fm4.4)
+fm4.4.glance <- broom::glance(fm4.4)
+fm4.4.Variogram <- nlme::Variogram(fm4.4)
 
+##----fm4.4.ANOVA----
+ fm4.4.ANOVA
+
+
+##----fm4.4.glance----
+ fm4.4.glance
+
+##----fm4.4.Variogram----
+ fm4.4.Variogram
+
+
+##-------fm4.5-------
 ##  corSymm unstructured
-corSymm = gls(y ~ factweek * (Replicate + variety), corr = corSymm(form = ~ 1|factplot),
- weights = varIdent(form = ~ 1|varweek), sorghum)
-anova(corSymm)
-AIC = c(AIC, AIC(corSymm))
-logLik = c(logLik, logLik(corSymm))
-Variogram(corSymm)
+fm4.5 <- nlme::gls(y ~ factweek * (Replicate + variety), 
+                   corr = corSymm(form = ~ 1|factplot),
+                   weights = varIdent(form = ~ 1|varweek), sorghum)
+fm4.5.ANOVA <- anova(fm4.5)
+fm4.5.glance <- broom::glance(fm4.5)
+fm4.5.Variogram <- nlme::Variogram(fm4.5)
 
-##  Table 11 Comparison of log Likelihood and AIC statistics for different correlation structures
-dAIC = AIC - AIC[4]
-logLik = -2 * logLik
-dlogLik = logLik - logLik[4]
-AICtable = data.frame(Model, round(logLik, 2), round(dlogLik, 2), round(AIC, 2), round(dAIC, 2))
-colnames(AICtable) = c("Covar_Model", "-2logLr", "-diff2logLr", "AIC", "diffAIC")
-AICtable
+##----fm4.5.ANOVA----
+ fm4.5.ANOVA
 
-## *************************************************************************************
-##  Section 3: Factorial block and variety effects assuming full polynomial week effects
-## *************************************************************************************
+##----fm4.5.glance----
+ fm4.5.glance
 
-## Table A2 (cf Table 14) Sequential Wald tests for full model sorghum data
-pol_Wald =
-gls(y ~ (factblock+variety) * (rawWeeks[,1] + rawWeeks[,2] + polWeeks[,3] + polWeeks[,4]),
-corr = corExp(form = ~ varweek | factplot, nugget = TRUE), sorghum)
-anova(pol_Wald)
-range=coef(pol_Wald$modelStruct$corStruct,unconstrained=FALSE)[1]
-nugget=coef(pol_Wald$modelStruct$corStruct,unconstrained=FALSE)[2]
-rho=(1-nugget)*exp(-1/range)
-cat("Range =", range, "\\n")
-cat("Nugget =", nugget, "\\n")
-cat("Correlation =", rho, "\\n")
-ACF(pol_Wald)
-plot(pol_Wald,sub.caption = NA, main = "Residuals from full polynomial weeks model")
+##----fm4.5.Variogram----
+ fm4.5.Variogram
 
-## *************************************************************************************
-## Section 4: Degree-2 model for weeks-by-variety and weeks-by-blocks effects assuming
-## degree-3 and degree-4 week effects are zero
-## *************************************************************************************
+##----Models.Summary----
+Model <- c("ID", "CS", "AR(1)", "AR(1) + nugget", "UN")
+Models.Summary <- 
+  cbind(Model, 
+        rbind(
+          fm4.1.glance
+          , fm4.2.glance
+          , fm4.3.glance  
+          , fm4.3.glance  
+          , fm4.5.glance  
+        ))
 
- ## Table 15 coefficients assuming a quadratic weeks model for both block and treatment effects
-quad_Wald = gls(y ~  polBlocks + variety + rawWeeks[,1] + rawWeeks[,2] +
- polBlocks:(rawWeeks[,1] + rawWeeks[,2]+ polWeeks[,3] + polWeeks[,4]) +
- variety:(rawWeeks[,1] + rawWeeks[,2]),
- corr = corExp(form = ~ varweek | factplot, nugget=TRUE), sorghum)
-anova(quad_Wald)
-summary(quad_Wald)$tTable
-vcov(quad_Wald)
-range=coef(quad_Wald$modelStruct$corStruct,unconstrained=FALSE)[1]
-nugget=coef(quad_Wald$modelStruct$corStruct,unconstrained=FALSE)[2]
-rho=(1-nugget)*exp(-1/range)
-cat("Range =", range, "\\n")
-cat("Nugget =", nugget, "\\n")
-cat("Correlation =", rho, "\\n")
-plot(quad_Wald,sub.caption = NA, main = "Residuals from quadratic regression model")
 
-## *************************************************************************************
-## Section 5: Quadratic model for weeks-by-variety effects assuming full degree-4 model
-## for weeks and weeks-by-blocks effects
-## *************************************************************************************
+ Models.Summary
 
-##  Model assuming a quadratic variety-by-weeks model and quartic blocks-by-weeks model
-quad_Wald = gls(y ~ Replicate * (rawWeeks[,1] + rawWeeks[,2] + polWeeks[,3] + polWeeks[,4]) +
- variety * (rawWeeks[,1] + rawWeeks[,2]),
- corr = corExp(form = ~ varweek | factplot, nugget = TRUE), sorghum)
-anova(quad_Wald)
-summary(quad_Wald)$tTable
-range=coef(quad_Wald$modelStruct$corStruct,unconstrained=FALSE)[1]
-nugget=coef(quad_Wald$modelStruct$corStruct,unconstrained=FALSE)[2]
-rho=(1-nugget)*exp(-1/range)
-cat("Range =", range, "\\n")
-cat("Nugget =", nugget, "\\n")
-cat("Correlation =", rho, "\\n")
-plot(quad_Wald,sub.caption = NA, main = "Quadratic treatment-by-weeks model with full
+
+##----fm4.6----
+fm4.6 <- nlme::gls(
+  y ~ (factblock+variety) * (varweek + I(varweek^2) + I(varweek^3) + I(varweek^4))
+  , corr = corExp(form = ~ varweek | factplot, nugget = TRUE)
+  , sorghum)
+
+fm4.6.ANOVA <- anova(fm4.6)
+fm4.6.Coef <- broom::tidy(fm4.6)
+fm4.6.vcov <- vcov(fm4.6)
+
+
+fm4.6.Par <- 
+  tibble::tibble(
+    "Parameter" = c("Range", "Nugget", "rho")
+    , "Value"     = c(
+      coef(fm4.6$modelStruct$corStruct, unconstrained = FALSE)[1]
+      , coef(fm4.6$modelStruct$corStruct, unconstrained = FALSE)[2]
+      , (1-coef(fm4.6$modelStruct$corStruct, unconstrained = FALSE)[2])*
+        exp(-1/coef(fm4.6$modelStruct$corStruct, unconstrained = FALSE)[1])
+    )
+  )
+
+fm4.6.ACF <- nlme::ACF(fm4.6)
+
+##----fm4.6.ANOVA----
+ fm4.6.ANOVA
+
+##----fm4.6.Coef----
+ fm4.6.Coef
+
+##----fm4.6.Par----
+ fm4.6.Par
+
+##----fm4.6.Plot1----
+plot(fm4.6.ACF)
+
+##----fm4.6.Plot2----
+plot(fm4.6, sub.caption = NA, main = "Residuals from full polynomial weeks model")
+
+
+##----fm4.7----
+fm4.7 <- nlme::gls(
+  y ~  polBlocks + variety + rawWeeks[,1] + rawWeeks[,2] +
+    polBlocks:(rawWeeks[,1] + rawWeeks[,2]+ polWeeks[,3] + polWeeks[,4]) +
+    variety:(rawWeeks[,1] + rawWeeks[,2])
+  , corr = corExp(form = ~ varweek | factplot, nugget=TRUE), sorghum)
+fm4.7.ANOVA <- anova(fm4.7)
+fm4.7.Coef <- broom::tidy(fm4.7)
+fm4.7.vcov <- vcov(fm4.7)
+
+fm4.7.Par <- 
+  tibble::tibble(
+    "Parameter" = c("Range", "Nugget", "rho")
+    , "Value"     = c(
+      coef(fm4.7$modelStruct$corStruct, unconstrained = FALSE)[1]
+      , coef(fm4.7$modelStruct$corStruct, unconstrained = FALSE)[2]
+      , (1-coef(fm4.7$modelStruct$corStruct, unconstrained = FALSE)[2])*
+        exp(-1/coef(fm4.7$modelStruct$corStruct, unconstrained = FALSE)[1])
+    )
+  )
+
+fm4.7.ACF <- nlme::ACF(fm4.7)
+
+
+##----fm4.7.ANOVA----
+ fm4.7.ANOVA
+
+##----fm4.7.Coef----
+ fm4.7.Coef
+
+##----fm4.7.Par----
+ fm4.7.Par
+
+##----fm4.7.Plot1----
+plot(fm4.7.ACF)
+
+##----fm4.7.Plot2----
+plot(fm4.7, sub.caption = NA, main = "Residuals from quadratic regression model")
+
+##----fm4.8----
+fm4.8 <-  nlme::gls(
+  y ~ Replicate * (rawWeeks[,1] + rawWeeks[,2] + polWeeks[,3] + polWeeks[,4]) +
+    variety * (rawWeeks[,1] + rawWeeks[,2])
+  ,  corr = corExp(form = ~ varweek | factplot, nugget = TRUE), sorghum)
+fm4.8.ANOVA <- anova(fm4.8)
+fm4.8.Coef <- broom::tidy(fm4.8)
+fm4.8.vcov <- vcov(fm4.8)
+
+fm4.8.Par <- 
+  tibble::tibble(
+    "Parameter" = c("Range", "Nugget", "rho")
+    , "Value"     = c(
+      coef(fm4.8$modelStruct$corStruct, unconstrained = FALSE)[1]
+      , coef(fm4.8$modelStruct$corStruct, unconstrained = FALSE)[2]
+      , (1-coef(fm4.8$modelStruct$corStruct, unconstrained = FALSE)[2])*
+        exp(-1/coef(fm4.8$modelStruct$corStruct, unconstrained = FALSE)[1])
+    )
+  )
+
+fm4.8.ACF <- nlme::ACF(fm4.8)
+
+##----fm4.8.ANOVA----
+ fm4.8.ANOVA
+
+##----fm4.8.Coef----
+ fm4.8.Coef
+
+##----fm4.8.Par----
+ fm4.8.Par
+
+##----fm4.8.Plot1----
+plot(fm4.8.ACF)
+
+##----fm4.8.Plot2----
+plot(fm4.8,sub.caption = NA, main = "Quadratic treatment-by-weeks model with full
 blocks-by-weeks model")
-
 
 }
 \references{
-Milliken, G.A., & Johnson, D.E. (1992). Analysis of messy data. Volume I: Designed experiments. Boca Raton: CRC Press.
-
-Piepho, H. P, and Edmondson. R. N. (2018). A tutorial on the statistical analysis of factorial experiments with qualitative and quantitative
-treatment factor levels. Journal of Agronomy and Crop Science. DOI: 10.1111/jac.12267.
-\href{http://onlinelibrary.wiley.com/doi/10.1111/jac.12267/full}{Early View}
+\enumerate{
+         \item  Milliken, G., & Johnson, D. (1992). \emph{Analysis of Messy Data. Volume I: Designed Experiments}. CRC Press.
+         \item  Kenward, M. G., & Roger, J. H. (1997). Small sample inference for fixed effects from restricted maximum likelihood. \emph{Biometrics},  \strong{53}, 983–997.
+         \item Piepho, H., & Edmondson, R. (2018). A tutorial on the Statistical Analysis of Factorial Experiments with Qualitative and Quantitative treatment factor levels. 
+               \emph{Journal of Agronomy and Crop Science.} (\url{https://onlinelibrary.wiley.com/doi/full/10.1111/jac.12267}).
+         }
+}
+\author{
+\enumerate{
+         \item Rodney N. Edmondson (\email{rodney.edmondson@gmail.com})
+         \item Hans-Peter Piepho (\email{piepho@uni-hohenheim.de})
+         \item Muhammad Yaseen (\email{myaseen208@gmail.com})
+         }
 }

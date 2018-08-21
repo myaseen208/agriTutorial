@@ -225,8 +225,7 @@ in isolation from the research workers who conducted the experiment.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>data</span>(<span class='no'>rice</span>)
-<span class='fu'>library</span>(<span class='no'>broom</span>)</div><div class='output co'>#&gt; <span class='message'></span>
+    <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>broom</span>)</div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Attaching package: ‘broom’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:agriTutorial’:</span>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    tidyMCMC</span></div><div class='input'><span class='fu'>library</span>(<span class='no'>broom.mixed</span>)</div><div class='output co'>#&gt; <span class='message'></span>
@@ -278,7 +277,8 @@ in isolation from the research workers who conducted the experiment.</p>
 #&gt;  8 Within             nitrogen:varie…     8  14.1     1.77      3.57   1.92e- 3
 #&gt;  9 Within             management:var…     4   3.85    0.963     1.94   1.15e- 1
 #&gt; 10 Within             nitrogen:manag…    16   3.70    0.231     0.467  9.54e- 1
-#&gt; 11 Within             Residuals          60  29.7     0.496    NA     NA       </div><div class='input'><span class='co'>##----fm1.2----</span>
+#&gt; 11 Within             Residuals          60  29.7     0.496    NA     NA       </div><div class='input'>
+<span class='co'>##----fm1.2----</span>
 <span class='no'>fm1.2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/lmerTest/topics/lmer'>lmer</a></span>(<span class='no'>yield</span> ~ <span class='no'>Replicate</span> + <span class='no'>nitrogen</span> * <span class='no'>management</span> * <span class='no'>variety</span> +
                 (<span class='fl'>1</span><span class='kw'>|</span><span class='no'>Replicate</span>:<span class='no'>Main</span>) + (<span class='fl'>1</span><span class='kw'>|</span><span class='no'>Replicate</span>:<span class='no'>Main</span>:<span class='no'>Sub</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>rice</span>)
 <span class='no'>fm1.2.ANOVA</span> <span class='kw'>&lt;-</span> <span class='fu'>anova</span>(<span class='no'>fm1.2</span>, <span class='kw'>ddf</span> <span class='kw'>=</span> <span class='st'>"Kenward-Roger"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fl'>1</span>)

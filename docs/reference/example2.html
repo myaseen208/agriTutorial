@@ -134,85 +134,79 @@ Piepho and Edmondson (2018).</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Petersen, R.G. (1994). Agricultural field experiments. Design and analysis. New York: Marcel Dekker.</p>
-<p>Piepho, H. P, and Edmondson. R. N. (2018). A tutorial on the statistical analysis of factorial experiments with qualitative and quantitative
-treatment factor levels. Journal of Agronomy and Crop Science. DOI: 10.1111/jac.12267.
-<a href='http://onlinelibrary.wiley.com/doi/10.1111/jac.12267/full'>Early View</a></p>
+    <ol>
+<li><p>Petersen, R. G. (1994). <em>Agricultural Field Experiments: Design and Analysis</em>. CRC Press.</p></li>
+<li><p>Kenward, M. G., &amp; Roger, J. H. (1997). Small sample inference for fixed effects from restricted maximum likelihood. <em>Biometrics</em>,  <strong>53</strong>, 983–997.</p></li>
+<li><p>Piepho, H., &amp; Edmondson, R. (2018). A tutorial on the Statistical Analysis of Factorial Experiments with Qualitative and Quantitative treatment factor levels. 
+               <em>Journal of Agronomy and Crop Science.</em> (<a href='https://onlinelibrary.wiley.com/doi/full/10.1111/jac.12267'>https://onlinelibrary.wiley.com/doi/full/10.1111/jac.12267</a>).</p></li>
+</ol>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='co'>## *************************************************************************************</span>
-<span class='co'>##                       How to run the code</span>
-<span class='co'>## *************************************************************************************</span>
-
-<span class='co'>## Either type example("example2") to run ALL the examples succesively</span>
-<span class='co'>## or copy and paste examples sucessively, as required</span>
-
-<span class='co'>## *************************************************************************************</span>
-<span class='co'>##                         Options and required packages</span>
-<span class='co'>## *************************************************************************************</span>
+    <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>broom</span>)
+<span class='fu'>library</span>(<span class='no'>broom.mixed</span>)
+<span class='fu'>library</span>(<span class='no'>dplyr</span>)
+<span class='fu'>library</span>(<span class='no'>emmeans</span>)
+<span class='fu'>library</span>(<span class='no'>ggfortify</span>)
+<span class='fu'>library</span>(<span class='no'>ggplot2</span>)
+<span class='fu'>library</span>(<span class='no'>lmerTest</span>)
+<span class='fu'>library</span>(<span class='no'>magrittr</span>)
+<span class='fu'>library</span>(<span class='no'>nlme</span>)
+<span class='fu'>library</span>(<span class='no'>pbkrtest</span>)
 
 <span class='fu'>options</span>(<span class='kw'>contrasts</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'contr.treatment'</span>, <span class='st'>'contr.poly'</span>))
-<span class='co'>## ggplot2 MUST be installed</span>
-<span class='fu'>require</span>(<span class='no'>ggplot2</span>)
 
-<span class='co'>## *************************************************************************************</span>
-<span class='co'>##         Polynomial analysis and graphical plots of factorial treatment effects</span>
-<span class='co'>## *************************************************************************************</span>
+<span class='co'>##----fm2.1----</span>
+<span class='no'>fm2.1</span> <span class='kw'>&lt;-</span> <span class='fu'>lm</span>(<span class='no'>yield</span> ~ <span class='no'>Replicate</span> + <span class='no'>nrate</span> + <span class='fu'>I</span>(<span class='no'>nrate</span>^<span class='fl'>2</span>) + <span class='fu'>I</span>(<span class='no'>nrate</span>^<span class='fl'>3</span>) + <span class='fu'>I</span>(<span class='no'>nrate</span>^<span class='fl'>4</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>beet</span>)
+<span class='no'>fm2.1.ANOVA</span> <span class='kw'>&lt;-</span> <span class='fu'>anova</span>(<span class='no'>fm2.1</span>)
 
-<span class='no'>N</span> <span class='kw'>=</span> <span class='fu'>poly</span>((<span class='no'>beet</span>$<span class='no'>nrate</span>/<span class='fl'>100</span>), <span class='kw'>degree</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>raw</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='fu'>colnames</span>(<span class='no'>N</span>) <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"Linear_N"</span>, <span class='st'>"Quadratic_N"</span>, <span class='st'>"Cubic_N"</span>, <span class='st'>"Quartic_N"</span>)
-<span class='no'>beet</span> <span class='kw'>=</span> <span class='fu'>cbind</span>(<span class='no'>beet</span>, <span class='no'>N</span>)
-
-<span class='co'>## Tables 4 and 5: Full polynomial analysis of variance based on raw polynomials</span>
-<span class='fu'>anova</span>(<span class='fu'>lm</span>(<span class='no'>yield</span> ~ <span class='no'>Replicate</span> + <span class='no'>Linear_N</span> + <span class='no'>Quadratic_N</span> + <span class='no'>Cubic_N</span> + <span class='no'>Quartic_N</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>beet</span>))</div><div class='output co'>#&gt; Analysis of Variance Table
+<span class='co'>##----fm2.1.ANOVA----</span>
+ <span class='no'>fm2.1.ANOVA</span></div><div class='output co'>#&gt; Analysis of Variance Table
 #&gt; 
 #&gt; Response: yield
-#&gt;             Df Sum Sq Mean Sq  F value    Pr(&gt;F)    
-#&gt; Replicate    2  26.32   13.16   3.7118   0.07238 .  
-#&gt; Linear_N     1 651.47  651.47 183.7364 8.429e-07 ***
-#&gt; Quadratic_N  1 260.50  260.50  73.4710 2.649e-05 ***
-#&gt; Cubic_N      1   1.59    1.59   0.4476   0.52232    
-#&gt; Quartic_N    1   0.00    0.00   0.0011   0.97450    
-#&gt; Residuals    8  28.37    3.55                       
+#&gt;            Df Sum Sq Mean Sq  F value    Pr(&gt;F)    
+#&gt; Replicate   2  26.32   13.16   3.7118   0.07238 .  
+#&gt; nrate       1 651.47  651.47 183.7364 8.429e-07 ***
+#&gt; I(nrate^2)  1 260.50  260.50  73.4710 2.649e-05 ***
+#&gt; I(nrate^3)  1   1.59    1.59   0.4476   0.52232    
+#&gt; I(nrate^4)  1   0.00    0.00   0.0011   0.97450    
+#&gt; Residuals   8  28.37    3.55                       
 #&gt; ---
 #&gt; Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</div><div class='input'>
-<span class='co'>##  Table 6: showing quadratic model coefficients with standard errors and confidence intervals</span>
-<span class='no'>quadratic</span> <span class='kw'>=</span> <span class='fu'>lm</span>(<span class='no'>yield</span> ~ <span class='no'>Replicate</span> + <span class='no'>Linear_N</span> + <span class='no'>Quadratic_N</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>beet</span>)
-<span class='fu'>summary</span>(<span class='no'>quadratic</span>)</div><div class='output co'>#&gt; 
-#&gt; Call:
-#&gt; lm(formula = yield ~ Replicate + Linear_N + Quadratic_N, data = beet)
-#&gt; 
-#&gt; Residuals:
-#&gt;     Min      1Q  Median      3Q     Max 
-#&gt; -2.6705 -0.9457  0.2495  0.7852  2.5991 
-#&gt; 
-#&gt; Coefficients:
-#&gt;             Estimate Std. Error t value Pr(&gt;|t|)    
-#&gt; (Intercept)    9.139      1.133   8.066 1.10e-05 ***
-#&gt; Replicate2    -0.720      1.095  -0.658   0.5256    
-#&gt; Replicate3     2.380      1.095   2.174   0.0548 .  
-#&gt; Linear_N      41.777      3.183  13.125 1.25e-07 ***
-#&gt; Quadratic_N  -20.330      2.180  -9.325 3.00e-06 ***
-#&gt; ---
-#&gt; Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
-#&gt; 
-#&gt; Residual standard error: 1.731 on 10 degrees of freedom
-#&gt; Multiple R-squared:  0.9691,	Adjusted R-squared:  0.9567 
-#&gt; F-statistic: 78.31 on 4 and 10 DF,  p-value: 1.657e-07
-#&gt; </div><div class='input'><span class='fu'>confint</span>(<span class='no'>quadratic</span>, <span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>)</div><div class='output co'>#&gt;                  2.5 %     97.5 %
-#&gt; (Intercept)   6.614421  11.663674
-#&gt; Replicate2   -3.159021   1.719021
-#&gt; Replicate3   -0.059021   4.819021
-#&gt; Linear_N     34.684891  48.868850
-#&gt; Quadratic_N -25.188052 -15.472784</div><div class='input'>
-<span class='fu'>par</span>(<span class='kw'>mfrow</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>2</span>, <span class='fl'>2</span>), <span class='kw'>oma</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>2</span>, <span class='fl'>0</span>))
-<span class='fu'>plot</span>(<span class='no'>quadratic</span>, <span class='kw'>sub.caption</span> <span class='kw'>=</span> <span class='fl'>NA</span>)</div><div class='input'><span class='fu'>title</span>(<span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"Diagnostic plots for quadratic nitrogen effects model"</span>, <span class='kw'>outer</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='img'><img src='example2-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggplot'>ggplot</a></span>(<span class='no'>beet</span>, <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>nrate</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>yield</span>)) +
- <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/labs'>ggtitle</a></span>(<span class='st'>"Fig 3 Yield versus N for sugar beet with 95% confidence band"</span>) +
- <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_point'>geom_point</a></span>(<span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>1</span>) + <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/stat_summary'>stat_summary</a></span>(<span class='kw'>fun.y</span> <span class='kw'>=</span> <span class='no'>mean</span>, <span class='kw'>geom</span> <span class='kw'>=</span> <span class='st'>"point"</span>) +
- <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_smooth'>geom_smooth</a></span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='no'>lm</span>, <span class='kw'>formula</span> <span class='kw'>=</span> <span class='no'>y</span> ~ <span class='fu'>poly</span>(<span class='no'>x</span>, <span class='fl'>2</span>)) + <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggtheme'>theme_bw</a></span>()</div><div class='img'><img src='example2-2.png' alt='' width='700' height='433' /></div><div class='input'>
+
+<span class='co'>##----fm2.2----</span>
+<span class='no'>fm2.2</span> <span class='kw'>&lt;-</span> <span class='fu'>lm</span>(<span class='no'>yield</span> ~ <span class='no'>Replicate</span> + <span class='no'>nrate</span> + <span class='fu'>I</span>(<span class='no'>nrate</span>^<span class='fl'>2</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>beet</span>)
+<span class='no'>fm2.2.Coef</span> <span class='kw'>&lt;-</span> <span class='fu'>summary</span>(<span class='no'>fm2.2</span>)$<span class='no'>coef</span>
+
+<span class='co'>##----fm2.2.Coef----</span>
+<span class='no'>fm2.2.Coef</span></div><div class='output co'>#&gt;                 Estimate   Std. Error    t value     Pr(&gt;|t|)
+#&gt; (Intercept)  9.139047619 1.1330651944  8.0657739 1.095923e-05
+#&gt; Replicate2  -0.720000000 1.0946449740 -0.6577475 5.255511e-01
+#&gt; Replicate3   2.380000000 1.0946449740  2.1742209 5.477791e-02
+#&gt; nrate        0.417768707 0.0318291636 13.1253436 1.252108e-07
+#&gt; I(nrate^2)  -0.002033042 0.0002180131 -9.3253201 3.003697e-06</div><div class='input'>
+<span class='co'>##----fm2.2.Coefs----</span>
+<span class='no'>fm2.2.Coef</span>[<span class='fl'>1</span>, <span class='fl'>1</span>] + <span class='fu'>sum</span>(<span class='no'>fm2.2.Coef</span>[<span class='fl'>2</span>:<span class='fl'>3</span>, <span class='fl'>1</span>])/<span class='fl'>3</span></div><div class='output co'>#&gt; [1] 9.692381</div><div class='input'><span class='no'>fm2.2.Coef</span>[<span class='fl'>4</span>, <span class='fl'>1</span>]</div><div class='output co'>#&gt; [1] 0.4177687</div><div class='input'><span class='no'>fm2.2.Coef</span>[<span class='fl'>5</span>, <span class='fl'>1</span>]</div><div class='output co'>#&gt; [1] -0.002033042</div><div class='input'>
+<span class='fu'>confint</span>(<span class='no'>fm2.2</span>, <span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>)</div><div class='output co'>#&gt;                    2.5 %       97.5 %
+#&gt; (Intercept)  6.614421038 11.663674200
+#&gt; Replicate2  -3.159020996  1.719020996
+#&gt; Replicate3  -0.059020996  4.819020996
+#&gt; nrate        0.346848911  0.488688503
+#&gt; I(nrate^2)  -0.002518805 -0.001547278</div><div class='input'>
+<span class='co'>##----fm2.2.Plot1----</span>
+<span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/autoplot'>autoplot</a></span>(<span class='no'>fm2.2</span>)</div><div class='img'><img src='example2-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'>##----fm2.2.Plot2----</span>
+<span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggplot'>ggplot</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>beet</span>, <span class='kw'>mapping</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>nrate</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>yield</span>)) +
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_point'>geom_point</a></span>(<span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>1</span>) +
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/stat_summary'>stat_summary</a></span>(<span class='kw'>fun.y</span> <span class='kw'>=</span> <span class='no'>mean</span>, <span class='kw'>geom</span> <span class='kw'>=</span> <span class='st'>"point"</span>) +
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_smooth'>geom_smooth</a></span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='no'>lm</span>, <span class='kw'>formula</span> <span class='kw'>=</span> <span class='no'>y</span> ~ <span class='fu'>poly</span>(<span class='no'>x</span>, <span class='fl'>2</span>)) +
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/labs'>labs</a></span>(
+    <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"Amont of nitrogen (kg)"</span>
+    ,  <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"Yield"</span>
+    , <span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>"Fig 3 Yield versus N for sugar beet with 95% confidence band"</span>
+  ) +
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggtheme'>theme_bw</a></span>()</div><div class='img'><img src='example2-2.png' alt='' width='700' height='433' /></div><div class='input'>
+
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -225,6 +219,14 @@ treatment factor levels. Journal of Agronomy and Crop Science. DOI: 10.1111/jac.
       
       <li><a href="#examples">Examples</a></li>
     </ul>
+
+    <h2>Author</h2>
+    
+<ol>
+<li><p>Rodney N. Edmondson (<a href='mailto:rodney.edmondson@gmail.com'>rodney.edmondson@gmail.com</a>)</p></li>
+<li><p>Hans-Peter Piepho (<a href='mailto:piepho@uni-hohenheim.de'>piepho@uni-hohenheim.de</a>)</p></li>
+<li><p>Muhammad Yaseen (<a href='mailto:myaseen208@gmail.com'>myaseen208@gmail.com</a>)</p></li>
+</ol>
 
   </div>
 </div>

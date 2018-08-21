@@ -136,7 +136,6 @@
 #'
 #'
 #' @examples
-#' data(rice)
 #' library(broom) 
 #' library(broom.mixed) 
 #' library(dplyr)
@@ -156,6 +155,7 @@
 #'                
 #' fm1.1.Summary <- broom::tidy(fm1.1)
 #' fm1.1.Summary
+#' 
 #' ##----fm1.2----
 #' fm1.2 <- lmer(yield ~ Replicate + nitrogen * management * variety +
 #'                 (1|Replicate:Main) + (1|Replicate:Main:Sub), data = rice)

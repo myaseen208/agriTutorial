@@ -32,7 +32,7 @@
 
 <meta property="og:title" content="Example 3: Polynomial regression model with two quantitative level treatment factors — example3" />
 
-<meta property="og:description" content="(Gomez &amp;amp; Gomez, 1984, p. 401) report a two-factor nitrogen uptake greenhouse experiment on rice
+<meta property="og:description" content="Gomez &amp;amp; Gomez (1984, p. 401) report a two-factor nitrogen uptake greenhouse experiment on rice
 involving duration of water stress (W) and level of nitrogen application (N) with four complete replicates of each treatment.
 The experiment had four water-stress levels (0, 10, 20 and 40 days) applied as main-plot treatments and
 four nitrogen rates (0, 90, 180 and 270 kg/ha) applied as sub-plot treatments. The four sub-plot treatments were randomized
@@ -106,7 +106,7 @@ four nitrogen rates (0, 90, 180 and 270 kg/ha) applied as sub-plot treatments. T
 
     <div class="ref-description">
     
-    <p>(Gomez &amp; Gomez, 1984, p. 401) report a two-factor nitrogen uptake greenhouse experiment on rice
+    <p>Gomez &amp; Gomez (1984, p. 401) report a two-factor nitrogen uptake greenhouse experiment on rice
 involving duration of water stress (W) and level of nitrogen application (N) with four complete replicates of each treatment.
 The experiment had four water-stress levels (0, 10, 20 and 40 days) applied as main-plot treatments and
 four nitrogen rates (0, 90, 180 and 270 kg/ha) applied as sub-plot treatments. The four sub-plot treatments were randomized
@@ -146,184 +146,170 @@ functional marginality.</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Faraway J (2002) Practical Regression and Anova using R. https://cran.r-project.org/doc/contrib/Faraway-PRA.pdf</p>
-<p>Gomez, K.A., &amp; Gomez, A.A. (1984). Statistical procedures for agricultural research, 2nd edn. New York: Wiley.</p>
-<p>Piepho, H. P, and Edmondson. R. N. (2018). A tutorial on the statistical analysis of factorial experiments with qualitative and quantitative
-treatment factor levels. Journal of Agronomy and Crop Science. DOI: 10.1111/jac.12267.
-<a href='http://onlinelibrary.wiley.com/doi/10.1111/jac.12267/full'>Early View</a></p>
+    <ol>
+<li><p>Gomez, K. A., &amp; Gomez, A. A. (1984). <em>Statistical Procedures for Agricultural Research</em>.   John Wiley &amp; Sons.</p></li>
+<li><p>Kenward, M. G., &amp; Roger, J. H. (1997). Small sample inference for fixed effects from restricted maximum likelihood. <em>Biometrics</em>,  <strong>53</strong>, 983–997.</p></li>
+<li><p>Piepho, H., &amp; Edmondson, R. (2018). A tutorial on the Statistical Analysis of Factorial Experiments with Qualitative and Quantitative treatment factor levels. 
+               <em>Journal of Agronomy and Crop Science.</em> (<a href='https://onlinelibrary.wiley.com/doi/full/10.1111/jac.12267'>https://onlinelibrary.wiley.com/doi/full/10.1111/jac.12267</a>).</p></li>
+</ol>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='co'>## *************************************************************************************</span>
-<span class='co'>##                       How to run the code</span>
-<span class='co'>## *************************************************************************************</span>
+    <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>broom</span>)
+<span class='fu'>library</span>(<span class='no'>broom.mixed</span>)
+<span class='fu'>library</span>(<span class='no'>dplyr</span>)
+<span class='fu'>library</span>(<span class='no'>emmeans</span>)
+<span class='fu'>library</span>(<span class='no'>ggfortify</span>)
+<span class='fu'>library</span>(<span class='no'>ggplot2</span>)
+<span class='fu'>library</span>(<span class='no'>lmerTest</span>)
+<span class='fu'>library</span>(<span class='no'>magrittr</span>)
+<span class='fu'>library</span>(<span class='no'>nlme</span>)
+<span class='fu'>library</span>(<span class='no'>pbkrtest</span>)
 
-<span class='co'>## Either type example("example3") to run ALL the examples succesively</span>
-<span class='co'>## or copy and paste examples sucessively, as required</span>
-
-<span class='co'>## *************************************************************************************</span>
-<span class='co'>##                  Options and required packages</span>
-<span class='co'>## *************************************************************************************</span>
-
-<span class='fu'>require</span>(<span class='no'>lmerTest</span>)
-<span class='fu'>require</span>(<span class='no'>lattice</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required package: lattice</span></div><div class='input'><span class='fu'>require</span>(<span class='no'>pbkrtest</span>)
 <span class='fu'>options</span>(<span class='kw'>contrasts</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'contr.treatment'</span>, <span class='st'>'contr.poly'</span>))
 
-<span class='co'>## *************************************************************************************</span>
-<span class='co'>##            Section 1: Polynomial powers of N and W</span>
-<span class='co'>## *************************************************************************************</span>
+<span class='co'>##----greenrice----</span>
+<span class='no'>greenrice</span> <span class='kw'>&lt;-</span>
+  <span class='no'>greenrice</span> <span class='kw'>%&gt;%</span>
+  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(
+    <span class='kw'>loguptake</span>   <span class='kw'>=</span> <span class='fu'>log</span>(<span class='no'>uptake</span>)
+    , <span class='kw'>Nitrogen</span>    <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>N</span>)
+    , <span class='kw'>Water</span>       <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>W</span>)
+  )
 
-<span class='no'>greenrice</span>$<span class='no'>loguptake</span> <span class='kw'>=</span> <span class='fu'>log</span>(<span class='no'>greenrice</span>$<span class='no'>uptake</span>)
-<span class='no'>greenrice</span>$<span class='no'>Nitrogen</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>greenrice</span>$<span class='no'>N</span>)
-<span class='no'>greenrice</span>$<span class='no'>Water</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>greenrice</span>$<span class='no'>W</span>)
-<span class='no'>PolW</span> <span class='kw'>=</span> <span class='fu'>poly</span>((<span class='no'>greenrice</span>$<span class='no'>W</span>/<span class='fl'>10</span>), <span class='kw'>degree</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>raw</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='fu'>colnames</span>(<span class='no'>PolW</span>) <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"Linear_W"</span>, <span class='st'>"Quadratic_W"</span>)
-<span class='no'>PolN</span> <span class='kw'>=</span> <span class='fu'>poly</span>((<span class='no'>greenrice</span>$<span class='no'>N</span>/<span class='fl'>100</span>), <span class='kw'>degree</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>raw</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='fu'>colnames</span>(<span class='no'>PolN</span>) <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"Linear_N"</span>, <span class='st'>"Quadratic_N"</span>)
-<span class='no'>greenrice</span> <span class='kw'>=</span> <span class='fu'>cbind</span>(<span class='no'>greenrice</span>, <span class='no'>PolW</span>, <span class='no'>PolN</span>)
 
-<span class='co'>## residual plot of untransformed N uptake data</span>
-<span class='no'>greenrice.uptake</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/lmerTest/topics/lmer'>lmer</a></span>(<span class='no'>uptake</span> ~ <span class='no'>Replicate</span> + <span class='fu'>factor</span>(<span class='no'>N</span>) * <span class='fu'>factor</span>(<span class='no'>W</span>) +
- (<span class='fl'>1</span><span class='kw'>|</span><span class='no'>Replicate</span>:<span class='no'>Main</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>greenrice</span>)
-<span class='fu'>plot</span>(<span class='no'>greenrice.uptake</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"Pearson residual plot for untransformed N uptake"</span>,
- <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"Residuals N uptake"</span>)</div><div class='img'><img src='example3-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'>## residual plot of log transformed N uptake data</span>
-<span class='no'>greenrice.loguptake</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/lmerTest/topics/lmer'>lmer</a></span>(<span class='no'>loguptake</span> ~ <span class='no'>Replicate</span> + <span class='fu'>factor</span>(<span class='no'>N</span>) * <span class='fu'>factor</span>(<span class='no'>W</span>) +
- (<span class='fl'>1</span><span class='kw'>|</span><span class='no'>Replicate</span>:<span class='no'>Main</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>greenrice</span>)
-<span class='fu'>plot</span>(<span class='no'>greenrice.loguptake</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"Pearson residual plot for log transformed N uptake"</span>,
- <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"Residuals log N uptake"</span>)</div><div class='img'><img src='example3-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'>## Table 9: first-order model of log uptake with Wald tests</span>
-<span class='no'>greenrice.lmer1</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/lmerTest/topics/lmer'>lmer</a></span>(<span class='no'>loguptake</span> ~ <span class='no'>Linear_N</span> + <span class='no'>Linear_W</span> + <span class='no'>Nitrogen</span> * <span class='no'>Water</span> +
- (<span class='fl'>1</span><span class='kw'>|</span><span class='no'>Replicate</span>) + (<span class='fl'>1</span><span class='kw'>|</span><span class='no'>Replicate</span>:<span class='no'>Main</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>greenrice</span>)</div><div class='output co'>#&gt; <span class='message'>fixed-effect model matrix is rank deficient so dropping 2 columns / coefficients</span></div><div class='input'><span class='fu'>anova</span>(<span class='no'>greenrice.lmer1</span>, <span class='kw'>ddf</span> <span class='kw'>=</span> <span class='st'>"Kenward-Roger"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; Type I Analysis of Variance Table with Kenward-Roger's method
+<span class='co'>##----fm3.1----</span>
+<span class='no'>fm3.1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/lmerTest/topics/lmer'>lmer</a></span>(<span class='no'>uptake</span> ~ <span class='no'>Replicate</span> + <span class='no'>Nitrogen</span> * <span class='no'>Water</span> +
+                (<span class='fl'>1</span><span class='kw'>|</span><span class='no'>Replicate</span>:<span class='no'>Main</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>greenrice</span>)
+
+<span class='co'>##----fm3.1.Plot1----</span>
+<span class='no'>fm3.1.Augment</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>broom.mixed</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/broom.mixed/topics/reexports'>augment</a></span>(<span class='no'>fm3.1</span>)
+
+<span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggplot'>ggplot</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>fm3.1.Augment</span>, <span class='kw'>mapping</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>.fitted</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>.resid</span>)) +
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_point'>geom_point</a></span>() +
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_abline'>geom_hline</a></span>(<span class='kw'>yintercept</span> <span class='kw'>=</span> <span class='fl'>0</span>) +
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/labs'>labs</a></span>(
+    <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"Fitted"</span>
+    , <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"Residuals N uptake"</span>
+    , <span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>"Pearson residual plot for untransformed N uptake"</span>) +
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggtheme'>theme_bw</a></span>() +
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/theme'>theme</a></span>(<span class='kw'>plot.title</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/element'>element_text</a></span>(<span class='kw'>hjust</span> <span class='kw'>=</span> <span class='fl'>0.5</span>))</div><div class='img'><img src='example3-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'>##----fm3.2----</span>
+<span class='no'>fm3.2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/lmerTest/topics/lmer'>lmer</a></span>(<span class='no'>loguptake</span> ~ <span class='no'>Replicate</span> + <span class='no'>Nitrogen</span> * <span class='no'>Water</span> +
+                (<span class='fl'>1</span><span class='kw'>|</span><span class='no'>Replicate</span>:<span class='no'>Main</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>greenrice</span>)
+
+<span class='co'>##----fm3.2.Plot1----</span>
+<span class='no'>fm3.2.Augment</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>broom.mixed</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/broom.mixed/topics/reexports'>augment</a></span>(<span class='no'>fm3.2</span>)
+
+<span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggplot'>ggplot</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>fm3.2.Augment</span>, <span class='kw'>mapping</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>.fitted</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>.resid</span>)) +
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_point'>geom_point</a></span>() +
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_abline'>geom_hline</a></span>(<span class='kw'>yintercept</span> <span class='kw'>=</span> <span class='fl'>0</span>) +
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/labs'>labs</a></span>(
+    <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"Fitted"</span>
+    , <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"Residuals log N uptake"</span>
+    , <span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>"Pearson residual plot for log transformed N uptake"</span>) +
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggtheme'>theme_bw</a></span>() +
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/theme'>theme</a></span>(<span class='kw'>plot.title</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/element'>element_text</a></span>(<span class='kw'>hjust</span> <span class='kw'>=</span> <span class='fl'>0.5</span>))</div><div class='img'><img src='example3-2.png' alt='' width='700' height='433' /></div><div class='input'>
+
+<span class='co'>##----fm3.3----</span>
+<span class='no'>fm3.3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/lmerTest/topics/lmer'>lmer</a></span>(<span class='no'>loguptake</span> ~ <span class='no'>N</span> + <span class='no'>W</span> + <span class='no'>Nitrogen</span> * <span class='no'>Water</span> +
+                (<span class='fl'>1</span><span class='kw'>|</span><span class='no'>Replicate</span>) + (<span class='fl'>1</span><span class='kw'>|</span><span class='no'>Replicate</span>:<span class='no'>Main</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>greenrice</span>)</div><div class='output co'>#&gt; <span class='message'>fixed-effect model matrix is rank deficient so dropping 2 columns / coefficients</span></div><div class='input'><span class='no'>fm3.3.ANOVA</span> <span class='kw'>&lt;-</span> <span class='fu'>anova</span>(<span class='no'>fm3.3</span>, <span class='kw'>ddf</span> <span class='kw'>=</span> <span class='st'>"Kenward-Roger"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+<span class='no'>fm3.3.Summary</span> <span class='kw'>&lt;-</span> <span class='fu'>summary</span>(<span class='no'>fm3.3</span>, <span class='kw'>ddf</span> <span class='kw'>=</span> <span class='st'>"Kenward-Roger"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fl'>1</span>)$<span class='no'>coef</span></div><div class='output co'>#&gt; <span class='warning'>Warning: additional arguments ignored</span></div><div class='input'>
+<span class='co'>##----fm3.3.ANOVA----</span>
+<span class='no'>fm3.3.ANOVA</span></div><div class='output co'>#&gt; Type I Analysis of Variance Table with Kenward-Roger's method
 #&gt;                 Sum Sq Mean Sq NumDF DenDF   F value    Pr(&gt;F)    
-#&gt; Linear_N        4.6529  4.6529     1    36  183.8071 1.033e-15 ***
-#&gt; Linear_W       25.5240 25.5240     1     9 1008.2989 1.496e-10 ***
+#&gt; N               4.6529  4.6529     1    36  183.8071 1.033e-15 ***
+#&gt; W              25.5240 25.5240     1     9 1008.2989 1.496e-10 ***
 #&gt; Nitrogen        0.6297  0.3148     2    36   12.4375 7.826e-05 ***
 #&gt; Water           2.7392  1.3696     2     9   54.1047 9.633e-06 ***
 #&gt; Nitrogen:Water  1.3181  0.1465     9    36    5.7856 5.878e-05 ***
 #&gt; ---
 #&gt; Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</div><div class='input'>
-<span class='co'>## Table 10: second-order model of log uptake with Wald tests</span>
-<span class='no'>greenrice.lmer2</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/lmerTest/topics/lmer'>lmer</a></span>(<span class='no'>loguptake</span> ~ <span class='no'>Linear_N</span> * <span class='no'>Linear_W</span> + <span class='no'>Quadratic_N</span> + <span class='no'>Quadratic_W</span> +
- <span class='no'>Nitrogen</span> * <span class='no'>Water</span> + (<span class='fl'>1</span><span class='kw'>|</span><span class='no'>Replicate</span>) + (<span class='fl'>1</span><span class='kw'>|</span><span class='no'>Replicate</span>:<span class='no'>Main</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>greenrice</span>)</div><div class='output co'>#&gt; <span class='message'>fixed-effect model matrix is rank deficient so dropping 5 columns / coefficients</span></div><div class='input'><span class='fu'>anova</span>(<span class='no'>greenrice.lmer2</span>, <span class='kw'>ddf</span> <span class='kw'>=</span> <span class='st'>"Kenward-Roger"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; Type I Analysis of Variance Table with Kenward-Roger's method
-#&gt;                    Sum Sq Mean Sq NumDF DenDF   F value    Pr(&gt;F)    
-#&gt; Linear_N           4.6529  4.6529     1    36  183.8071 1.033e-15 ***
-#&gt; Linear_W          25.5240 25.5240     1     9 1008.2989 1.496e-10 ***
-#&gt; Quadratic_N        0.3695  0.3695     1    36   14.5956 0.0005074 ***
-#&gt; Quadratic_W        2.7061  2.7061     1     9  106.9031 2.708e-06 ***
-#&gt; Nitrogen           0.2602  0.2602     1    36   10.2793 0.0028202 ** 
-#&gt; Water              0.0331  0.0331     1     9    1.3062 0.2825677    
-#&gt; Linear_N:Linear_W  1.1667  1.1667     1    36   46.0909 6.219e-08 ***
-#&gt; Nitrogen:Water     0.1514  0.0189     8    36    0.7474 0.6498072    
-#&gt; ---
-#&gt; Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</div><div class='input'>## *************************************************************************************
-##         Section 2 : Fitted regression models and quadratic log uptake curves
-## *************************************************************************************
-</div><div class='input'><span class='co'>## Regression coefficients of quadratic response model of W and N</span>
-<span class='no'>greenrice.lmer0</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/lmerTest/topics/lmer'>lmer</a></span>(<span class='no'>loguptake</span> ~ <span class='no'>Linear_N</span> * <span class='no'>Linear_W</span> + <span class='no'>Quadratic_N</span> +
- <span class='no'>Quadratic_W</span> + (<span class='fl'>1</span><span class='kw'>|</span><span class='no'>Replicate</span>) + (<span class='fl'>1</span><span class='kw'>|</span><span class='no'>Replicate</span>:<span class='no'>Main</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>greenrice</span>)
-<span class='fu'>summary</span>(<span class='no'>greenrice.lmer0</span>, <span class='kw'>ddf</span> <span class='kw'>=</span> <span class='st'>"Kenward-Roger"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: additional arguments ignored</span></div><div class='output co'>#&gt; Linear mixed model fit by REML. t-tests use Kenward-Roger's method [
-#&gt; lmerModLmerTest]
-#&gt; Formula: loguptake ~ Linear_N * Linear_W + Quadratic_N + Quadratic_W +  
-#&gt;     (1 | Replicate) + (1 | Replicate:Main)
-#&gt;    Data: greenrice
-#&gt; 
-#&gt; REML criterion at convergence: -13.7
-#&gt; 
-#&gt; Scaled residuals: 
-#&gt;      Min       1Q   Median       3Q      Max 
-#&gt; -2.26402 -0.54435  0.02556  0.69423  2.14818 
-#&gt; 
-#&gt; Random effects:
-#&gt;  Groups         Name        Variance  Std.Dev.
-#&gt;  Replicate:Main (Intercept) 0.000e+00 0.000000
-#&gt;  Replicate      (Intercept) 8.815e-05 0.009389
-#&gt;  Residual                   2.880e-02 0.169693
-#&gt; Number of obs: 64, groups:  Replicate:Main, 16; Replicate, 4
-#&gt; 
-#&gt; Fixed effects:
-#&gt;                   Estimate Std. Error       df t value Pr(&gt;|t|)    
-#&gt; (Intercept)       -1.16000    0.06378 47.80633 -18.187  &lt; 2e-16 ***
-#&gt; Linear_N           0.68000    0.07788 45.00000   8.731 3.05e-11 ***
-#&gt; Linear_W           0.17603    0.05507 12.91860   3.196 0.007067 ** 
-#&gt; Quadratic_N       -0.09380    0.02619 45.00000  -3.582 0.000833 ***
-#&gt; Quadratic_W       -0.11599    0.01196 10.00000  -9.694 2.11e-06 ***
-#&gt; Linear_N:Linear_W -0.09072    0.01425 45.00000  -6.365 8.94e-08 ***
-#&gt; ---
-#&gt; Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
-#&gt; 
-#&gt; Correlation of Fixed Effects:
-#&gt;             (Intr) Linr_N Linr_W Qdrt_N Qdrt_W
-#&gt; Linear_N    -0.592                            
-#&gt; Linear_W    -0.625  0.112                     
-#&gt; Quadratic_N  0.333 -0.908  0.000              
-#&gt; Quadratic_W  0.375  0.000 -0.900  0.000       
-#&gt; Lnr_N:Lnr_W  0.528 -0.320 -0.349  0.000  0.000</div><div class='input'>
-<span class='co'>## Fig 4a fitted quadratic loguptake curve versus water stress treatments</span>
-<span class='no'>panel.plot</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>x</span>, <span class='no'>y</span>) {
-<span class='fu'><a href='http://www.rdocumentation.org/packages/lattice/topics/panel.xyplot'>panel.xyplot</a></span>(<span class='no'>x</span>, <span class='no'>y</span>) <span class='co'># shows observed points</span>
-<span class='no'>Nitrogen</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>.90</span>, <span class='fl'>1.80</span>, <span class='fl'>2.70</span>)[<span class='fu'><a href='http://www.rdocumentation.org/packages/lattice/topics/panel.number'>panel.number</a></span>()]
-<span class='fu'><a href='http://www.rdocumentation.org/packages/lattice/topics/panel.functions'>panel.curve</a></span>(-<span class='fl'>1.16</span> + <span class='fl'>0.17603</span> * <span class='no'>x</span> - <span class='fl'>0.11599</span> * <span class='no'>x</span> * <span class='no'>x</span> + <span class='fl'>0.68</span> * <span class='no'>Nitrogen</span> -
- <span class='fl'>0.0938</span> * <span class='no'>Nitrogen</span> * <span class='no'>Nitrogen</span> - <span class='fl'>0.09072</span> * <span class='no'>x</span> * <span class='no'>Nitrogen</span>,
-<span class='kw'>from</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='fl'>4.0</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"l"</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>2</span>)
-}
-<span class='fu'><a href='http://www.rdocumentation.org/packages/lattice/topics/xyplot'>xyplot</a></span>(<span class='no'>loguptake</span> ~ <span class='no'>Linear_W</span><span class='kw'>|</span><span class='fu'>factor</span>(<span class='no'>Linear_N</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>greenrice</span>,
- <span class='kw'>scales</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>at</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>4</span>), <span class='kw'>labels</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>10</span>, <span class='fl'>20</span>, <span class='fl'>40</span>))),
- <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"Fig 4a: logN uptake versus water stress"</span>,
- <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>" Water stress (days)"</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"Log nitrogen uptake (g/pot)"</span>,
- <span class='kw'>strip</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/lattice/topics/strip.default'>strip.custom</a></span>(<span class='kw'>strip.names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
- <span class='kw'>factor.levels</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"0"</span>, <span class='st'>"90"</span>, <span class='st'>"180"</span>, <span class='st'>"270"</span>)),
-<span class='kw'>panel</span> <span class='kw'>=</span> <span class='no'>panel.plot</span>)</div><div class='img'><img src='example3-3.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'>## Fig 4b fitted quadratic quadratic loguptake curve versus nitrogen rate treatments</span>
-<span class='no'>panel.plot</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>x</span>, <span class='no'>y</span>) {
-<span class='fu'><a href='http://www.rdocumentation.org/packages/lattice/topics/panel.xyplot'>panel.xyplot</a></span>(<span class='no'>x</span>, <span class='no'>y</span>) <span class='co'># shows observed points</span>
-<span class='no'>Water</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>1.0</span>, <span class='fl'>2.0</span>, <span class='fl'>4.0</span>)[<span class='fu'><a href='http://www.rdocumentation.org/packages/lattice/topics/panel.number'>panel.number</a></span>()]
-<span class='fu'><a href='http://www.rdocumentation.org/packages/lattice/topics/panel.functions'>panel.curve</a></span>( -<span class='fl'>1.16</span> + <span class='fl'>0.17603</span> * <span class='no'>Water</span> - <span class='fl'>0.11599</span> * <span class='no'>Water</span> * <span class='no'>Water</span> +
- <span class='fl'>0.68</span> * <span class='no'>x</span> - <span class='fl'>0.0938</span> * <span class='no'>x</span> * <span class='no'>x</span> - <span class='fl'>0.09072</span> * <span class='no'>Water</span> * <span class='no'>x</span> ,
-<span class='kw'>from</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='fl'>2.70</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"l"</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>2</span>)
-}
-<span class='fu'><a href='http://www.rdocumentation.org/packages/lattice/topics/xyplot'>xyplot</a></span>(<span class='no'>loguptake</span> ~ <span class='no'>Linear_N</span><span class='kw'>|</span><span class='fu'>factor</span>(<span class='no'>Linear_W</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>greenrice</span>,
- <span class='kw'>scales</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>at</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>.9</span>, <span class='fl'>1.8</span>, <span class='fl'>2.7</span>), <span class='kw'>labels</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>90</span>, <span class='fl'>180</span>, <span class='fl'>270</span>))),
- <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"Fig 4b: logN uptake versus nitrogen rate"</span>,
- <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"Nitrogen (kg/ha)"</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"Log nitrogen uptake (g/pot)"</span>,
- <span class='kw'>strip</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/lattice/topics/strip.default'>strip.custom</a></span>(<span class='kw'>strip.names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
- <span class='kw'>factor.levels</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"0"</span>, <span class='st'>"10"</span>, <span class='st'>"20"</span>, <span class='st'>"40"</span>)),
-<span class='kw'>panel</span> <span class='kw'>=</span> <span class='no'>panel.plot</span>)</div><div class='img'><img src='example3-4.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'>##----fm3.3.Summary----</span>
+<span class='no'>fm3.3.Summary</span></div><div class='output co'>#&gt;                         Estimate   Std. Error       df     t value     Pr(&gt;|t|)
+#&gt; (Intercept)         -1.156645121 0.0800308146 47.89766 -14.4524972 4.345837e-19
+#&gt; N                    0.004248876 0.0004166787 36.00000  10.1970084 3.679346e-12
+#&gt; W                   -0.030069847 0.0028125809 44.30769 -10.6911934 7.480406e-14
+#&gt; Nitrogen90           0.113364341 0.0992185298 36.00000   1.1425723 2.607584e-01
+#&gt; Nitrogen180          0.135067013 0.0992185298 36.00000   1.3613083 1.818766e-01
+#&gt; Water10              0.354424925 0.1014090483 44.30769   3.4950030 1.089068e-03
+#&gt; Water20              0.419364354 0.0974306621 44.30769   4.3042339 9.123952e-05
+#&gt; Nitrogen90:Water10   0.064245275 0.1591036050 36.00000   0.4037952 6.887520e-01
+#&gt; Nitrogen180:Water10 -0.194517509 0.1591036050 36.00000  -1.2225839 2.294309e-01
+#&gt; Nitrogen270:Water10 -0.143681681 0.1591036050 36.00000  -0.9030699 3.724920e-01
+#&gt; Nitrogen90:Water20   0.089807632 0.1591036050 36.00000   0.5644601 5.759414e-01
+#&gt; Nitrogen180:Water20 -0.383553658 0.1591036050 36.00000  -2.4107163 2.115270e-02
+#&gt; Nitrogen270:Water20 -0.457590823 0.1591036050 36.00000  -2.8760557 6.725501e-03
+#&gt; Nitrogen90:Water40  -0.108344146 0.1591036050 36.00000  -0.6809660 5.002500e-01
+#&gt; Nitrogen180:Water40 -0.712343182 0.1591036050 36.00000  -4.4772284 7.330223e-05
+#&gt; Nitrogen270:Water40 -0.865393492 0.1591036050 36.00000  -5.4391822 3.905305e-06</div><div class='input'>
+<span class='co'>##----fm3.4----</span>
+<span class='no'>fm3.4</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/lmerTest/topics/lmer'>lmer</a></span>(<span class='no'>loguptake</span> ~ <span class='no'>N</span> * <span class='no'>W</span> + <span class='fu'>I</span>(<span class='no'>N</span>^<span class='fl'>2</span>) + <span class='fu'>I</span>(<span class='no'>W</span>^<span class='fl'>2</span>) +
+                <span class='no'>Nitrogen</span> * <span class='no'>Water</span> + (<span class='fl'>1</span><span class='kw'>|</span><span class='no'>Replicate</span>) + (<span class='fl'>1</span><span class='kw'>|</span><span class='no'>Replicate</span>:<span class='no'>Main</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>greenrice</span>)</div><div class='output co'>#&gt; <span class='message'>fixed-effect model matrix is rank deficient so dropping 5 columns / coefficients</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Some predictor variables are on very different scales: consider rescaling</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Some predictor variables are on very different scales: consider rescaling</span></div><div class='input'><span class='no'>fm3.4.Coef</span> <span class='kw'>&lt;-</span><span class='fu'>summary</span>(<span class='no'>fm3.4</span>, <span class='kw'>ddf</span> <span class='kw'>=</span> <span class='st'>"Kenward-Roger"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fl'>1</span>)$<span class='no'>coef</span></div><div class='output co'>#&gt; <span class='warning'>Warning: additional arguments ignored</span></div><div class='input'><span class='no'>greenrice2</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>broom.mixed</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/broom.mixed/topics/reexports'>augment</a></span>(<span class='no'>fm3.4</span>)
 
 
-<span class='co'>## Fig 4a backtransformed quadratic loguptake curve versus water stress treatments</span>
-<span class='no'>panel.plot</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>x</span>, <span class='no'>y</span>) {
-<span class='fu'><a href='http://www.rdocumentation.org/packages/lattice/topics/panel.xyplot'>panel.xyplot</a></span>(<span class='no'>x</span>, <span class='no'>y</span>) <span class='co'># shows observed points</span>
-<span class='no'>Nitrogen</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>.90</span>, <span class='fl'>1.80</span>, <span class='fl'>2.70</span>)[<span class='fu'><a href='http://www.rdocumentation.org/packages/lattice/topics/panel.number'>panel.number</a></span>()]
-<span class='fu'><a href='http://www.rdocumentation.org/packages/lattice/topics/panel.functions'>panel.curve</a></span>( <span class='fu'>exp</span>(-<span class='fl'>1.16</span> + <span class='fl'>0.17603</span> * <span class='no'>x</span> - <span class='fl'>0.11599</span> * <span class='no'>x</span> * <span class='no'>x</span> + <span class='fl'>0.68</span> * <span class='no'>Nitrogen</span> -
- <span class='fl'>0.0938</span> * <span class='no'>Nitrogen</span> * <span class='no'>Nitrogen</span> - <span class='fl'>0.09072</span> * <span class='no'>x</span> * <span class='no'>Nitrogen</span>),
-<span class='kw'>from</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='fl'>4.0</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"l"</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>2</span>)
-}
-
-<span class='fu'><a href='http://www.rdocumentation.org/packages/lattice/topics/xyplot'>xyplot</a></span>(<span class='no'>uptake</span> ~ <span class='no'>Linear_W</span><span class='kw'>|</span><span class='fu'>factor</span>(<span class='no'>Linear_N</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>greenrice</span>,
- <span class='kw'>scales</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>at</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>4</span>), <span class='kw'>labels</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>10</span>, <span class='fl'>20</span>, <span class='fl'>40</span>))),
- <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"Fig 4a: Back transformed N uptake versus water stress"</span>,
- <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>" Water stress (days)"</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"Nitrogen uptake (g/pot)"</span>,
- <span class='kw'>strip</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/lattice/topics/strip.default'>strip.custom</a></span>(<span class='kw'>strip.names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
- <span class='kw'>factor.levels</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"0"</span>, <span class='st'>"90"</span>, <span class='st'>"180"</span>, <span class='st'>"270"</span>)),
-<span class='kw'>panel</span> <span class='kw'>=</span> <span class='no'>panel.plot</span>)</div><div class='img'><img src='example3-5.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'>## Fig 4b back transformed quadratic loguptake curve versus nitrogen rate treatments</span>
-<span class='no'>panel.plot</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>x</span>, <span class='no'>y</span>) {
-<span class='fu'><a href='http://www.rdocumentation.org/packages/lattice/topics/panel.xyplot'>panel.xyplot</a></span>(<span class='no'>x</span>, <span class='no'>y</span>) <span class='co'># shows observed points</span>
-<span class='no'>Water</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>1.0</span>, <span class='fl'>2.0</span>, <span class='fl'>4.0</span>)[<span class='fu'><a href='http://www.rdocumentation.org/packages/lattice/topics/panel.number'>panel.number</a></span>()]
-<span class='fu'><a href='http://www.rdocumentation.org/packages/lattice/topics/panel.functions'>panel.curve</a></span>(<span class='fu'>exp</span>(-<span class='fl'>1.16</span> + <span class='fl'>0.17603</span> * <span class='no'>Water</span> - <span class='fl'>0.11599</span> * <span class='no'>Water</span> * <span class='no'>Water</span> +
- <span class='fl'>0.68</span> * <span class='no'>x</span> - <span class='fl'>0.0938</span> * <span class='no'>x</span> * <span class='no'>x</span> - <span class='fl'>0.09072</span> * <span class='no'>Water</span> * <span class='no'>x</span>),
-<span class='kw'>from</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='fl'>2.70</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"l"</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>2</span>)
-}
-<span class='fu'><a href='http://www.rdocumentation.org/packages/lattice/topics/xyplot'>xyplot</a></span>(<span class='no'>uptake</span> ~ <span class='no'>Linear_N</span><span class='kw'>|</span><span class='fu'>factor</span>(<span class='no'>Linear_W</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>greenrice</span>,
- <span class='kw'>scales</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>at</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>.9</span>, <span class='fl'>1.8</span>, <span class='fl'>2.7</span>), <span class='kw'>labels</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>90</span>, <span class='fl'>180</span>, <span class='fl'>270</span>))),
- <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"Fig 4b: Back transformed N uptake versus nitrogen rate"</span>,
- <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"Nitrogen (kg/ha)"</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"Nitrogen uptake (g/pot)"</span>,
- <span class='kw'>strip</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/lattice/topics/strip.default'>strip.custom</a></span>(<span class='kw'>strip.names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
- <span class='kw'>factor.levels</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"0"</span>, <span class='st'>"10"</span>, <span class='st'>"20"</span>, <span class='st'>"40"</span>)),
-<span class='kw'>panel</span> <span class='kw'>=</span> <span class='no'>panel.plot</span>)</div><div class='img'><img src='example3-6.png' alt='' width='700' height='433' /></div><div class='input'>
-
-
+<span class='co'>##----fm3.4.Coef----</span>
+<span class='no'>fm3.4.Coef</span></div><div class='output co'>#&gt;                          Estimate   Std. Error       df     t value
+#&gt; (Intercept)         -1.156645e+00 8.003081e-02 47.89766 -14.4524972
+#&gt; N                    6.499993e-03 1.627182e-03 36.00000   3.9946312
+#&gt; W                    1.186659e-02 1.014090e-02 44.30769   1.1701706
+#&gt; I(N^2)              -8.337470e-06 6.124601e-06 36.00000  -1.3613083
+#&gt; I(W^2)              -1.048411e-03 2.435767e-04 44.30769  -4.3042338
+#&gt; Nitrogen90          -2.170267e-02 1.185888e-01 36.00000  -0.1830077
+#&gt; Water10              3.990166e-02 1.042933e-01 44.30769   0.3825909
+#&gt; N:W                 -8.012903e-05 1.473182e-05 36.00000  -5.4391822
+#&gt; Nitrogen90:Water10   1.363614e-01 1.563170e-01 36.00000   0.8723390
+#&gt; Nitrogen180:Water10 -5.028526e-02 1.546209e-01 36.00000  -0.3252164
+#&gt; Nitrogen270:Water10  7.266669e-02 1.434141e-01 36.00000   0.5066916
+#&gt; Nitrogen90:Water20   2.340399e-01 1.546209e-01 36.00000   1.5136367
+#&gt; Nitrogen180:Water20 -9.508916e-02 1.546209e-01 36.00000  -0.6149825
+#&gt; Nitrogen270:Water20 -2.489408e-02 1.377878e-01 36.00000  -0.1806697
+#&gt; Nitrogen90:Water40   1.801204e-01 1.403162e-01 36.00000   1.2836748
+#&gt; Nitrogen180:Water40 -1.354142e-01 1.403162e-01 36.00000  -0.9650646
+#&gt;                         Pr(&gt;|t|)
+#&gt; (Intercept)         4.345837e-19
+#&gt; N                   3.062454e-04
+#&gt; W                   2.481882e-01
+#&gt; I(N^2)              1.818766e-01
+#&gt; I(W^2)              9.123952e-05
+#&gt; Nitrogen90          8.558188e-01
+#&gt; Water10             7.038524e-01
+#&gt; N:W                 3.905305e-06
+#&gt; Nitrogen90:Water10  3.888047e-01
+#&gt; Nitrogen180:Water10 7.468999e-01
+#&gt; Nitrogen270:Water10 6.154608e-01
+#&gt; Nitrogen90:Water20  1.388488e-01
+#&gt; Nitrogen180:Water20 5.424343e-01
+#&gt; Nitrogen270:Water20 8.576401e-01
+#&gt; Nitrogen90:Water40  2.074571e-01
+#&gt; Nitrogen180:Water40 3.409510e-01</div><div class='input'>
+<span class='co'>##----fm3.4.Plot1----</span>
+<span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggplot'>ggplot</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>greenrice2</span>, <span class='kw'>mapping</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>Water</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>loguptake</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='no'>Nitrogen</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='no'>Nitrogen</span>)) +
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_point'>geom_point</a></span>() +
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_smooth'>geom_smooth</a></span>(<span class='kw'>mapping</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>y</span> <span class='kw'>=</span><span class='no'>.fitted</span>), <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"loess"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: pseudoinverse used at 0.985</span></div><div class='output co'>#&gt; <span class='warning'>Warning: neighborhood radius 2.015</span></div><div class='output co'>#&gt; <span class='warning'>Warning: reciprocal condition number  0</span></div><div class='output co'>#&gt; <span class='warning'>Warning: There are other near singularities as well. 4.0602</span></div><div class='output co'>#&gt; <span class='warning'>Warning: pseudoinverse used at 0.985</span></div><div class='output co'>#&gt; <span class='warning'>Warning: neighborhood radius 2.015</span></div><div class='output co'>#&gt; <span class='warning'>Warning: reciprocal condition number  0</span></div><div class='output co'>#&gt; <span class='warning'>Warning: There are other near singularities as well. 4.0602</span></div><div class='output co'>#&gt; <span class='warning'>Warning: pseudoinverse used at 0.985</span></div><div class='output co'>#&gt; <span class='warning'>Warning: neighborhood radius 2.015</span></div><div class='output co'>#&gt; <span class='warning'>Warning: reciprocal condition number  0</span></div><div class='output co'>#&gt; <span class='warning'>Warning: There are other near singularities as well. 4.0602</span></div><div class='output co'>#&gt; <span class='warning'>Warning: pseudoinverse used at 0.985</span></div><div class='output co'>#&gt; <span class='warning'>Warning: neighborhood radius 2.015</span></div><div class='output co'>#&gt; <span class='warning'>Warning: reciprocal condition number  0</span></div><div class='output co'>#&gt; <span class='warning'>Warning: There are other near singularities as well. 4.0602</span></div><div class='output co'>#&gt; <span class='warning'>Warning: pseudoinverse used at 0.985</span></div><div class='output co'>#&gt; <span class='warning'>Warning: neighborhood radius 2.015</span></div><div class='output co'>#&gt; <span class='warning'>Warning: reciprocal condition number  0</span></div><div class='output co'>#&gt; <span class='warning'>Warning: There are other near singularities as well. 4.0602</span></div><div class='output co'>#&gt; <span class='warning'>Warning: pseudoinverse used at 0.985</span></div><div class='output co'>#&gt; <span class='warning'>Warning: neighborhood radius 2.015</span></div><div class='output co'>#&gt; <span class='warning'>Warning: reciprocal condition number  0</span></div><div class='output co'>#&gt; <span class='warning'>Warning: There are other near singularities as well. 4.0602</span></div><div class='output co'>#&gt; <span class='warning'>Warning: pseudoinverse used at 0.985</span></div><div class='output co'>#&gt; <span class='warning'>Warning: neighborhood radius 2.015</span></div><div class='output co'>#&gt; <span class='warning'>Warning: reciprocal condition number  0</span></div><div class='output co'>#&gt; <span class='warning'>Warning: There are other near singularities as well. 4.0602</span></div><div class='output co'>#&gt; <span class='warning'>Warning: pseudoinverse used at 0.985</span></div><div class='output co'>#&gt; <span class='warning'>Warning: neighborhood radius 2.015</span></div><div class='output co'>#&gt; <span class='warning'>Warning: reciprocal condition number  0</span></div><div class='output co'>#&gt; <span class='warning'>Warning: There are other near singularities as well. 4.0602</span></div><div class='img'><img src='example3-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'>##----fm3.4.Plot2----</span>
+<span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggplot'>ggplot</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>greenrice2</span>, <span class='kw'>mapping</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>Water</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'>exp</span>(<span class='no'>loguptake</span>), <span class='kw'>color</span> <span class='kw'>=</span> <span class='no'>Nitrogen</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='no'>Nitrogen</span>)) +
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_point'>geom_point</a></span>() +
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_smooth'>geom_smooth</a></span>(<span class='kw'>mapping</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>y</span> <span class='kw'>=</span><span class='no'>.fitted</span>), <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"loess"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: pseudoinverse used at 0.985</span></div><div class='output co'>#&gt; <span class='warning'>Warning: neighborhood radius 2.015</span></div><div class='output co'>#&gt; <span class='warning'>Warning: reciprocal condition number  0</span></div><div class='output co'>#&gt; <span class='warning'>Warning: There are other near singularities as well. 4.0602</span></div><div class='output co'>#&gt; <span class='warning'>Warning: pseudoinverse used at 0.985</span></div><div class='output co'>#&gt; <span class='warning'>Warning: neighborhood radius 2.015</span></div><div class='output co'>#&gt; <span class='warning'>Warning: reciprocal condition number  0</span></div><div class='output co'>#&gt; <span class='warning'>Warning: There are other near singularities as well. 4.0602</span></div><div class='output co'>#&gt; <span class='warning'>Warning: pseudoinverse used at 0.985</span></div><div class='output co'>#&gt; <span class='warning'>Warning: neighborhood radius 2.015</span></div><div class='output co'>#&gt; <span class='warning'>Warning: reciprocal condition number  0</span></div><div class='output co'>#&gt; <span class='warning'>Warning: There are other near singularities as well. 4.0602</span></div><div class='output co'>#&gt; <span class='warning'>Warning: pseudoinverse used at 0.985</span></div><div class='output co'>#&gt; <span class='warning'>Warning: neighborhood radius 2.015</span></div><div class='output co'>#&gt; <span class='warning'>Warning: reciprocal condition number  0</span></div><div class='output co'>#&gt; <span class='warning'>Warning: There are other near singularities as well. 4.0602</span></div><div class='output co'>#&gt; <span class='warning'>Warning: pseudoinverse used at 0.985</span></div><div class='output co'>#&gt; <span class='warning'>Warning: neighborhood radius 2.015</span></div><div class='output co'>#&gt; <span class='warning'>Warning: reciprocal condition number  0</span></div><div class='output co'>#&gt; <span class='warning'>Warning: There are other near singularities as well. 4.0602</span></div><div class='output co'>#&gt; <span class='warning'>Warning: pseudoinverse used at 0.985</span></div><div class='output co'>#&gt; <span class='warning'>Warning: neighborhood radius 2.015</span></div><div class='output co'>#&gt; <span class='warning'>Warning: reciprocal condition number  0</span></div><div class='output co'>#&gt; <span class='warning'>Warning: There are other near singularities as well. 4.0602</span></div><div class='output co'>#&gt; <span class='warning'>Warning: pseudoinverse used at 0.985</span></div><div class='output co'>#&gt; <span class='warning'>Warning: neighborhood radius 2.015</span></div><div class='output co'>#&gt; <span class='warning'>Warning: reciprocal condition number  0</span></div><div class='output co'>#&gt; <span class='warning'>Warning: There are other near singularities as well. 4.0602</span></div><div class='output co'>#&gt; <span class='warning'>Warning: pseudoinverse used at 0.985</span></div><div class='output co'>#&gt; <span class='warning'>Warning: neighborhood radius 2.015</span></div><div class='output co'>#&gt; <span class='warning'>Warning: reciprocal condition number  0</span></div><div class='output co'>#&gt; <span class='warning'>Warning: There are other near singularities as well. 4.0602</span></div><div class='img'><img src='example3-4.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'>##----fm3.4.Plot3----</span>
+<span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggplot'>ggplot</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>greenrice2</span>, <span class='kw'>mapping</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>Nitrogen</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>loguptake</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='no'>Water</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='no'>Water</span>)) +
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_point'>geom_point</a></span>() +
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_smooth'>geom_smooth</a></span>(<span class='kw'>mapping</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>y</span> <span class='kw'>=</span><span class='no'>.fitted</span>), <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"loess"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: pseudoinverse used at 0.985</span></div><div class='output co'>#&gt; <span class='warning'>Warning: neighborhood radius 2.015</span></div><div class='output co'>#&gt; <span class='warning'>Warning: reciprocal condition number  2.2269e-16</span></div><div class='output co'>#&gt; <span class='warning'>Warning: There are other near singularities as well. 4.0602</span></div><div class='output co'>#&gt; <span class='warning'>Warning: pseudoinverse used at 0.985</span></div><div class='output co'>#&gt; <span class='warning'>Warning: neighborhood radius 2.015</span></div><div class='output co'>#&gt; <span class='warning'>Warning: reciprocal condition number  2.2269e-16</span></div><div class='output co'>#&gt; <span class='warning'>Warning: There are other near singularities as well. 4.0602</span></div><div class='output co'>#&gt; <span class='warning'>Warning: pseudoinverse used at 0.985</span></div><div class='output co'>#&gt; <span class='warning'>Warning: neighborhood radius 2.015</span></div><div class='output co'>#&gt; <span class='warning'>Warning: reciprocal condition number  0</span></div><div class='output co'>#&gt; <span class='warning'>Warning: There are other near singularities as well. 4.0602</span></div><div class='output co'>#&gt; <span class='warning'>Warning: pseudoinverse used at 0.985</span></div><div class='output co'>#&gt; <span class='warning'>Warning: neighborhood radius 2.015</span></div><div class='output co'>#&gt; <span class='warning'>Warning: reciprocal condition number  0</span></div><div class='output co'>#&gt; <span class='warning'>Warning: There are other near singularities as well. 4.0602</span></div><div class='output co'>#&gt; <span class='warning'>Warning: pseudoinverse used at 0.985</span></div><div class='output co'>#&gt; <span class='warning'>Warning: neighborhood radius 2.015</span></div><div class='output co'>#&gt; <span class='warning'>Warning: reciprocal condition number  6.3601e-17</span></div><div class='output co'>#&gt; <span class='warning'>Warning: There are other near singularities as well. 4.0602</span></div><div class='output co'>#&gt; <span class='warning'>Warning: pseudoinverse used at 0.985</span></div><div class='output co'>#&gt; <span class='warning'>Warning: neighborhood radius 2.015</span></div><div class='output co'>#&gt; <span class='warning'>Warning: reciprocal condition number  6.3601e-17</span></div><div class='output co'>#&gt; <span class='warning'>Warning: There are other near singularities as well. 4.0602</span></div><div class='output co'>#&gt; <span class='warning'>Warning: pseudoinverse used at 0.985</span></div><div class='output co'>#&gt; <span class='warning'>Warning: neighborhood radius 2.015</span></div><div class='output co'>#&gt; <span class='warning'>Warning: reciprocal condition number  5.193e-17</span></div><div class='output co'>#&gt; <span class='warning'>Warning: There are other near singularities as well. 4.0602</span></div><div class='output co'>#&gt; <span class='warning'>Warning: pseudoinverse used at 0.985</span></div><div class='output co'>#&gt; <span class='warning'>Warning: neighborhood radius 2.015</span></div><div class='output co'>#&gt; <span class='warning'>Warning: reciprocal condition number  5.193e-17</span></div><div class='output co'>#&gt; <span class='warning'>Warning: There are other near singularities as well. 4.0602</span></div><div class='img'><img src='example3-5.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'>##----fm3.4.Plot4----</span>
+<span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggplot'>ggplot</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>greenrice2</span>, <span class='kw'>mapping</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>Nitrogen</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'>exp</span>(<span class='no'>loguptake</span>), <span class='kw'>color</span> <span class='kw'>=</span> <span class='no'>Water</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='no'>Water</span>)) +
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_point'>geom_point</a></span>() +
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_smooth'>geom_smooth</a></span>(<span class='kw'>mapping</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>y</span> <span class='kw'>=</span><span class='no'>.fitted</span>), <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"loess"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: pseudoinverse used at 0.985</span></div><div class='output co'>#&gt; <span class='warning'>Warning: neighborhood radius 2.015</span></div><div class='output co'>#&gt; <span class='warning'>Warning: reciprocal condition number  2.2269e-16</span></div><div class='output co'>#&gt; <span class='warning'>Warning: There are other near singularities as well. 4.0602</span></div><div class='output co'>#&gt; <span class='warning'>Warning: pseudoinverse used at 0.985</span></div><div class='output co'>#&gt; <span class='warning'>Warning: neighborhood radius 2.015</span></div><div class='output co'>#&gt; <span class='warning'>Warning: reciprocal condition number  2.2269e-16</span></div><div class='output co'>#&gt; <span class='warning'>Warning: There are other near singularities as well. 4.0602</span></div><div class='output co'>#&gt; <span class='warning'>Warning: pseudoinverse used at 0.985</span></div><div class='output co'>#&gt; <span class='warning'>Warning: neighborhood radius 2.015</span></div><div class='output co'>#&gt; <span class='warning'>Warning: reciprocal condition number  0</span></div><div class='output co'>#&gt; <span class='warning'>Warning: There are other near singularities as well. 4.0602</span></div><div class='output co'>#&gt; <span class='warning'>Warning: pseudoinverse used at 0.985</span></div><div class='output co'>#&gt; <span class='warning'>Warning: neighborhood radius 2.015</span></div><div class='output co'>#&gt; <span class='warning'>Warning: reciprocal condition number  0</span></div><div class='output co'>#&gt; <span class='warning'>Warning: There are other near singularities as well. 4.0602</span></div><div class='output co'>#&gt; <span class='warning'>Warning: pseudoinverse used at 0.985</span></div><div class='output co'>#&gt; <span class='warning'>Warning: neighborhood radius 2.015</span></div><div class='output co'>#&gt; <span class='warning'>Warning: reciprocal condition number  6.3601e-17</span></div><div class='output co'>#&gt; <span class='warning'>Warning: There are other near singularities as well. 4.0602</span></div><div class='output co'>#&gt; <span class='warning'>Warning: pseudoinverse used at 0.985</span></div><div class='output co'>#&gt; <span class='warning'>Warning: neighborhood radius 2.015</span></div><div class='output co'>#&gt; <span class='warning'>Warning: reciprocal condition number  6.3601e-17</span></div><div class='output co'>#&gt; <span class='warning'>Warning: There are other near singularities as well. 4.0602</span></div><div class='output co'>#&gt; <span class='warning'>Warning: pseudoinverse used at 0.985</span></div><div class='output co'>#&gt; <span class='warning'>Warning: neighborhood radius 2.015</span></div><div class='output co'>#&gt; <span class='warning'>Warning: reciprocal condition number  5.193e-17</span></div><div class='output co'>#&gt; <span class='warning'>Warning: There are other near singularities as well. 4.0602</span></div><div class='output co'>#&gt; <span class='warning'>Warning: pseudoinverse used at 0.985</span></div><div class='output co'>#&gt; <span class='warning'>Warning: neighborhood radius 2.015</span></div><div class='output co'>#&gt; <span class='warning'>Warning: reciprocal condition number  5.193e-17</span></div><div class='output co'>#&gt; <span class='warning'>Warning: There are other near singularities as well. 4.0602</span></div><div class='img'><img src='example3-6.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'>##----fm3.5----</span>
+<span class='no'>fm3.5</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/lmerTest/topics/lmer'>lmer</a></span>(<span class='no'>loguptake</span> ~ <span class='no'>N</span> * <span class='no'>W</span> + <span class='fu'>I</span>(<span class='no'>N</span>^<span class='fl'>2</span>) + <span class='fu'>I</span>(<span class='no'>W</span>^<span class='fl'>2</span>) +
+                (<span class='fl'>1</span><span class='kw'>|</span><span class='no'>Replicate</span>) + (<span class='fl'>1</span><span class='kw'>|</span><span class='no'>Replicate</span>:<span class='no'>Main</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>greenrice</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Some predictor variables are on very different scales: consider rescaling</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Some predictor variables are on very different scales: consider rescaling</span></div><div class='input'><span class='no'>fm3.5.Coef</span> <span class='kw'>&lt;-</span> <span class='fu'>summary</span>(<span class='no'>fm3.5</span>, <span class='kw'>ddf</span> <span class='kw'>=</span> <span class='st'>"Kenward-Roger"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fl'>1</span>)$<span class='no'>coef</span></div><div class='output co'>#&gt; <span class='warning'>Warning: additional arguments ignored</span></div><div class='input'>
+<span class='co'>##----fm3.5.Coef----</span>
+<span class='no'>fm3.5.Coef</span></div><div class='output co'>#&gt;                  Estimate   Std. Error       df    t value     Pr(&gt;|t|)
+#&gt; (Intercept) -1.160003e+00 6.378222e-02 47.80633 -18.186927 4.047012e-23
+#&gt; N            6.799986e-03 7.788309e-04 45.00000   8.731018 3.050437e-11
+#&gt; W            1.760281e-02 5.507288e-03 12.91860   3.196276 7.067219e-03
+#&gt; I(N^2)      -9.380292e-06 2.618722e-06 45.00000  -3.582012 8.328506e-04
+#&gt; I(W^2)      -1.159906e-03 1.196498e-04 10.00000  -9.694176 2.111488e-06
+#&gt; N:W         -9.072484e-05 1.425289e-05 45.00000  -6.365367 8.941001e-08</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -336,6 +322,14 @@ treatment factor levels. Journal of Agronomy and Crop Science. DOI: 10.1111/jac.
       
       <li><a href="#examples">Examples</a></li>
     </ul>
+
+    <h2>Author</h2>
+    
+<ol>
+<li><p>Rodney N. Edmondson (<a href='mailto:rodney.edmondson@gmail.com'>rodney.edmondson@gmail.com</a>)</p></li>
+<li><p>Hans-Peter Piepho (<a href='mailto:piepho@uni-hohenheim.de'>piepho@uni-hohenheim.de</a>)</p></li>
+<li><p>Muhammad Yaseen (<a href='mailto:myaseen208@gmail.com'>myaseen208@gmail.com</a>)</p></li>
+</ol>
 
   </div>
 </div>

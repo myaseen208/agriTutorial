@@ -35,153 +35,148 @@
 #'
 #' \code{\link[agriTutorial]{agriTutorial}}: return to home page if you want to select a different example \cr
 #'
-#' @references
-#' Mead, R. (1988). The design of experiments. Statistical principles for practical application.
-#' Cambridge: Cambridge University Press.
+#' @author
+#' \enumerate{
+#'          \item Rodney N. Edmondson (\email{rodney.edmondson@@gmail.com})
+#'          \item Hans-Peter Piepho (\email{piepho@@uni-hohenheim.de})
+#'          \item Muhammad Yaseen (\email{myaseen208@@gmail.com})
+#'          }
+#' 
 #'
-#' Piepho, H. P, and Edmondson. R. N. (2018). A tutorial on the statistical analysis of factorial experiments with qualitative and quantitative
-#' treatment factor levels. Journal of Agronomy and Crop Science. DOI: 10.1111/jac.12267.
-#' \href{http://onlinelibrary.wiley.com/doi/10.1111/jac.12267/full}{Early View}
+#'
+#' @references
+#' \enumerate{
+#'          \item  Mead, R. (1990). \emph{The Design of Experiments: Statistical Principles for Practical Applications}. Cambridge University Press. 
+#'          \item  Kenward, M. G., & Roger, J. H. (1997). Small sample inference for fixed effects from restricted maximum likelihood. \emph{Biometrics},  \strong{53}, 983–997.
+#'          \item Piepho, H., & Edmondson, R. (2018). A tutorial on the Statistical Analysis of Factorial Experiments with Qualitative and Quantitative treatment factor levels. 
+#'                \emph{Journal of Agronomy and Crop Science.} (\url{https://onlinelibrary.wiley.com/doi/full/10.1111/jac.12267}).
+#'          }
+#' 
+#' @import broom broom.mixed dplyr emmeans ggfortify ggplot2 lmerTest magrittr nlme pbkrtest
+#'
 #'
 #' @examples
-#'
-#' ## *************************************************************************************
-#' ##                       How to run the code
-#' ## *************************************************************************************
-#'
-#' ## Either type example("example5") to run ALL the examples succesively
-#' ## or copy and paste examples sucessively, as required
-#'
-#' ## *************************************************************************************
-#' ##                        Options and required packages
-#' ## *************************************************************************************
-#'
+#' library(broom) 
+#' library(broom.mixed) 
+#' library(dplyr)
+#' library(emmeans) 
+#' library(ggfortify) 
+#' library(ggplot2)
+#' library(lmerTest) 
+#' library(magrittr) 
+#' library(nlme) 
+#' library(pbkrtest)
+#' 
 #' options(contrasts = c('contr.treatment', 'contr.poly'))
-#' require(lattice)
 #'
-#' ## *************************************************************************************
-#' ##   Quadratic regression models with and without transformation of regressor variables
-#' ## *************************************************************************************
-#'
-#' RowSpacing = poly(turnip$rowspacing, 3, raw = TRUE)
-#' colnames(RowSpacing) = c("linSpacing", "quadSpacing", "cubSpacing")
-#' Density = poly(turnip$density, 4, raw = TRUE)
-#' colnames(Density) = c("linDensity", "quadDensity", "cubDensity", "quartDensity")
-#' turnip = cbind(turnip, Density, RowSpacing)
-#'
-#' ## Log transformed row spacing and density polynomials
-#' logRowSpacing = poly(log(turnip$rowspacing), 3, raw = TRUE)
-#' colnames(logRowSpacing) = c("linlogSpacing", "quadlogSpacing", "cublogSpacing")
-#' logDensity = poly(log(turnip$density), 4, raw = TRUE)
-#' colnames(logDensity) = c("linlogDensity", "quadlogDensity", "cublogDensity", "quartlogDensity")
-#' turnip = cbind(turnip, logDensity, logRowSpacing)
-#'
-#' ## Table 16 Quadratic response surface for untransformed planting density by row spacing model
-#' quad.mod = lm(log_yield ~ Replicate + linDensity * linSpacing + quadDensity + quadSpacing +
-#'  Density * Spacing, turnip)
-#' anova(quad.mod)
-#'
-#' ## Table 17 Quadratic response surface for transformed log planting density by log row spacing
-#' log.quad.mod = lm(log_yield ~ Replicate + linlogDensity * linlogSpacing +
-#'  quadlogDensity + quadlogSpacing + Density * Spacing, turnip)
-#' anova(log.quad.mod)
-#'
-#' ## *************************************************************************************
-#' ##   Quadratic regression model plots with and without transformations
-#' ##   Averaged over replicate blocks to give mean of block effects
-#' ## *************************************************************************************
-#'
-#' ## Quadratic response surface for untransformed planting density by row spacing model
-#' quad.mod = lm(log_yield ~ linDensity * linSpacing + quadDensity + quadSpacing , turnip)
-#' quad.mod$coefficients
-#'
-#' ##  Fig 8 Plot of loge yield (lb/plot) versus row width
-#' panel.plot = function(x, y) {
-#' panel.xyplot(x, y) # lattice plot shows observed points
-#' SeedDensity = c(0.5,2,8,20,32)[panel.number()]
-#' panel.curve(1.1146900855 + 0.0284788787 * x -0.0007748656  * x * x + 0.1564753713  *SeedDensity -
-#'   0.0033192569 * SeedDensity* SeedDensity  -0.0006749985  * x * SeedDensity,
-#' from = 4, to = 32.0, type = "l", lwd = 2)
-#' }
-#' Seed_Rate=factor(turnip$linDensity)
-#' xyplot(log_yield  ~ linSpacing|Seed_Rate, data = turnip,
-#'  scales = list(x = list(at = c(10,20,30), labels = c(10,20,30))),
-#'  main = "Fig 8: loge yield versus row width",
-#'  xlab = " Row Width ", ylab = "Loge yield ",
-#'  strip = strip.custom(strip.names = TRUE,
-#'  factor.levels = c("0.5", "2", "8", "20", "32")),
-#' panel = panel.plot)
-#'
-#' ##  Fig 9 Plot of loge yield (lb/plot) versus seed rate
-#' panel.plot = function(x, y) {
-#' panel.xyplot(x, y) # lattice plot shows observed points
-#' RowWidth = c(4, 8, 16, 32)[panel.number()]
-#' panel.curve(1.1146900855 + 0.1564753713 * x - 0.0033192569  * x * x + 0.0284788787 * RowWidth -
-#'  0.0007748656* RowWidth * RowWidth  -0.0006749985  * x * RowWidth,
-#' from = 0.5, to = 32.0, type = "l", lwd = 2)
-#' }
-#' Row_Width=factor(turnip$linSpacing)
-#' xyplot(log_yield  ~ linDensity|Row_Width, data = turnip,
-#'  scales = list(x = list(at = c(0,10,20,30), labels = c(0,10,20,30))),
-#'  main = "Fig 9: loge yield versus seed rate",
-#'  xlab = " Seed Rate", ylab = "Loge yield ",
-#'  strip = strip.custom(strip.names = TRUE,
-#'  factor.levels = c("4", "8", "16", "32")),
-#' panel = panel.plot)
-#'
-#' ## Quadratic response surface for log transformed planting density by log row spacing model
-#' log.quad.mod = lm(log_yield ~ linlogDensity * linlogSpacing + quadlogDensity + quadlogSpacing,
-#' turnip)
-#' log.quad.mod$coefficients
-
-#' ##  Fig 10 Plot of loge yield (lb/plot) versus log row width
-#' panel.plot = function(x, y) {
-#' panel.xyplot(x, y) # lattice plot shows observed points
-#' LogSeedDensity = c(-0.6931472,0.6931472,2.0794415,2.9957323,3.4657359)[panel.number()]
-#' panel.curve( 0.18414803  + 1.09137389 * x - 0.20987137 * x * x +  0.94207543 *LogSeedDensity -
-#'   0.10875560 * LogSeedDensity* LogSeedDensity  -0.09440938   * x * LogSeedDensity,
-#' from = 1.35, to =3.50, type = "l", lwd = 2)
-#' }
-#' xyplot(log_yield  ~ linlogSpacing|Seed_Rate, data = turnip,
-#'  scales = list(x = list(at = c(1.5,2.0,2.5,3.0,3.5), labels = c(1.5,2.0,2.5,3.0,3.5))),
-#'  main = "Fig 10: loge yield versus loge row width",
-#'  xlab = " Loge Row Width ", ylab = "Loge yield ",
-#'  strip = strip.custom(strip.names = TRUE,
-#' factor.levels = c("0.5", "2", "8", "20", "32")),
-#' panel = panel.plot)
-#'
-#' ##  Fig 11 Plot of loge yield (lb/plot) versus log seed rate
-#' panel.plot = function(x, y) {
-#' panel.xyplot(x, y) # lattice plot shows observed points
-#' LogRowWidth = c(1.386294, 2.079442, 2.772589,3.465736)[panel.number()]
-#' panel.curve(0.18414803  + 0.94207543 * x -0.10875560 * x * x + 1.09137389* LogRowWidth -
-#'  0.20987137* LogRowWidth * LogRowWidth  -0.09440938 * x * LogRowWidth,
-#' from = -0.7 , to = 3.5, type = "l", lwd = 2)
-#' }
-#' xyplot(log_yield  ~ linlogDensity|Row_Width, data = turnip,
-#'  scales = list(x = list(at = c(0,1,2,3),labels = c(0,1,2,3))),
-#'  main = "Fig 11: loge yield versus loge seed rate",
-#'  xlab = " Loge Seed Rate", ylab = "Loge yield ",
-#'  strip = strip.custom(strip.names = TRUE,
-#'  factor.levels = c("4", "8", "16", "32")),
-#' panel = panel.plot)
-#'
-#' ## *************************************************************************************
-#' ##   Quadratic regression model diagnostic plots with and without transformations
-#' ## *************************************************************************************
-#'
-#' ## graphical plots of untransformed data
-#' par(mfrow = c(2, 2), oma = c(0, 0, 2, 0))
-#' fit.quad.mod = lm(log_yield ~ linDensity * linSpacing + quadDensity + quadSpacing,
-#'  turnip)
-#' plot(fit.quad.mod, sub.caption = NA)
-#' title(main = "Fig 12a Diagnostics for untransformed sowing density and row spacing", outer = TRUE)
-#'
-#' ## graphical plots of log transformed data
-#' par(mfrow = c(2, 2), oma = c(0, 0, 2, 0))
-#' fit.log.quad.mod = lm(log_yield ~ linlogDensity * linlogSpacing + quadlogDensity +
-#'  quadlogSpacing, turnip)
-#' plot(fit.log.quad.mod, sub.caption = NA)
-#' title(main = "Fig 12b Diagnostics for log transformed sowing density and row spacing", outer = TRUE)
-#'
+#' ##----fm5.1----
+#' fm5.1 <- lm(log_yield ~ Replicate + density * rowspacing + 
+#'               I(density^2) + I(rowspacing^2) + Density * Spacing
+#'             , turnip)
+#' fm5.1.ANOVA <- anova(fm5.1)
+#' 
+#' 
+#' ##----fm5.1.ANOVA----
+#' fm5.1.ANOVA
+#' 
+#' ##----fm5.2----
+#' fm5.2 <- lm(log_yield ~ Replicate + log(density) * log(rowspacing) +
+#'               I(log(density)^2) + I(log(rowspacing)^2) + 
+#'               Density * Spacing, turnip)
+#' fm5.2.ANOVA <- anova(fm5.2)
+#' 
+#' 
+#' ##----fm5.2.ANOVA----
+#' fm5.2.ANOVA
+#' 
+#' ##----fm5.3----
+#' fm5.3 <- lm(log_yield ~ density * rowspacing + I(density^2) + 
+#'               I(rowspacing^2) , turnip)
+#' fm5.3.Coef <- broom::tidy(fm5.3)
+#' turnip1 <- broom::augment(fm5.3, turnip)
+#' 
+#' ##----fm5.3.Cof----
+#' fm5.3.Cof
+#' 
+#' ##----fm5.3.Plot1----
+#' ggplot(data = turnip1, 
+#'        mapping = aes(x = rowspacing, y = log_yield, 
+#'                      color = factor(density), group = factor(density))) +
+#'   geom_point() +
+#'   geom_smooth(mapping = aes(y =.fitted), method = "loess")
+#' 
+#' ##----fm5.3.Plot2----
+#' ggplot(data = turnip1, 
+#'        mapping = aes(x = rowspacing, y = exp(log_yield), 
+#'                      color = factor(density), group = factor(density))) +
+#'   geom_point() +
+#'   geom_smooth(mapping = aes(y =exp(.fitted)), method = "loess")
+#' 
+#' ##----fm5.3.Plot3----
+#' ggplot(data = turnip1, 
+#'        mapping = aes(x = density, y = log_yield, 
+#'                      color = factor(rowspacing), group = factor(rowspacing))) +
+#'   geom_point() +
+#'   geom_smooth(mapping = aes(y =.fitted), method = "loess")
+#' 
+#' ##----fm5.3.Plot4----
+#' ggplot(data = turnip1, 
+#'        mapping = aes(x = density, y = exp(log_yield), 
+#'                      color = factor(rowspacing), group = factor(rowspacing))) +
+#'   geom_point() +
+#'   geom_smooth(mapping = aes(y =exp(.fitted)), method = "loess")
+#' 
+#' 
+#' ##----fm5.4----
+#' fm5.4 <- lm(log_yield ~ log(density) * log(rowspacing) + 
+#'               I(log(density)^2) + I(log(rowspacing)^2),
+#'             turnip)
+#' fm5.4.Coef <- broom::tidy(fm5.4)
+#' turnip2 <- broom::augment(fm5.4, turnip)
+#' 
+#' ##----fm5.4.Plot1----
+#' ggplot(data = turnip2, 
+#'        mapping = aes(x = log(rowspacing), y = log_yield, 
+#'                      color = factor(density), group = factor(density))) +
+#'   geom_point() +
+#'   geom_smooth(mapping = aes(y =.fitted), method = "loess")
+#' 
+#' ##----fm5.4.Plot2----
+#' ggplot(data = turnip2, 
+#'        mapping = aes(x = log(rowspacing), y = exp(log_yield), 
+#'                      color = factor(density), group = factor(density))) +
+#'   geom_point() +
+#'   geom_smooth(mapping = aes(y =exp(.fitted)), method = "loess")
+#' 
+#' ##----fm5.4.Plot3----
+#' ggplot(data = turnip2, 
+#'        mapping = aes(x = log(density), y = log_yield, 
+#'                      color = factor(rowspacing), group = factor(rowspacing))) +
+#'   geom_point() +
+#'   geom_smooth(mapping = aes(y =.fitted), method = "loess")
+#' 
+#' ##----fm5.4.Plot4----
+#' ggplot(data = turnip2, 
+#'        mapping = aes(x = log(density), y = exp(log_yield), 
+#'                      color = factor(rowspacing), group = factor(rowspacing))) +
+#'   geom_point() +
+#'   geom_smooth(mapping = aes(y = exp(.fitted)), method = "loess")
+#' 
+#' 
+#' ##----fm5.5----
+#' fm5.5 <- lm(log_yield ~ density * rowspacing + 
+#'               I(density^2) + I(rowspacing^2),
+#'             turnip)
+#' 
+#' ##----fm5.5.Plot1----
+#' ggplot2::autoplot(fm5.5)
+#' 
+#' ##----fm5.6----
+#' fm5.6 <- lm(log_yield ~ log(density) * log(rowspacing) + 
+#'               I(log(density)^2) + I(log(rowspacing)^2),
+#'             turnip)
+#' 
+#' ##----fm5.6.Plot1----
+#' ggplot2::autoplot(fm5.6)
+#' 
 NULL

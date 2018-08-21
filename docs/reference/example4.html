@@ -200,181 +200,307 @@ this tutorial and will not be discussed further here.</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Milliken, G.A., &amp; Johnson, D.E. (1992). Analysis of messy data. Volume I: Designed experiments. Boca Raton: CRC Press.</p>
-<p>Piepho, H. P, and Edmondson. R. N. (2018). A tutorial on the statistical analysis of factorial experiments with qualitative and quantitative
-treatment factor levels. Journal of Agronomy and Crop Science. DOI: 10.1111/jac.12267.
-<a href='http://onlinelibrary.wiley.com/doi/10.1111/jac.12267/full'>Early View</a></p>
+    <ol>
+<li><p>Milliken, G., &amp; Johnson, D. (1992). <em>Analysis of Messy Data. Volume I: Designed Experiments</em>. CRC Press.</p></li>
+<li><p>Kenward, M. G., &amp; Roger, J. H. (1997). Small sample inference for fixed effects from restricted maximum likelihood. <em>Biometrics</em>,  <strong>53</strong>, 983–997.</p></li>
+<li><p>Piepho, H., &amp; Edmondson, R. (2018). A tutorial on the Statistical Analysis of Factorial Experiments with Qualitative and Quantitative treatment factor levels. 
+               <em>Journal of Agronomy and Crop Science.</em> (<a href='https://onlinelibrary.wiley.com/doi/full/10.1111/jac.12267'>https://onlinelibrary.wiley.com/doi/full/10.1111/jac.12267</a>).</p></li>
+</ol>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='co'>## *************************************************************************************</span>
-<span class='co'>##                       How to run the code</span>
-<span class='co'>## *************************************************************************************</span>
+    <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>broom</span>)
+<span class='fu'>library</span>(<span class='no'>broom.mixed</span>)
+<span class='fu'>library</span>(<span class='no'>dplyr</span>)
+<span class='fu'>library</span>(<span class='no'>emmeans</span>)
+<span class='fu'>library</span>(<span class='no'>ggfortify</span>)
+<span class='fu'>library</span>(<span class='no'>ggplot2</span>)
+<span class='fu'>library</span>(<span class='no'>lmerTest</span>)
+<span class='fu'>library</span>(<span class='no'>magrittr</span>)
+<span class='fu'>library</span>(<span class='no'>nlme</span>)
+<span class='fu'>library</span>(<span class='no'>pbkrtest</span>)
 
-<span class='co'>## Either type example("example4") to run ALL the examples succesively</span>
-<span class='co'>## or copy and paste examples sucessively, as required</span>
+<span class='fu'>options</span>(<span class='kw'>contrasts</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'contr.treatment'</span>, <span class='st'>'contr.poly'</span>))
 
-<span class='co'>## *************************************************************************************</span>
-<span class='co'>##                          Options and required packages</span>
-<span class='co'>## *************************************************************************************</span>
+<span class='co'>##---------sorghumData-------</span>
+<span class='no'>sorghum</span>$<span class='no'>factblock</span> <span class='kw'>&lt;-</span> <span class='fu'>factor</span>(<span class='no'>sorghum</span>$<span class='no'>varblock</span>)
+<span class='no'>sorghum</span>$<span class='no'>rawWeeks</span>  <span class='kw'>&lt;-</span> <span class='fu'>poly</span>(<span class='no'>sorghum</span>$<span class='no'>varweek</span>, <span class='kw'>degree</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>raw</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='no'>sorghum</span>$<span class='no'>polWeeks</span>  <span class='kw'>&lt;-</span> <span class='fu'>poly</span>(<span class='no'>sorghum</span>$<span class='no'>varweek</span>, <span class='kw'>degree</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>raw</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='no'>sorghum</span>$<span class='no'>polBlocks</span> <span class='kw'>&lt;-</span> <span class='fu'>poly</span>(<span class='no'>sorghum</span>$<span class='no'>varblock</span>, <span class='kw'>degree</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>raw</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
-<span class='fu'>options</span>(<span class='kw'>contrasts</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'contr.treatment'</span>,<span class='st'>'contr.poly'</span>))
-<span class='fu'>require</span>(<span class='no'>nlme</span>)
-
-<span class='co'>## *************************************************************************************</span>
-<span class='co'>##            Section 1:  Polynomials for weeks and blocks contrasts</span>
-<span class='co'>## *************************************************************************************</span>
-
-<span class='no'>sorghum</span>$<span class='no'>rawWeeks</span> <span class='kw'>=</span> <span class='fu'>poly</span>(<span class='no'>sorghum</span>$<span class='no'>varweek</span>, <span class='kw'>degree</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>raw</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='no'>sorghum</span>$<span class='no'>polWeeks</span> <span class='kw'>=</span> <span class='fu'>poly</span>(<span class='no'>sorghum</span>$<span class='no'>varweek</span>, <span class='kw'>degree</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>raw</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='no'>sorghum</span>$<span class='no'>polBlocks</span> <span class='kw'>=</span> <span class='fu'>poly</span>(<span class='no'>sorghum</span>$<span class='no'>varblock</span>, <span class='kw'>degree</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>raw</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='no'>sorghum</span>$<span class='no'>factblock</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>sorghum</span>$<span class='no'>varblock</span>)
-
-<span class='co'>## *************************************************************************************</span>
-<span class='co'>## Section 2: Various correlation models assuming full factorial blocks and weeks model</span>
-<span class='co'>## *************************************************************************************</span>
-
-<span class='no'>AIC</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
-<span class='no'>logLik</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
-<span class='no'>Model</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"ID"</span>, <span class='st'>"CS"</span>, <span class='st'>"AR(1)"</span>, <span class='st'>"AR(1) + nugget"</span>, <span class='st'>"UN"</span>)
-
+<span class='co'>##-------fm4.1-------</span>
 <span class='co'>## independent uncorrelated random plots</span>
-<span class='no'>full_indy</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/gls'>gls</a></span>(<span class='no'>y</span> ~ <span class='no'>factweek</span> * (<span class='no'>Replicate</span> + <span class='no'>variety</span>), <span class='no'>sorghum</span>)
-<span class='fu'>anova</span>(<span class='no'>full_indy</span>)</div><div class='output co'>#&gt; Denom. DF: 60 
+<span class='no'>fm4.1</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>nlme</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/gls'>gls</a></span>(<span class='no'>y</span> ~ <span class='no'>factweek</span> * (<span class='no'>Replicate</span> + <span class='no'>variety</span>), <span class='no'>sorghum</span>)
+<span class='no'>fm4.1.ANOVA</span> <span class='kw'>&lt;-</span> <span class='fu'>anova</span>(<span class='no'>fm4.1</span>)
+<span class='no'>fm4.1.glance</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>broom</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/broom/topics/glance'>glance</a></span>(<span class='no'>fm4.1</span>)
+<span class='no'>fm4.1.Variogram</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>nlme</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/Variogram'>Variogram</a></span>(<span class='no'>fm4.1</span>)
+
+<span class='co'>##----fm4.1.ANOVA----</span>
+ <span class='no'>fm4.1.ANOVA</span></div><div class='output co'>#&gt; Denom. DF: 60 
 #&gt;                    numDF  F-value p-value
 #&gt; (Intercept)            1 80947.08  &lt;.0001
 #&gt; factweek               4   220.90  &lt;.0001
 #&gt; Replicate              4   358.86  &lt;.0001
 #&gt; variety                3   334.87  &lt;.0001
 #&gt; factweek:Replicate    16     1.82  0.0495
-#&gt; factweek:variety      12     4.48  &lt;.0001</div><div class='input'><span class='no'>AIC</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='no'>AIC</span>, <span class='fu'>AIC</span>(<span class='no'>full_indy</span>))
-<span class='no'>logLik</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='no'>logLik</span>, <span class='fu'>logLik</span>(<span class='no'>full_indy</span>))
-
+#&gt; factweek:variety      12     4.48  &lt;.0001</div><div class='input'>
+<span class='co'>##----fm4.1.glance----</span>
+ <span class='no'>fm4.1.glance</span></div><div class='output co'>#&gt; # A tibble: 1 x 6
+#&gt;   sigma    df logLik   AIC   BIC df.residual
+#&gt;   &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;       &lt;int&gt;
+#&gt; 1 0.152    40   1.87  78.3  164.          60</div><div class='input'>
+<span class='co'>##----fm4.1.Variogram----</span>
+<span class='no'>fm4.1.Variogram</span></div><div class='output co'>#&gt;       variog dist n.pairs
+#&gt; 1  0.4844580    2     195
+#&gt; 2  0.6952706    5     285
+#&gt; 3  0.5949027    7     185
+#&gt; 4  0.6395966   10     270
+#&gt; 5  0.6253573   13     261
+#&gt; 6  0.7140342   16     252
+#&gt; 7  0.6430040   19     243
+#&gt; 8  0.5396552   22     234
+#&gt; 9  0.5933554   25     225
+#&gt; 10 0.5017639   28     286
+#&gt; 11 0.5515372   32     204
+#&gt; 12 0.5603973   35     258
+#&gt; 13 0.4864744   39     242
+#&gt; 14 0.5010566   43     226
+#&gt; 15 0.6216947   48     260
+#&gt; 16 0.7288533   53     235
+#&gt; 17 0.5576019   58     249
+#&gt; 18 0.7579793   65     276
+#&gt; 19 1.0266935   74     234
+#&gt; 20 0.3877214   85     231</div><div class='input'>
+<span class='co'>##-------fm4.2-------</span>
 <span class='co'>## corCompSymm compound symmetry</span>
-<span class='no'>corCompSymm</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/gls'>gls</a></span>(<span class='no'>y</span> ~ <span class='no'>factweek</span> * (<span class='no'>Replicate</span> + <span class='no'>variety</span>),
-<span class='kw'>corr</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/corCompSymm'>corCompSymm</a></span>(<span class='kw'>form</span> <span class='kw'>=</span> ~ <span class='no'>varweek</span><span class='kw'>|</span><span class='no'>factplot</span>), <span class='no'>sorghum</span>)
-<span class='fu'>anova</span>(<span class='no'>corCompSymm</span>)</div><div class='output co'>#&gt; Denom. DF: 60 
+<span class='no'>fm4.2</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>nlme</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/gls'>gls</a></span>(<span class='no'>y</span> ~ <span class='no'>factweek</span> * (<span class='no'>Replicate</span> + <span class='no'>variety</span>),
+                   <span class='kw'>corr</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/corCompSymm'>corCompSymm</a></span>(<span class='kw'>form</span> <span class='kw'>=</span> ~ <span class='no'>varweek</span><span class='kw'>|</span><span class='no'>factplot</span>), <span class='no'>sorghum</span>)
+<span class='no'>fm4.2.ANOVA</span> <span class='kw'>&lt;-</span> <span class='fu'>anova</span>(<span class='no'>fm4.2</span>)
+<span class='no'>fm4.2.glance</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>broom</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/broom/topics/glance'>glance</a></span>(<span class='no'>fm4.2</span>)
+<span class='no'>fm4.2.Variogram</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>nlme</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/Variogram'>Variogram</a></span>(<span class='no'>fm4.2</span>)
+
+<span class='co'>##----fm4.2.ANOVA----</span>
+ <span class='no'>fm4.2.ANOVA</span></div><div class='output co'>#&gt; Denom. DF: 60 
 #&gt;                    numDF   F-value p-value
 #&gt; (Intercept)            1 21284.930  &lt;.0001
 #&gt; factweek               4   738.198  &lt;.0001
 #&gt; Replicate              4    94.361  &lt;.0001
 #&gt; variety                3    88.053  &lt;.0001
 #&gt; factweek:Replicate    16     6.077  &lt;.0001
-#&gt; factweek:variety      12    14.975  &lt;.0001</div><div class='input'><span class='no'>AIC</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='no'>AIC</span>, <span class='fu'>AIC</span>(<span class='no'>corCompSymm</span>))
-<span class='no'>logLik</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='no'>logLik</span>, <span class='fu'>logLik</span>(<span class='no'>corCompSymm</span>))
-<span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/Variogram'>Variogram</a></span>(<span class='no'>corCompSymm</span>)</div><div class='output co'>#&gt;      variog dist n.pairs
+#&gt; factweek:variety      12    14.975  &lt;.0001</div><div class='input'>
+<span class='co'>##----fm4.2.glance----</span>
+ <span class='no'>fm4.2.glance</span></div><div class='output co'>#&gt; # A tibble: 1 x 6
+#&gt;   sigma    df logLik   AIC   BIC df.residual
+#&gt;   &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;       &lt;int&gt;
+#&gt; 1 0.152    40   22.8  38.4  126.          60</div><div class='input'>
+<span class='co'>##----fm4.2.Variogram----</span>
+ <span class='no'>fm4.2.Variogram</span></div><div class='output co'>#&gt;      variog dist n.pairs
 #&gt; 1 0.1458280    1      80
 #&gt; 2 0.1805148    2      60
 #&gt; 3 0.2136222    3      40
 #&gt; 4 0.2433676    4      20</div><div class='input'>
+<span class='co'>##-------fm4.3-------</span>
 <span class='co'>## corExp without nugget</span>
-<span class='no'>corExp</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/gls'>gls</a></span>(<span class='no'>y</span> ~ <span class='no'>factweek</span> * (<span class='no'>Replicate</span> + <span class='no'>variety</span>),
- <span class='kw'>corr</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/corExp'>corExp</a></span>(<span class='kw'>form</span> <span class='kw'>=</span> ~ <span class='no'>varweek</span><span class='kw'>|</span><span class='no'>factplot</span>), <span class='no'>sorghum</span>)
-<span class='fu'>anova</span>(<span class='no'>corExp</span>)</div><div class='output co'>#&gt; Denom. DF: 60 
+<span class='no'>fm4.3</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>nlme</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/gls'>gls</a></span>(<span class='no'>y</span> ~ <span class='no'>factweek</span> * (<span class='no'>Replicate</span> + <span class='no'>variety</span>),
+                   <span class='kw'>corr</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/corExp'>corExp</a></span>(<span class='kw'>form</span> <span class='kw'>=</span> ~ <span class='no'>varweek</span><span class='kw'>|</span><span class='no'>factplot</span>), <span class='no'>sorghum</span>)
+<span class='no'>fm4.3.ANOVA</span> <span class='kw'>&lt;-</span> <span class='fu'>anova</span>(<span class='no'>fm4.3</span>)
+<span class='no'>fm4.3.glance</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>broom</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/broom/topics/glance'>glance</a></span>(<span class='no'>fm4.3</span>)
+<span class='no'>fm4.3.Variogram</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>nlme</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/Variogram'>Variogram</a></span>(<span class='no'>fm4.3</span>)
+
+<span class='co'>##----fm4.3.ANOVA----</span>
+ <span class='no'>fm4.3.ANOVA</span></div><div class='output co'>#&gt; Denom. DF: 60 
 #&gt;                    numDF   F-value p-value
 #&gt; (Intercept)            1 26108.428  &lt;.0001
 #&gt; factweek               4   272.514  &lt;.0001
 #&gt; Replicate              4   112.786  &lt;.0001
 #&gt; variety                3   102.241  &lt;.0001
 #&gt; factweek:Replicate    16     3.206   5e-04
-#&gt; factweek:variety      12    10.297  &lt;.0001</div><div class='input'><span class='no'>AIC</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='no'>AIC</span>, <span class='fu'>AIC</span>(<span class='no'>corExp</span>))
-<span class='no'>logLik</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='no'>logLik</span>, <span class='fu'>logLik</span>(<span class='no'>corExp</span>))
-<span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/Variogram'>Variogram</a></span>(<span class='no'>corExp</span>)</div><div class='output co'>#&gt;      variog dist n.pairs
+#&gt; factweek:variety      12    10.297  &lt;.0001</div><div class='input'>
+<span class='co'>##----fm4.3.glance----</span>
+ <span class='no'>fm4.3.glance</span></div><div class='output co'>#&gt; # A tibble: 1 x 6
+#&gt;   sigma    df logLik   AIC   BIC df.residual
+#&gt;   &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;       &lt;int&gt;
+#&gt; 1 0.149    40   23.0  38.0  126.          60</div><div class='input'>
+<span class='co'>##----fm4.3.Variogram----</span>
+ <span class='no'>fm4.3.Variogram</span></div><div class='output co'>#&gt;      variog dist n.pairs
 #&gt; 1 0.1525443    1      80
 #&gt; 2 0.1888286    2      60
 #&gt; 3 0.2234608    3      40
 #&gt; 4 0.2545762    4      20</div><div class='input'>
+<span class='co'>##-------fm4.4-------</span>
 <span class='co'>##  corExp with nugget</span>
-<span class='no'>corExp_nugget</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/gls'>gls</a></span>(<span class='no'>y</span> ~ <span class='no'>factweek</span> * (<span class='no'>Replicate</span> + <span class='no'>variety</span>),
- <span class='kw'>corr</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/corExp'>corExp</a></span>(<span class='kw'>form</span> <span class='kw'>=</span> ~ <span class='no'>varweek</span><span class='kw'>|</span><span class='no'>factplot</span>, <span class='kw'>nugget</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>), <span class='no'>sorghum</span>)
-<span class='fu'>anova</span>(<span class='no'>corExp_nugget</span>)</div><div class='output co'>#&gt; Denom. DF: 60 
+<span class='no'>fm4.4</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>nlme</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/gls'>gls</a></span>(<span class='no'>y</span> ~ <span class='no'>factweek</span> * (<span class='no'>Replicate</span> + <span class='no'>variety</span>),
+                   <span class='kw'>corr</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/corExp'>corExp</a></span>(<span class='kw'>form</span> <span class='kw'>=</span> ~ <span class='no'>varweek</span><span class='kw'>|</span><span class='no'>factplot</span>, <span class='kw'>nugget</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>), <span class='no'>sorghum</span>)
+<span class='no'>fm4.4.ANOVA</span> <span class='kw'>&lt;-</span> <span class='fu'>anova</span>(<span class='no'>fm4.4</span>)
+<span class='no'>fm4.4.glance</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>broom</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/broom/topics/glance'>glance</a></span>(<span class='no'>fm4.4</span>)
+<span class='no'>fm4.4.Variogram</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>nlme</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/Variogram'>Variogram</a></span>(<span class='no'>fm4.4</span>)
+
+<span class='co'>##----fm4.4.ANOVA----</span>
+ <span class='no'>fm4.4.ANOVA</span></div><div class='output co'>#&gt; Denom. DF: 60 
 #&gt;                    numDF   F-value p-value
 #&gt; (Intercept)            1 22278.120  &lt;.0001
 #&gt; factweek               4   447.078  &lt;.0001
 #&gt; Replicate              4    97.680  &lt;.0001
 #&gt; variety                3    88.735  &lt;.0001
 #&gt; factweek:Replicate    16     4.220  &lt;.0001
-#&gt; factweek:variety      12    12.578  &lt;.0001</div><div class='input'><span class='no'>AIC</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='no'>AIC</span>, <span class='fu'>AIC</span>(<span class='no'>corExp_nugget</span>))
-<span class='no'>logLik</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='no'>logLik</span>, <span class='fu'>logLik</span>(<span class='no'>corExp_nugget</span>))
-<span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/Variogram'>Variogram</a></span>(<span class='no'>corExp</span>)</div><div class='output co'>#&gt;      variog dist n.pairs
-#&gt; 1 0.1525443    1      80
-#&gt; 2 0.1888286    2      60
-#&gt; 3 0.2234608    3      40
-#&gt; 4 0.2545762    4      20</div><div class='input'>
+#&gt; factweek:variety      12    12.578  &lt;.0001</div><div class='input'>
+
+<span class='co'>##----fm4.4.glance----</span>
+ <span class='no'>fm4.4.glance</span></div><div class='output co'>#&gt; # A tibble: 1 x 6
+#&gt;   sigma    df logLik   AIC   BIC df.residual
+#&gt;   &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;       &lt;int&gt;
+#&gt; 1 0.150    40   24.3  37.5  128.          60</div><div class='input'>
+<span class='co'>##----fm4.4.Variogram----</span>
+ <span class='no'>fm4.4.Variogram</span></div><div class='output co'>#&gt;      variog dist n.pairs
+#&gt; 1 0.1502717    1      80
+#&gt; 2 0.1860155    2      60
+#&gt; 3 0.2201317    3      40
+#&gt; 4 0.2507836    4      20</div><div class='input'>
+
+<span class='co'>##-------fm4.5-------</span>
 <span class='co'>##  corSymm unstructured</span>
-<span class='no'>corSymm</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/gls'>gls</a></span>(<span class='no'>y</span> ~ <span class='no'>factweek</span> * (<span class='no'>Replicate</span> + <span class='no'>variety</span>), <span class='kw'>corr</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/corSymm'>corSymm</a></span>(<span class='kw'>form</span> <span class='kw'>=</span> ~ <span class='fl'>1</span><span class='kw'>|</span><span class='no'>factplot</span>),
- <span class='kw'>weights</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/varIdent'>varIdent</a></span>(<span class='kw'>form</span> <span class='kw'>=</span> ~ <span class='fl'>1</span><span class='kw'>|</span><span class='no'>varweek</span>), <span class='no'>sorghum</span>)
-<span class='fu'>anova</span>(<span class='no'>corSymm</span>)</div><div class='output co'>#&gt; Denom. DF: 60 
+<span class='no'>fm4.5</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>nlme</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/gls'>gls</a></span>(<span class='no'>y</span> ~ <span class='no'>factweek</span> * (<span class='no'>Replicate</span> + <span class='no'>variety</span>),
+                   <span class='kw'>corr</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/corSymm'>corSymm</a></span>(<span class='kw'>form</span> <span class='kw'>=</span> ~ <span class='fl'>1</span><span class='kw'>|</span><span class='no'>factplot</span>),
+                   <span class='kw'>weights</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/varIdent'>varIdent</a></span>(<span class='kw'>form</span> <span class='kw'>=</span> ~ <span class='fl'>1</span><span class='kw'>|</span><span class='no'>varweek</span>), <span class='no'>sorghum</span>)
+<span class='no'>fm4.5.ANOVA</span> <span class='kw'>&lt;-</span> <span class='fu'>anova</span>(<span class='no'>fm4.5</span>)
+<span class='no'>fm4.5.glance</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>broom</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/broom/topics/glance'>glance</a></span>(<span class='no'>fm4.5</span>)
+<span class='no'>fm4.5.Variogram</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>nlme</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/Variogram'>Variogram</a></span>(<span class='no'>fm4.5</span>)
+
+<span class='co'>##----fm4.5.ANOVA----</span>
+ <span class='no'>fm4.5.ANOVA</span></div><div class='output co'>#&gt; Denom. DF: 60 
 #&gt;                    numDF  F-value p-value
 #&gt; (Intercept)            1 57534.14  &lt;.0001
 #&gt; factweek               4   594.16  &lt;.0001
 #&gt; Replicate              4   217.57  &lt;.0001
 #&gt; variety                3   144.72  &lt;.0001
 #&gt; factweek:Replicate    16     4.04  &lt;.0001
-#&gt; factweek:variety      12    12.18  &lt;.0001</div><div class='input'><span class='no'>AIC</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='no'>AIC</span>, <span class='fu'>AIC</span>(<span class='no'>corSymm</span>))
-<span class='no'>logLik</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='no'>logLik</span>, <span class='fu'>logLik</span>(<span class='no'>corSymm</span>))
-<span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/Variogram'>Variogram</a></span>(<span class='no'>corSymm</span>)</div><div class='output co'>#&gt;      variog dist n.pairs
+#&gt; factweek:variety      12    12.18  &lt;.0001</div><div class='input'>
+<span class='co'>##----fm4.5.glance----</span>
+ <span class='no'>fm4.5.glance</span></div><div class='output co'>#&gt; # A tibble: 1 x 6
+#&gt;   sigma    df logLik   AIC   BIC df.residual
+#&gt;   &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;       &lt;int&gt;
+#&gt; 1 0.141    40   31.5  47.1  162.          60</div><div class='input'>
+<span class='co'>##----fm4.5.Variogram----</span>
+ <span class='no'>fm4.5.Variogram</span></div><div class='output co'>#&gt;      variog dist n.pairs
 #&gt; 1 0.1421985    1      80
 #&gt; 2 0.1789136    2      60
 #&gt; 3 0.2110624    3      40
 #&gt; 4 0.2797197    4      20</div><div class='input'>
-<span class='co'>##  Table 11 Comparison of log Likelihood and AIC statistics for different correlation structures</span>
-<span class='no'>dAIC</span> <span class='kw'>=</span> <span class='no'>AIC</span> - <span class='no'>AIC</span>[<span class='fl'>4</span>]
-<span class='no'>logLik</span> <span class='kw'>=</span> -<span class='fl'>2</span> * <span class='no'>logLik</span>
-<span class='no'>dlogLik</span> <span class='kw'>=</span> <span class='no'>logLik</span> - <span class='no'>logLik</span>[<span class='fl'>4</span>]
-<span class='no'>AICtable</span> <span class='kw'>=</span> <span class='fu'>data.frame</span>(<span class='no'>Model</span>, <span class='fu'>round</span>(<span class='no'>logLik</span>, <span class='fl'>2</span>), <span class='fu'>round</span>(<span class='no'>dlogLik</span>, <span class='fl'>2</span>), <span class='fu'>round</span>(<span class='no'>AIC</span>, <span class='fl'>2</span>), <span class='fu'>round</span>(<span class='no'>dAIC</span>, <span class='fl'>2</span>))
-<span class='fu'>colnames</span>(<span class='no'>AICtable</span>) <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"Covar_Model"</span>, <span class='st'>"-2logLr"</span>, <span class='st'>"-diff2logLr"</span>, <span class='st'>"AIC"</span>, <span class='st'>"diffAIC"</span>)
-<span class='no'>AICtable</span></div><div class='output co'>#&gt;      Covar_Model -2logLr -diff2logLr   AIC diffAIC
-#&gt; 1             ID   -3.74       44.78 78.26   40.78
-#&gt; 2             CS  -45.62        2.90 38.38    0.90
-#&gt; 3          AR(1)  -45.96        2.57 38.04    0.57
-#&gt; 4 AR(1) + nugget  -48.52        0.00 37.48    0.00
-#&gt; 5             UN  -62.90      -14.38 47.10    9.62</div><div class='input'>
-<span class='co'>## *************************************************************************************</span>
-<span class='co'>##  Section 3: Factorial block and variety effects assuming full polynomial week effects</span>
-<span class='co'>## *************************************************************************************</span>
+<span class='co'>##----Models.Summary----</span>
+<span class='no'>Model</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"ID"</span>, <span class='st'>"CS"</span>, <span class='st'>"AR(1)"</span>, <span class='st'>"AR(1) + nugget"</span>, <span class='st'>"UN"</span>)
+<span class='no'>Models.Summary</span> <span class='kw'>&lt;-</span>
+  <span class='fu'>cbind</span>(<span class='no'>Model</span>,
+        <span class='fu'>rbind</span>(
+          <span class='no'>fm4.1.glance</span>
+          , <span class='no'>fm4.2.glance</span>
+          , <span class='no'>fm4.3.glance</span>
+          , <span class='no'>fm4.3.glance</span>
+          , <span class='no'>fm4.5.glance</span>
+        ))
 
-<span class='co'>## Table A2 (cf Table 14) Sequential Wald tests for full model sorghum data</span>
-<span class='no'>pol_Wald</span> <span class='kw'>=</span>
-<span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/gls'>gls</a></span>(<span class='no'>y</span> ~ (<span class='no'>factblock</span>+<span class='no'>variety</span>) * (<span class='no'>rawWeeks</span>[,<span class='fl'>1</span>] + <span class='no'>rawWeeks</span>[,<span class='fl'>2</span>] + <span class='no'>polWeeks</span>[,<span class='fl'>3</span>] + <span class='no'>polWeeks</span>[,<span class='fl'>4</span>]),
-<span class='kw'>corr</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/corExp'>corExp</a></span>(<span class='kw'>form</span> <span class='kw'>=</span> ~ <span class='no'>varweek</span> <span class='kw'>|</span> <span class='no'>factplot</span>, <span class='kw'>nugget</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>), <span class='no'>sorghum</span>)
-<span class='fu'>anova</span>(<span class='no'>pol_Wald</span>)</div><div class='output co'>#&gt; Denom. DF: 60 
-#&gt;                         numDF   F-value p-value
-#&gt; (Intercept)                 1 22278.120  &lt;.0001
-#&gt; factblock                   4    97.680  &lt;.0001
-#&gt; variety                     3    88.735  &lt;.0001
-#&gt; rawWeeks[, 1]               1  1687.507  &lt;.0001
-#&gt; rawWeeks[, 2]               1    62.675  &lt;.0001
-#&gt; polWeeks[, 3]               1    18.088  0.0001
-#&gt; polWeeks[, 4]               1    20.042  &lt;.0001
-#&gt; factblock:rawWeeks[, 1]     4    12.449  &lt;.0001
-#&gt; factblock:rawWeeks[, 2]     4     1.694  0.1632
-#&gt; factblock:polWeeks[, 3]     4     0.081  0.9878
-#&gt; factblock:polWeeks[, 4]     4     2.654  0.0416
-#&gt; variety:rawWeeks[, 1]       3    21.194  &lt;.0001
-#&gt; variety:rawWeeks[, 2]       3    16.621  &lt;.0001
-#&gt; variety:polWeeks[, 3]       3     7.699  0.0002
-#&gt; variety:polWeeks[, 4]       3     4.797  0.0046</div><div class='input'><span class='no'>range</span><span class='kw'>=</span><span class='fu'>coef</span>(<span class='no'>pol_Wald</span>$<span class='no'>modelStruct</span>$<span class='no'>corStruct</span>,<span class='kw'>unconstrained</span><span class='kw'>=</span><span class='fl'>FALSE</span>)[<span class='fl'>1</span>]
-<span class='no'>nugget</span><span class='kw'>=</span><span class='fu'>coef</span>(<span class='no'>pol_Wald</span>$<span class='no'>modelStruct</span>$<span class='no'>corStruct</span>,<span class='kw'>unconstrained</span><span class='kw'>=</span><span class='fl'>FALSE</span>)[<span class='fl'>2</span>]
-<span class='no'>rho</span><span class='kw'>=</span>(<span class='fl'>1</span>-<span class='no'>nugget</span>)*<span class='fu'>exp</span>(-<span class='fl'>1</span>/<span class='no'>range</span>)
-<span class='fu'>cat</span>(<span class='st'>"Range ="</span>, <span class='no'>range</span>, <span class='st'>"\n"</span>)</div><div class='output co'>#&gt; Range = 10.35774 </div><div class='input'><span class='fu'>cat</span>(<span class='st'>"Nugget ="</span>, <span class='no'>nugget</span>, <span class='st'>"\n"</span>)</div><div class='output co'>#&gt; Nugget = 0.1720444 </div><div class='input'><span class='fu'>cat</span>(<span class='st'>"Correlation ="</span>, <span class='no'>rho</span>, <span class='st'>"\n"</span>)</div><div class='output co'>#&gt; Correlation = 0.7517572 </div><div class='input'><span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/ACF'>ACF</a></span>(<span class='no'>pol_Wald</span>)</div><div class='output co'>#&gt;   lag       ACF
-#&gt; 1   0 1.0000000
-#&gt; 2   1 0.7894943
-#&gt; 3   2 0.6928613
-#&gt; 4   3 0.6533836
-#&gt; 5   4 0.4642228</div><div class='input'><span class='fu'>plot</span>(<span class='no'>pol_Wald</span>,<span class='kw'>sub.caption</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"Residuals from full polynomial weeks model"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in (function (x, form = resid(., type = "pearson") ~ fitted(.),     abline, id = NULL, idLabels = NULL, idResType = c("pearson",         "normalized"), grid, ...) {    object &lt;- x    if (!inherits(form, "formula")) {        stop("'form' must be a formula")    }    allV &lt;- all.vars(asOneFormula(form, id, idLabels))    allV &lt;- allV[is.na(match(allV, c("T", "F", "TRUE", "FALSE")))]    if (length(allV) &gt; 0) {        data &lt;- getData(object)        if (is.null(data)) {            alist &lt;- lapply(as.list(allV), as.name)            names(alist) &lt;- allV            alist &lt;- c(list(quote(data.frame)), alist)            mode(alist) &lt;- "call"            data &lt;- eval(alist, sys.parent(1))        }        else {            if (any(naV &lt;- is.na(match(allV, names(data))))) {                stop(sprintf(ngettext(sum(naV), "%s not found in data",                   "%s not found in data"), allV[naV]), domain = NA)            }        }    }    else data &lt;- NULL    if (inherits(data, "groupedData")) {        ff &lt;- formula(data)        rF &lt;- deparse(getResponseFormula(ff)[[2]])        cF &lt;- c_deparse(getCovariateFormula(ff)[[2]])        lbs &lt;- attr(data, "labels")        unts &lt;- attr(data, "units")        if (!is.null(lbs$x))             cL &lt;- paste(lbs$x, unts$x)        else cF &lt;- NULL        if (!is.null(lbs$y))             rL &lt;- paste(lbs$y, unts$y)        else rF &lt;- NULL    }    else {        rF &lt;- cF &lt;- NULL    }    dots &lt;- list(...)    if (length(dots) &gt; 0)         args &lt;- dots    else args &lt;- list()    data &lt;- as.list(c(as.list(data), . = list(object)))    covF &lt;- getCovariateFormula(form)    .x &lt;- eval(covF[[2]], data)    if (!is.numeric(.x)) {        stop("covariate must be numeric")    }    argForm &lt;- ~.x    argData &lt;- data.frame(.x = .x, check.names = FALSE)    if (is.null(xlab &lt;- attr(.x, "label"))) {        xlab &lt;- deparse(covF[[2]])        if (!is.null(cF) &amp;&amp; (xlab == cF))             xlab &lt;- cL        else if (!is.null(rF) &amp;&amp; (xlab == rF))             xlab &lt;- rL    }    if (is.null(args$xlab))         args$xlab &lt;- xlab    respF &lt;- getResponseFormula(form)    if (!is.null(respF)) {        .y &lt;- eval(respF[[2]], data)        if (is.null(ylab &lt;- attr(.y, "label"))) {            ylab &lt;- deparse(respF[[2]])            if (!is.null(cF) &amp;&amp; (ylab == cF))                 ylab &lt;- cL            else if (!is.null(rF) &amp;&amp; (ylab == rF))                 ylab &lt;- rL        }        argForm &lt;- .y ~ .x        argData[, ".y"] &lt;- .y        if (is.null(args$ylab))             args$ylab &lt;- ylab    }    grpsF &lt;- getGroupsFormula(form)    if (!is.null(grpsF)) {        gr &lt;- splitFormula(grpsF, sep = "*")        for (i in seq_along(gr)) {            auxGr &lt;- all.vars(gr[[i]])            for (j in auxGr) {                argData[[j]] &lt;- eval(as.name(j), data)            }        }        if (length(argForm) == 2)             argForm &lt;- eval(parse(text = paste("~ .x |", deparse(grpsF[[2]]))))        else argForm &lt;- eval(parse(text = paste(".y ~ .x |",             deparse(grpsF[[2]]))))    }    args &lt;- c(list(argForm, data = argData), args)    if (is.null(args$cex))         args$cex &lt;- par("cex")    if (is.null(args$adj))         args$adj &lt;- par("adj")    if (!is.null(id)) {        idResType &lt;- match.arg(idResType)        id &lt;- switch(mode(id), numeric = {            if ((id &lt;= 0) || (id &gt;= 1)) {                stop("'id' must be between 0 and 1")            }            as.logical(abs(resid(object, type = idResType)) &gt;                 -qnorm(id/2))        }, call = eval(asOneSidedFormula(id)[[2]], data), stop("'id' can only be a formula or numeric"))        if (is.null(idLabels)) {            idLabels &lt;- getGroups(object)            if (length(idLabels) == 0)                 idLabels &lt;- 1:object$dims$N            idLabels &lt;- as.character(idLabels)        }        else {            if (mode(idLabels) == "call") {                idLabels &lt;- as.character(eval(asOneSidedFormula(idLabels)[[2]],                   data))            }            else if (is.vector(idLabels)) {                if (length(idLabels &lt;- unlist(idLabels)) != length(id)) {                  stop("'idLabels' of incorrect length")                }                idLabels &lt;- as.character(idLabels)            }            else {                stop("'idLabels' can only be a formula or a vector")            }        }    }    if (missing(abline)) {        if (missing(form)) {            abline &lt;- c(0, 0)        }        else {            abline &lt;- NULL        }    }    assign("abl", abline)    if (length(argForm) == 3) {        if (is.numeric(.y)) {            plotFun &lt;- "xyplot"            if (is.null(args$panel)) {                args &lt;- c(args, panel = list(function(x, y, subscripts,                   ...) {                  x &lt;- as.numeric(x)                  y &lt;- as.numeric(y)                  dots &lt;- list(...)                  if (grid) panel.grid()                  panel.xyplot(x, y, ...)                  if (any(ids &lt;- id[subscripts])) {                    ltext(x[ids], y[ids], idLabels[subscripts][ids],                       cex = dots$cex, adj = dots$adj)                  }                  if (!is.null(abl)) {                    if (length(abl) == 2) panel.abline(a = abl,                       ...) else panel.abline(h = abl, ...)                  }                }))            }        }        else {            plotFun &lt;- "bwplot"            if (is.null(args$panel)) {                args &lt;- c(args, panel = list(function(x, y, ...) {                  if (grid) panel.grid()                  panel.bwplot(x, y, ...)                  if (!is.null(abl)) {                    panel.abline(v = abl[1], ...)                  }                }))            }        }    }    else {        plotFun &lt;- "histogram"        if (is.null(args$panel)) {            args &lt;- c(args, panel = list(function(x, ...) {                if (grid) panel.grid()                panel.histogram(x, ...)                if (!is.null(abl)) {                  panel.abline(v = abl[1], ...)                }            }))        }    }    if (missing(grid)) {        if (plotFun == "xyplot")             grid &lt;- TRUE        else grid &lt;- FALSE    }    do.call(plotFun, as.list(args))})(x = pol_Wald, sub.caption = NA, main = "Residuals from full polynomial weeks model"): object 'pol_Wald' not found</span></div><div class='input'>
-<span class='co'>## *************************************************************************************</span>
-<span class='co'>## Section 4: Degree-2 model for weeks-by-variety and weeks-by-blocks effects assuming</span>
-<span class='co'>## degree-3 and degree-4 week effects are zero</span>
-<span class='co'>## *************************************************************************************</span>
 
- <span class='co'>## Table 15 coefficients assuming a quadratic weeks model for both block and treatment effects</span>
-<span class='no'>quad_Wald</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/gls'>gls</a></span>(<span class='no'>y</span> ~  <span class='no'>polBlocks</span> + <span class='no'>variety</span> + <span class='no'>rawWeeks</span>[,<span class='fl'>1</span>] + <span class='no'>rawWeeks</span>[,<span class='fl'>2</span>] +
- <span class='no'>polBlocks</span>:(<span class='no'>rawWeeks</span>[,<span class='fl'>1</span>] + <span class='no'>rawWeeks</span>[,<span class='fl'>2</span>]+ <span class='no'>polWeeks</span>[,<span class='fl'>3</span>] + <span class='no'>polWeeks</span>[,<span class='fl'>4</span>]) +
- <span class='no'>variety</span>:(<span class='no'>rawWeeks</span>[,<span class='fl'>1</span>] + <span class='no'>rawWeeks</span>[,<span class='fl'>2</span>]),
- <span class='kw'>corr</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/corExp'>corExp</a></span>(<span class='kw'>form</span> <span class='kw'>=</span> ~ <span class='no'>varweek</span> <span class='kw'>|</span> <span class='no'>factplot</span>, <span class='kw'>nugget</span><span class='kw'>=</span><span class='fl'>TRUE</span>), <span class='no'>sorghum</span>)
-<span class='fu'>anova</span>(<span class='no'>quad_Wald</span>)</div><div class='output co'>#&gt; Denom. DF: 68 
+ <span class='no'>Models.Summary</span></div><div class='output co'>#&gt;            Model     sigma df    logLik      AIC      BIC df.residual
+#&gt; 1             ID 0.1522361 40  1.869316 78.26137 164.1295          60
+#&gt; 2             CS 0.1522361 40 22.810374 38.37925 126.3417          60
+#&gt; 3          AR(1) 0.1488471 40 22.977679 38.04464 126.0071          60
+#&gt; 4 AR(1) + nugget 0.1488471 40 22.977679 38.04464 126.0071          60
+#&gt; 5             UN 0.1405318 40 31.451417 47.09717 162.2861          60</div><div class='input'>
+
+<span class='co'>##----fm4.6----</span>
+<span class='no'>fm4.6</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>nlme</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/gls'>gls</a></span>(
+  <span class='no'>y</span> ~ (<span class='no'>factblock</span>+<span class='no'>variety</span>) * (<span class='no'>varweek</span> + <span class='fu'>I</span>(<span class='no'>varweek</span>^<span class='fl'>2</span>) + <span class='fu'>I</span>(<span class='no'>varweek</span>^<span class='fl'>3</span>) + <span class='fu'>I</span>(<span class='no'>varweek</span>^<span class='fl'>4</span>))
+  , <span class='kw'>corr</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/corExp'>corExp</a></span>(<span class='kw'>form</span> <span class='kw'>=</span> ~ <span class='no'>varweek</span> <span class='kw'>|</span> <span class='no'>factplot</span>, <span class='kw'>nugget</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+  , <span class='no'>sorghum</span>)
+
+<span class='no'>fm4.6.ANOVA</span> <span class='kw'>&lt;-</span> <span class='fu'>anova</span>(<span class='no'>fm4.6</span>)
+<span class='no'>fm4.6.Coef</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>broom</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/broom/topics/tidy'>tidy</a></span>(<span class='no'>fm4.6</span>)
+<span class='no'>fm4.6.vcov</span> <span class='kw'>&lt;-</span> <span class='fu'>vcov</span>(<span class='no'>fm4.6</span>)
+
+
+<span class='no'>fm4.6.Par</span> <span class='kw'>&lt;-</span>
+  <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/tibble/topics/tibble'>tibble</a></span>(
+    <span class='st'>"Parameter"</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"Range"</span>, <span class='st'>"Nugget"</span>, <span class='st'>"rho"</span>)
+    , <span class='st'>"Value"</span>     <span class='kw'>=</span> <span class='fu'>c</span>(
+      <span class='fu'>coef</span>(<span class='no'>fm4.6</span>$<span class='no'>modelStruct</span>$<span class='no'>corStruct</span>, <span class='kw'>unconstrained</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)[<span class='fl'>1</span>]
+      , <span class='fu'>coef</span>(<span class='no'>fm4.6</span>$<span class='no'>modelStruct</span>$<span class='no'>corStruct</span>, <span class='kw'>unconstrained</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)[<span class='fl'>2</span>]
+      , (<span class='fl'>1</span>-<span class='fu'>coef</span>(<span class='no'>fm4.6</span>$<span class='no'>modelStruct</span>$<span class='no'>corStruct</span>, <span class='kw'>unconstrained</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)[<span class='fl'>2</span>])*
+        <span class='fu'>exp</span>(-<span class='fl'>1</span>/<span class='fu'>coef</span>(<span class='no'>fm4.6</span>$<span class='no'>modelStruct</span>$<span class='no'>corStruct</span>, <span class='kw'>unconstrained</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)[<span class='fl'>1</span>])
+    )
+  )
+
+<span class='no'>fm4.6.ACF</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>nlme</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/ACF'>ACF</a></span>(<span class='no'>fm4.6</span>)
+
+<span class='co'>##----fm4.6.ANOVA----</span>
+ <span class='no'>fm4.6.ANOVA</span></div><div class='output co'>#&gt; Denom. DF: 60 
+#&gt;                        numDF   F-value p-value
+#&gt; (Intercept)                1 22278.120  &lt;.0001
+#&gt; factblock                  4    97.680  &lt;.0001
+#&gt; variety                    3    88.735  &lt;.0001
+#&gt; varweek                    1  1687.507  &lt;.0001
+#&gt; I(varweek^2)               1    62.675  &lt;.0001
+#&gt; I(varweek^3)               1    18.088  0.0001
+#&gt; I(varweek^4)               1    20.042  &lt;.0001
+#&gt; factblock:varweek          4    12.449  &lt;.0001
+#&gt; factblock:I(varweek^2)     4     1.694  0.1632
+#&gt; factblock:I(varweek^3)     4     0.081  0.9878
+#&gt; factblock:I(varweek^4)     4     2.654  0.0416
+#&gt; variety:varweek            3    21.194  &lt;.0001
+#&gt; variety:I(varweek^2)       3    16.621  &lt;.0001
+#&gt; variety:I(varweek^3)       3     7.699  0.0002
+#&gt; variety:I(varweek^4)       3     4.797  0.0046</div><div class='input'>
+<span class='co'>##----fm4.6.Coef----</span>
+ <span class='no'>fm4.6.Coef</span></div><div class='output co'>#&gt; # A tibble: 40 x 5
+#&gt;    term         estimate std.error statistic    p.value
+#&gt;    &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;
+#&gt;  1 (Intercept)     1.53      0.705     2.17  0.0339    
+#&gt;  2 factblock2      0.652     0.788     0.828 0.411     
+#&gt;  3 factblock3      0.950     0.788     1.21  0.233     
+#&gt;  4 factblock4      0.725     0.788     0.920 0.361     
+#&gt;  5 factblock5      0.423     0.788     0.536 0.594     
+#&gt;  6 variety2        2.71      0.705     3.84  0.000296  
+#&gt;  7 variety3        0.398     0.705     0.565 0.574     
+#&gt;  8 variety4        3.20      0.705     4.55  0.0000269 
+#&gt;  9 varweek         6.70      1.29      5.20  0.00000249
+#&gt; 10 I(varweek^2)   -4.15      0.772    -5.37  0.00000134
+#&gt; # ... with 30 more rows</div><div class='input'>
+<span class='co'>##----fm4.6.Par----</span>
+ <span class='no'>fm4.6.Par</span></div><div class='output co'>#&gt; # A tibble: 3 x 2
+#&gt;   Parameter  Value
+#&gt;   &lt;chr&gt;      &lt;dbl&gt;
+#&gt; 1 Range     10.4  
+#&gt; 2 Nugget     0.172
+#&gt; 3 rho        0.752</div><div class='input'>
+<span class='co'>##----fm4.6.Plot1----</span>
+<span class='fu'>plot</span>(<span class='no'>fm4.6.ACF</span>)</div><div class='img'><img src='example4-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'>##----fm4.6.Plot2----</span>
+<span class='fu'>plot</span>(<span class='no'>fm4.6</span>, <span class='kw'>sub.caption</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"Residuals from full polynomial weeks model"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in (function (x, form = resid(., type = "pearson") ~ fitted(.),     abline, id = NULL, idLabels = NULL, idResType = c("pearson",         "normalized"), grid, ...) {    object &lt;- x    if (!inherits(form, "formula")) {        stop("'form' must be a formula")    }    allV &lt;- all.vars(asOneFormula(form, id, idLabels))    allV &lt;- allV[is.na(match(allV, c("T", "F", "TRUE", "FALSE")))]    if (length(allV) &gt; 0) {        data &lt;- getData(object)        if (is.null(data)) {            alist &lt;- lapply(as.list(allV), as.name)            names(alist) &lt;- allV            alist &lt;- c(list(quote(data.frame)), alist)            mode(alist) &lt;- "call"            data &lt;- eval(alist, sys.parent(1))        }        else {            if (any(naV &lt;- is.na(match(allV, names(data))))) {                stop(sprintf(ngettext(sum(naV), "%s not found in data",                   "%s not found in data"), allV[naV]), domain = NA)            }        }    }    else data &lt;- NULL    if (inherits(data, "groupedData")) {        ff &lt;- formula(data)        rF &lt;- deparse(getResponseFormula(ff)[[2]])        cF &lt;- c_deparse(getCovariateFormula(ff)[[2]])        lbs &lt;- attr(data, "labels")        unts &lt;- attr(data, "units")        if (!is.null(lbs$x))             cL &lt;- paste(lbs$x, unts$x)        else cF &lt;- NULL        if (!is.null(lbs$y))             rL &lt;- paste(lbs$y, unts$y)        else rF &lt;- NULL    }    else {        rF &lt;- cF &lt;- NULL    }    dots &lt;- list(...)    if (length(dots) &gt; 0)         args &lt;- dots    else args &lt;- list()    data &lt;- as.list(c(as.list(data), . = list(object)))    covF &lt;- getCovariateFormula(form)    .x &lt;- eval(covF[[2]], data)    if (!is.numeric(.x)) {        stop("covariate must be numeric")    }    argForm &lt;- ~.x    argData &lt;- data.frame(.x = .x, check.names = FALSE)    if (is.null(xlab &lt;- attr(.x, "label"))) {        xlab &lt;- deparse(covF[[2]])        if (!is.null(cF) &amp;&amp; (xlab == cF))             xlab &lt;- cL        else if (!is.null(rF) &amp;&amp; (xlab == rF))             xlab &lt;- rL    }    if (is.null(args$xlab))         args$xlab &lt;- xlab    respF &lt;- getResponseFormula(form)    if (!is.null(respF)) {        .y &lt;- eval(respF[[2]], data)        if (is.null(ylab &lt;- attr(.y, "label"))) {            ylab &lt;- deparse(respF[[2]])            if (!is.null(cF) &amp;&amp; (ylab == cF))                 ylab &lt;- cL            else if (!is.null(rF) &amp;&amp; (ylab == rF))                 ylab &lt;- rL        }        argForm &lt;- .y ~ .x        argData[, ".y"] &lt;- .y        if (is.null(args$ylab))             args$ylab &lt;- ylab    }    grpsF &lt;- getGroupsFormula(form)    if (!is.null(grpsF)) {        gr &lt;- splitFormula(grpsF, sep = "*")        for (i in seq_along(gr)) {            auxGr &lt;- all.vars(gr[[i]])            for (j in auxGr) {                argData[[j]] &lt;- eval(as.name(j), data)            }        }        if (length(argForm) == 2)             argForm &lt;- eval(parse(text = paste("~ .x |", deparse(grpsF[[2]]))))        else argForm &lt;- eval(parse(text = paste(".y ~ .x |",             deparse(grpsF[[2]]))))    }    args &lt;- c(list(argForm, data = argData), args)    if (is.null(args$cex))         args$cex &lt;- par("cex")    if (is.null(args$adj))         args$adj &lt;- par("adj")    if (!is.null(id)) {        idResType &lt;- match.arg(idResType)        id &lt;- switch(mode(id), numeric = {            if ((id &lt;= 0) || (id &gt;= 1)) {                stop("'id' must be between 0 and 1")            }            as.logical(abs(resid(object, type = idResType)) &gt;                 -qnorm(id/2))        }, call = eval(asOneSidedFormula(id)[[2]], data), stop("'id' can only be a formula or numeric"))        if (is.null(idLabels)) {            idLabels &lt;- getGroups(object)            if (length(idLabels) == 0)                 idLabels &lt;- 1:object$dims$N            idLabels &lt;- as.character(idLabels)        }        else {            if (mode(idLabels) == "call") {                idLabels &lt;- as.character(eval(asOneSidedFormula(idLabels)[[2]],                   data))            }            else if (is.vector(idLabels)) {                if (length(idLabels &lt;- unlist(idLabels)) != length(id)) {                  stop("'idLabels' of incorrect length")                }                idLabels &lt;- as.character(idLabels)            }            else {                stop("'idLabels' can only be a formula or a vector")            }        }    }    if (missing(abline)) {        if (missing(form)) {            abline &lt;- c(0, 0)        }        else {            abline &lt;- NULL        }    }    assign("abl", abline)    if (length(argForm) == 3) {        if (is.numeric(.y)) {            plotFun &lt;- "xyplot"            if (is.null(args$panel)) {                args &lt;- c(args, panel = list(function(x, y, subscripts,                   ...) {                  x &lt;- as.numeric(x)                  y &lt;- as.numeric(y)                  dots &lt;- list(...)                  if (grid) panel.grid()                  panel.xyplot(x, y, ...)                  if (any(ids &lt;- id[subscripts])) {                    ltext(x[ids], y[ids], idLabels[subscripts][ids],                       cex = dots$cex, adj = dots$adj)                  }                  if (!is.null(abl)) {                    if (length(abl) == 2) panel.abline(a = abl,                       ...) else panel.abline(h = abl, ...)                  }                }))            }        }        else {            plotFun &lt;- "bwplot"            if (is.null(args$panel)) {                args &lt;- c(args, panel = list(function(x, y, ...) {                  if (grid) panel.grid()                  panel.bwplot(x, y, ...)                  if (!is.null(abl)) {                    panel.abline(v = abl[1], ...)                  }                }))            }        }    }    else {        plotFun &lt;- "histogram"        if (is.null(args$panel)) {            args &lt;- c(args, panel = list(function(x, ...) {                if (grid) panel.grid()                panel.histogram(x, ...)                if (!is.null(abl)) {                  panel.abline(v = abl[1], ...)                }            }))        }    }    if (missing(grid)) {        if (plotFun == "xyplot")             grid &lt;- TRUE        else grid &lt;- FALSE    }    do.call(plotFun, as.list(args))})(x = fm4.6, sub.caption = NA, main = "Residuals from full polynomial weeks model"): object 'fm4.6' not found</span></div><div class='input'>
+
+<span class='co'>##----fm4.7----</span>
+<span class='no'>fm4.7</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>nlme</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/gls'>gls</a></span>(
+  <span class='no'>y</span> ~  <span class='no'>polBlocks</span> + <span class='no'>variety</span> + <span class='no'>rawWeeks</span>[,<span class='fl'>1</span>] + <span class='no'>rawWeeks</span>[,<span class='fl'>2</span>] +
+    <span class='no'>polBlocks</span>:(<span class='no'>rawWeeks</span>[,<span class='fl'>1</span>] + <span class='no'>rawWeeks</span>[,<span class='fl'>2</span>]+ <span class='no'>polWeeks</span>[,<span class='fl'>3</span>] + <span class='no'>polWeeks</span>[,<span class='fl'>4</span>]) +
+    <span class='no'>variety</span>:(<span class='no'>rawWeeks</span>[,<span class='fl'>1</span>] + <span class='no'>rawWeeks</span>[,<span class='fl'>2</span>])
+  , <span class='kw'>corr</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/corExp'>corExp</a></span>(<span class='kw'>form</span> <span class='kw'>=</span> ~ <span class='no'>varweek</span> <span class='kw'>|</span> <span class='no'>factplot</span>, <span class='kw'>nugget</span><span class='kw'>=</span><span class='fl'>TRUE</span>), <span class='no'>sorghum</span>)
+<span class='no'>fm4.7.ANOVA</span> <span class='kw'>&lt;-</span> <span class='fu'>anova</span>(<span class='no'>fm4.7</span>)
+<span class='no'>fm4.7.Coef</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>broom</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/broom/topics/tidy'>tidy</a></span>(<span class='no'>fm4.7</span>)
+<span class='no'>fm4.7.vcov</span> <span class='kw'>&lt;-</span> <span class='fu'>vcov</span>(<span class='no'>fm4.7</span>)
+
+<span class='no'>fm4.7.Par</span> <span class='kw'>&lt;-</span>
+  <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/tibble/topics/tibble'>tibble</a></span>(
+    <span class='st'>"Parameter"</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"Range"</span>, <span class='st'>"Nugget"</span>, <span class='st'>"rho"</span>)
+    , <span class='st'>"Value"</span>     <span class='kw'>=</span> <span class='fu'>c</span>(
+      <span class='fu'>coef</span>(<span class='no'>fm4.7</span>$<span class='no'>modelStruct</span>$<span class='no'>corStruct</span>, <span class='kw'>unconstrained</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)[<span class='fl'>1</span>]
+      , <span class='fu'>coef</span>(<span class='no'>fm4.7</span>$<span class='no'>modelStruct</span>$<span class='no'>corStruct</span>, <span class='kw'>unconstrained</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)[<span class='fl'>2</span>]
+      , (<span class='fl'>1</span>-<span class='fu'>coef</span>(<span class='no'>fm4.7</span>$<span class='no'>modelStruct</span>$<span class='no'>corStruct</span>, <span class='kw'>unconstrained</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)[<span class='fl'>2</span>])*
+        <span class='fu'>exp</span>(-<span class='fl'>1</span>/<span class='fu'>coef</span>(<span class='no'>fm4.7</span>$<span class='no'>modelStruct</span>$<span class='no'>corStruct</span>, <span class='kw'>unconstrained</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)[<span class='fl'>1</span>])
+    )
+  )
+
+<span class='no'>fm4.7.ACF</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>nlme</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/ACF'>ACF</a></span>(<span class='no'>fm4.7</span>)
+
+
+<span class='co'>##----fm4.7.ANOVA----</span>
+ <span class='no'>fm4.7.ANOVA</span></div><div class='output co'>#&gt; Denom. DF: 68 
 #&gt;                         numDF   F-value p-value
 #&gt; (Intercept)                 1 21284.944  &lt;.0001
 #&gt; polBlocks                   4    94.361  &lt;.0001
@@ -386,546 +512,57 @@ treatment factor levels. Journal of Agronomy and Crop Science. DOI: 10.1111/jac.
 #&gt; polBlocks:polWeeks[, 3]     4     0.034  0.9978
 #&gt; polBlocks:polWeeks[, 4]     4     1.011  0.4081
 #&gt; variety:rawWeeks[, 1]       3    19.094  &lt;.0001
-#&gt; variety:rawWeeks[, 2]       3     8.219  0.0001</div><div class='input'><span class='fu'>summary</span>(<span class='no'>quad_Wald</span>)$<span class='no'>tTable</span></div><div class='output co'>#&gt;                                 Value  Std.Error      t-value      p-value
-#&gt; (Intercept)               4.679200000 0.12180989  38.41395931 7.733900e-48
-#&gt; polBlocks1               -6.445278311 0.60904943 -10.58252089 5.132292e-16
-#&gt; polBlocks2               -1.259173340 0.60904943  -2.06744031 4.250108e-02
-#&gt; polBlocks3               -0.109601551 0.60904943  -0.17995510 8.577230e-01
-#&gt; polBlocks4                0.368553253 0.60904943   0.60512864 5.471077e-01
-#&gt; variety2                  0.784800000 0.17226519   4.55576654 2.228201e-05
-#&gt; variety3                  0.073200000 0.17226519   0.42492624 6.722321e-01
-#&gt; variety4                  0.500800000 0.17226519   2.90714562 4.920762e-03
-#&gt; rawWeeks[, 1]            -0.378685714 0.08287384  -4.56942385 2.120022e-05
-#&gt; rawWeeks[, 2]            -0.004285714 0.01355132  -0.31625801 7.527754e-01
-#&gt; polBlocks1:rawWeeks[, 1]  0.050356104 0.41436921   0.12152472 9.036338e-01
-#&gt; polBlocks2:rawWeeks[, 1] -0.325998603 0.41436921  -0.78673461 4.341706e-01
-#&gt; polBlocks3:rawWeeks[, 1] -0.357038417 0.41436921  -0.86164320 3.919122e-01
-#&gt; polBlocks4:rawWeeks[, 1] -0.484945523 0.41436921  -1.17032228 2.459566e-01
-#&gt; polBlocks1:rawWeeks[, 2]  0.076519055 0.06775661   1.12932234 2.627301e-01
-#&gt; polBlocks2:rawWeeks[, 2]  0.052291252 0.06775661   0.77175128 4.429355e-01
-#&gt; polBlocks3:rawWeeks[, 2]  0.032577420 0.06775661   0.48080060 6.322016e-01
-#&gt; polBlocks4:rawWeeks[, 2]  0.070156076 0.06775661   1.03541299 3.041443e-01
-#&gt; polBlocks1:polWeeks[, 3] -0.210000000 1.13378497  -0.18522031 8.536076e-01
-#&gt; polBlocks2:polWeeks[, 3]  0.219740106 1.13378497   0.19381109 8.469016e-01
-#&gt; polBlocks3:polWeeks[, 3] -0.205000000 1.13378497  -0.18081030 8.570543e-01
-#&gt; polBlocks4:polWeeks[, 3]  0.194651704 1.13378497   0.17168309 8.641966e-01
-#&gt; polBlocks1:polWeeks[, 4]  2.237549680 1.13378497   1.97352208 5.250143e-02
-#&gt; polBlocks2:polWeeks[, 4] -0.424852916 1.13378497  -0.37472089 7.090342e-01
-#&gt; polBlocks3:polWeeks[, 4]  0.088821651 1.13378497   0.07834083 9.377870e-01
-#&gt; polBlocks4:polWeeks[, 4]  0.045000000 1.13378497   0.03969007 9.684565e-01
-#&gt; variety2:rawWeeks[, 1]    0.107257143 0.11720131   0.91515308 3.633452e-01
-#&gt; variety3:rawWeeks[, 1]    0.644600000 0.11720131   5.49993840 6.208620e-07
-#&gt; variety4:rawWeeks[, 1]    0.388228571 0.11720131   3.31249337 1.483688e-03
-#&gt; variety2:rawWeeks[, 2]   -0.001142857 0.01916446  -0.05963418 9.526219e-01
-#&gt; variety3:rawWeeks[, 2]   -0.079000000 0.01916446  -4.12221288 1.042117e-04
-#&gt; variety4:rawWeeks[, 2]   -0.050571429 0.01916446  -2.63881259 1.030588e-02</div><div class='input'><span class='fu'>vcov</span>(<span class='no'>quad_Wald</span>)</div><div class='output co'>#&gt;                            (Intercept)    polBlocks1    polBlocks2
-#&gt; (Intercept)               1.483765e-02 -1.684511e-16  7.279634e-17
-#&gt; polBlocks1               -1.684511e-16  3.709412e-01  8.097551e-17
-#&gt; polBlocks2                7.279634e-17  8.097551e-17  3.709412e-01
-#&gt; polBlocks3               -1.965575e-17 -9.027368e-17  8.769205e-17
-#&gt; polBlocks4                4.039000e-16 -1.080635e-15  9.521033e-16
-#&gt; variety2                 -1.483765e-02  1.672651e-16 -7.632060e-17
-#&gt; variety3                 -1.483765e-02  1.775746e-16 -9.657716e-17
-#&gt; variety4                 -1.483765e-02  1.884090e-16 -9.398375e-17
-#&gt; rawWeeks[, 1]            -8.484091e-03  1.177454e-16 -7.544129e-17
-#&gt; rawWeeks[, 2]             1.285468e-03 -1.797541e-17  1.244051e-17
-#&gt; polBlocks1:rawWeeks[, 1]  8.882824e-17 -2.121023e-01 -1.889417e-17
-#&gt; polBlocks2:rawWeeks[, 1] -4.775234e-17 -4.766054e-17 -2.121023e-01
-#&gt; polBlocks3:rawWeeks[, 1] -1.520304e-17  1.190353e-16 -6.740260e-18
-#&gt; polBlocks4:rawWeeks[, 1] -9.135326e-17  2.816747e-16 -2.710557e-16
-#&gt; polBlocks1:rawWeeks[, 2] -1.325373e-17  3.213671e-02  6.988842e-18
-#&gt; polBlocks2:rawWeeks[, 2]  8.368661e-18  9.473865e-18  3.213671e-02
-#&gt; polBlocks3:rawWeeks[, 2]  2.542242e-18 -2.201772e-17  3.277782e-18
-#&gt; polBlocks4:rawWeeks[, 2]  1.154900e-17 -3.055401e-17  3.478929e-17
-#&gt; polBlocks1:polWeeks[, 3] -3.598665e-17  4.498766e-11 -2.354237e-16
-#&gt; polBlocks2:polWeeks[, 3]  1.885796e-17  1.472848e-16  4.498778e-11
-#&gt; polBlocks3:polWeeks[, 3]  2.639065e-16 -4.857868e-17 -9.463747e-18
-#&gt; polBlocks4:polWeeks[, 3] -2.890082e-16  7.078052e-16 -5.105304e-16
-#&gt; polBlocks1:polWeeks[, 4] -3.310476e-16 -2.833945e-11 -5.434707e-16
-#&gt; polBlocks2:polWeeks[, 4]  2.449717e-16 -8.396920e-16 -2.833987e-11
-#&gt; polBlocks3:polWeeks[, 4] -1.408599e-16  5.052814e-16 -4.630917e-16
-#&gt; polBlocks4:polWeeks[, 4]  1.446723e-16 -4.762318e-16  4.729624e-16
-#&gt; variety2:rawWeeks[, 1]    8.484091e-03 -1.225092e-16  8.468943e-17
-#&gt; variety3:rawWeeks[, 1]    8.484091e-03 -1.338315e-16  8.575398e-17
-#&gt; variety4:rawWeeks[, 1]    8.484091e-03 -1.410327e-16  8.827493e-17
-#&gt; variety2:rawWeeks[, 2]   -1.285468e-03  1.860709e-17 -1.369022e-17
-#&gt; variety3:rawWeeks[, 2]   -1.285468e-03  2.049759e-17 -1.351757e-17
-#&gt; variety4:rawWeeks[, 2]   -1.285468e-03  2.165127e-17 -1.421509e-17
-#&gt;                             polBlocks3    polBlocks4      variety2
-#&gt; (Intercept)              -1.965575e-17  4.039000e-16 -1.483765e-02
-#&gt; polBlocks1               -9.027368e-17 -1.080635e-15  1.672651e-16
-#&gt; polBlocks2                8.769205e-17  9.521033e-16 -7.632060e-17
-#&gt; polBlocks3                3.709412e-01 -3.719418e-16  5.394484e-17
-#&gt; polBlocks4               -3.719418e-16  3.709412e-01 -4.485050e-16
-#&gt; variety2                  5.394484e-17 -4.485050e-16  2.967530e-02
-#&gt; variety3                  4.841331e-17 -4.304917e-16  1.483765e-02
-#&gt; variety4                  5.421278e-17 -4.544528e-16  1.483765e-02
-#&gt; rawWeeks[, 1]             1.636248e-17 -2.437032e-16  8.484091e-03
-#&gt; rawWeeks[, 2]            -2.721236e-18  3.408256e-17 -1.285468e-03
-#&gt; polBlocks1:rawWeeks[, 1]  2.085434e-17  6.041567e-16 -8.793110e-17
-#&gt; polBlocks2:rawWeeks[, 1] -7.510877e-17 -5.763023e-16  5.436598e-17
-#&gt; polBlocks3:rawWeeks[, 1] -2.121023e-01  2.186789e-16 -1.066414e-17
-#&gt; polBlocks4:rawWeeks[, 1]  1.322630e-16 -2.121023e-01  1.209676e-16
-#&gt; polBlocks1:rawWeeks[, 2] -2.345008e-18 -7.512370e-17  1.267455e-17
-#&gt; polBlocks2:rawWeeks[, 2]  9.142472e-18  7.155316e-17 -9.505009e-18
-#&gt; polBlocks3:rawWeeks[, 2]  3.213671e-02 -2.418984e-17  1.496842e-18
-#&gt; polBlocks4:rawWeeks[, 2] -1.950918e-17  3.213671e-02 -1.599170e-17
-#&gt; polBlocks1:polWeeks[, 3] -6.321632e-16  9.356234e-16  2.957043e-17
-#&gt; polBlocks2:polWeeks[, 3]  4.954673e-16 -7.438124e-16 -7.712221e-17
-#&gt; polBlocks3:polWeeks[, 3]  4.498771e-11  6.191278e-16 -2.873198e-16
-#&gt; polBlocks4:polWeeks[, 3]  2.618160e-16  4.498750e-11  3.069301e-16
-#&gt; polBlocks1:polWeeks[, 4]  1.060888e-17 -4.635397e-16  3.417410e-16
-#&gt; polBlocks2:polWeeks[, 4] -6.344903e-16  4.224204e-16 -2.345251e-16
-#&gt; polBlocks3:polWeeks[, 4] -2.834024e-11 -1.780359e-17  1.280361e-16
-#&gt; polBlocks4:polWeeks[, 4]  4.895394e-17 -2.834045e-11 -1.881960e-16
-#&gt; variety2:rawWeeks[, 1]   -4.097694e-17  2.610897e-16 -1.696818e-02
-#&gt; variety3:rawWeeks[, 1]   -3.294556e-17  2.623591e-16 -8.484091e-03
-#&gt; variety4:rawWeeks[, 1]   -4.098578e-17  2.805159e-16 -8.484091e-03
-#&gt; variety2:rawWeeks[, 2]    6.728337e-18 -3.582404e-17  2.570937e-03
-#&gt; variety3:rawWeeks[, 2]    5.503256e-18 -3.653026e-17  1.285468e-03
-#&gt; variety4:rawWeeks[, 2]    6.632603e-18 -3.939718e-17  1.285468e-03
-#&gt;                               variety3      variety4 rawWeeks[, 1]
-#&gt; (Intercept)              -1.483765e-02 -1.483765e-02 -8.484091e-03
-#&gt; polBlocks1                1.775746e-16  1.884090e-16  1.177454e-16
-#&gt; polBlocks2               -9.657716e-17 -9.398375e-17 -7.544129e-17
-#&gt; polBlocks3                4.841331e-17  5.421278e-17  1.636248e-17
-#&gt; polBlocks4               -4.304917e-16 -4.544528e-16 -2.437032e-16
-#&gt; variety2                  1.483765e-02  1.483765e-02  8.484091e-03
-#&gt; variety3                  2.967530e-02  1.483765e-02  8.484091e-03
-#&gt; variety4                  1.483765e-02  2.967530e-02  8.484091e-03
-#&gt; rawWeeks[, 1]             8.484091e-03  8.484091e-03  6.868074e-03
-#&gt; rawWeeks[, 2]            -1.285468e-03 -1.285468e-03 -1.101830e-03
-#&gt; polBlocks1:rawWeeks[, 1] -9.186751e-17 -9.222233e-17 -6.234145e-17
-#&gt; polBlocks2:rawWeeks[, 1]  6.904746e-17  6.205965e-17  5.220307e-17
-#&gt; polBlocks3:rawWeeks[, 1] -6.832873e-18 -1.695757e-17  1.263223e-17
-#&gt; polBlocks4:rawWeeks[, 1]  1.065164e-16  1.252820e-16  3.887615e-17
-#&gt; polBlocks1:rawWeeks[, 2]  1.394521e-17  1.363440e-17  9.232694e-18
-#&gt; polBlocks2:rawWeeks[, 2] -1.214083e-17 -1.070763e-17 -8.941227e-18
-#&gt; polBlocks3:rawWeeks[, 2]  1.090188e-18  2.864456e-18 -2.204555e-18
-#&gt; polBlocks4:rawWeeks[, 2] -1.410536e-17 -1.665951e-17 -4.522339e-18
-#&gt; polBlocks1:polWeeks[, 3]  3.138601e-17  7.748941e-17  2.141178e-17
-#&gt; polBlocks2:polWeeks[, 3] -1.950410e-17 -1.825635e-17 -4.734836e-18
-#&gt; polBlocks3:polWeeks[, 3] -4.001464e-16 -2.999181e-16 -2.150366e-16
-#&gt; polBlocks4:polWeeks[, 3]  2.996885e-16  2.506831e-16  2.060123e-16
-#&gt; polBlocks1:polWeeks[, 4]  3.348077e-16  2.827011e-16  1.976508e-16
-#&gt; polBlocks2:polWeeks[, 4] -2.788577e-16 -2.330017e-16 -1.347606e-16
-#&gt; polBlocks3:polWeeks[, 4]  1.310417e-16  1.167075e-16  8.622484e-17
-#&gt; polBlocks4:polWeeks[, 4] -1.200567e-16 -1.674992e-16 -1.132627e-16
-#&gt; variety2:rawWeeks[, 1]   -8.484091e-03 -8.484091e-03 -6.868074e-03
-#&gt; variety3:rawWeeks[, 1]   -1.696818e-02 -8.484091e-03 -6.868074e-03
-#&gt; variety4:rawWeeks[, 1]   -8.484091e-03 -1.696818e-02 -6.868074e-03
-#&gt; variety2:rawWeeks[, 2]    1.285468e-03  1.285468e-03  1.101830e-03
-#&gt; variety3:rawWeeks[, 2]    2.570937e-03  1.285468e-03  1.101830e-03
-#&gt; variety4:rawWeeks[, 2]    1.285468e-03  2.570937e-03  1.101830e-03
-#&gt;                          rawWeeks[, 2] polBlocks1:rawWeeks[, 1]
-#&gt; (Intercept)               1.285468e-03             8.882824e-17
-#&gt; polBlocks1               -1.797541e-17            -2.121023e-01
-#&gt; polBlocks2                1.244051e-17            -1.889417e-17
-#&gt; polBlocks3               -2.721236e-18             2.085434e-17
-#&gt; polBlocks4                3.408256e-17             6.041567e-16
-#&gt; variety2                 -1.285468e-03            -8.793110e-17
-#&gt; variety3                 -1.285468e-03            -9.186751e-17
-#&gt; variety4                 -1.285468e-03            -9.222233e-17
-#&gt; rawWeeks[, 1]            -1.101830e-03            -6.234145e-17
-#&gt; rawWeeks[, 2]             1.836383e-04             9.418726e-18
-#&gt; polBlocks1:rawWeeks[, 1]  9.418726e-18             1.717018e-01
-#&gt; polBlocks2:rawWeeks[, 1] -8.559140e-18             2.081256e-17
-#&gt; polBlocks3:rawWeeks[, 1] -2.075446e-18            -7.010631e-17
-#&gt; polBlocks4:rawWeeks[, 1] -4.599178e-18            -9.241791e-17
-#&gt; polBlocks1:rawWeeks[, 2] -1.389133e-18            -2.754575e-02
-#&gt; polBlocks2:rawWeeks[, 2]  1.463551e-18            -5.144202e-18
-#&gt; polBlocks3:rawWeeks[, 2]  3.679549e-19             1.373283e-17
-#&gt; polBlocks4:rawWeeks[, 2]  5.209249e-19             4.839756e-18
-#&gt; polBlocks1:polWeeks[, 3] -3.235632e-18            -1.499572e-11
-#&gt; polBlocks2:polWeeks[, 3]  5.062606e-19            -1.670694e-16
-#&gt; polBlocks3:polWeeks[, 3]  3.501540e-17             3.225661e-17
-#&gt; polBlocks4:polWeeks[, 3] -3.085480e-17            -4.760687e-16
-#&gt; polBlocks1:polWeeks[, 4] -2.654417e-17             2.429111e-11
-#&gt; polBlocks2:polWeeks[, 4]  1.694000e-17             4.816145e-16
-#&gt; polBlocks3:polWeeks[, 4] -1.121657e-17            -2.812569e-16
-#&gt; polBlocks4:polWeeks[, 4]  1.705747e-17             3.477462e-16
-#&gt; variety2:rawWeeks[, 1]    1.101830e-03             6.522606e-17
-#&gt; variety3:rawWeeks[, 1]    1.101830e-03             7.090316e-17
-#&gt; variety4:rawWeeks[, 1]    1.101830e-03             7.076569e-17
-#&gt; variety2:rawWeeks[, 2]   -1.836383e-04            -9.742250e-18
-#&gt; variety3:rawWeeks[, 2]   -1.836383e-04            -1.070229e-17
-#&gt; variety4:rawWeeks[, 2]   -1.836383e-04            -1.069813e-17
-#&gt;                          polBlocks2:rawWeeks[, 1] polBlocks3:rawWeeks[, 1]
-#&gt; (Intercept)                         -4.775234e-17            -1.520304e-17
-#&gt; polBlocks1                          -4.766054e-17             1.190353e-16
-#&gt; polBlocks2                          -2.121023e-01            -6.740260e-18
-#&gt; polBlocks3                          -7.510877e-17            -2.121023e-01
-#&gt; polBlocks4                          -5.763023e-16             2.186789e-16
-#&gt; variety2                             5.436598e-17            -1.066414e-17
-#&gt; variety3                             6.904746e-17            -6.832873e-18
-#&gt; variety4                             6.205965e-17            -1.695757e-17
-#&gt; rawWeeks[, 1]                        5.220307e-17             1.263223e-17
-#&gt; rawWeeks[, 2]                       -8.559140e-18            -2.075446e-18
-#&gt; polBlocks1:rawWeeks[, 1]             2.081256e-17            -7.010631e-17
-#&gt; polBlocks2:rawWeeks[, 1]             1.717018e-01             1.366368e-17
-#&gt; polBlocks3:rawWeeks[, 1]             1.366368e-17             1.717018e-01
-#&gt; polBlocks4:rawWeeks[, 1]             1.281398e-16            -7.970358e-17
-#&gt; polBlocks1:rawWeeks[, 2]            -7.712396e-18             1.143979e-17
-#&gt; polBlocks2:rawWeeks[, 2]            -2.754575e-02            -3.469534e-20
-#&gt; polBlocks3:rawWeeks[, 2]            -4.712478e-18            -2.754575e-02
-#&gt; polBlocks4:rawWeeks[, 2]            -1.467703e-17             1.221996e-17
-#&gt; polBlocks1:polWeeks[, 3]             1.594090e-16             4.678278e-16
-#&gt; polBlocks2:polWeeks[, 3]            -1.499586e-11            -4.085777e-16
-#&gt; polBlocks3:polWeeks[, 3]             1.540045e-17            -1.499583e-11
-#&gt; polBlocks4:polWeeks[, 3]             3.335316e-16            -1.536212e-16
-#&gt; polBlocks1:polWeeks[, 4]             2.586761e-16             2.124606e-16
-#&gt; polBlocks2:polWeeks[, 4]             2.429140e-11             3.615055e-16
-#&gt; polBlocks3:polWeeks[, 4]             2.195033e-16             2.429160e-11
-#&gt; polBlocks4:polWeeks[, 4]            -3.530843e-16            -1.111216e-16
-#&gt; variety2:rawWeeks[, 1]              -6.277631e-17             7.091845e-18
-#&gt; variety3:rawWeeks[, 1]              -6.200739e-17             8.606810e-19
-#&gt; variety4:rawWeeks[, 1]              -6.111968e-17             1.177822e-17
-#&gt; variety2:rawWeeks[, 2]               1.001949e-17            -1.118575e-18
-#&gt; variety3:rawWeeks[, 2]               9.627814e-18            -2.087689e-19
-#&gt; variety4:rawWeeks[, 2]               9.743829e-18            -1.839491e-18
-#&gt;                          polBlocks4:rawWeeks[, 1] polBlocks1:rawWeeks[, 2]
-#&gt; (Intercept)                         -9.135326e-17            -1.325373e-17
-#&gt; polBlocks1                           2.816747e-16             3.213671e-02
-#&gt; polBlocks2                          -2.710557e-16             6.988842e-18
-#&gt; polBlocks3                           1.322630e-16            -2.345008e-18
-#&gt; polBlocks4                          -2.121023e-01            -7.512370e-17
-#&gt; variety2                             1.209676e-16             1.267455e-17
-#&gt; variety3                             1.065164e-16             1.394521e-17
-#&gt; variety4                             1.252820e-16             1.363440e-17
-#&gt; rawWeeks[, 1]                        3.887615e-17             9.232694e-18
-#&gt; rawWeeks[, 2]                       -4.599178e-18            -1.389133e-18
-#&gt; polBlocks1:rawWeeks[, 1]            -9.241791e-17            -2.754575e-02
-#&gt; polBlocks2:rawWeeks[, 1]             1.281398e-16            -7.712396e-18
-#&gt; polBlocks3:rawWeeks[, 1]            -7.970358e-17             1.143979e-17
-#&gt; polBlocks4:rawWeeks[, 1]             1.717018e-01             5.558239e-18
-#&gt; polBlocks1:rawWeeks[, 2]             5.558239e-18             4.590958e-03
-#&gt; polBlocks2:rawWeeks[, 2]            -1.126041e-17             1.550372e-18
-#&gt; polBlocks3:rawWeeks[, 2]             8.612261e-18            -2.248039e-18
-#&gt; polBlocks4:rawWeeks[, 2]            -2.754575e-02             6.201487e-19
-#&gt; polBlocks1:polWeeks[, 3]            -4.005597e-16            -3.956678e-17
-#&gt; polBlocks2:polWeeks[, 3]             2.921095e-16             2.713151e-17
-#&gt; polBlocks3:polWeeks[, 3]            -2.981828e-16            -5.821969e-18
-#&gt; polBlocks4:polWeeks[, 3]            -1.499571e-11             6.873315e-17
-#&gt; polBlocks1:polWeeks[, 4]             4.845497e-16            -4.048531e-12
-#&gt; polBlocks2:polWeeks[, 4]            -4.423612e-16            -6.149808e-17
-#&gt; polBlocks3:polWeeks[, 4]             6.053171e-17             3.617534e-17
-#&gt; polBlocks4:polWeeks[, 4]             2.429164e-11            -5.064548e-17
-#&gt; variety2:rawWeeks[, 1]              -5.010410e-17            -9.289001e-18
-#&gt; variety3:rawWeeks[, 1]              -5.133352e-17            -1.076578e-17
-#&gt; variety4:rawWeeks[, 1]              -6.558812e-17            -1.043338e-17
-#&gt; variety2:rawWeeks[, 2]               5.602119e-18             1.372596e-18
-#&gt; variety3:rawWeeks[, 2]               6.231670e-18             1.620655e-18
-#&gt; variety4:rawWeeks[, 2]               8.497789e-18             1.571043e-18
-#&gt;                          polBlocks2:rawWeeks[, 2] polBlocks3:rawWeeks[, 2]
-#&gt; (Intercept)                          8.368661e-18             2.542242e-18
-#&gt; polBlocks1                           9.473865e-18            -2.201772e-17
-#&gt; polBlocks2                           3.213671e-02             3.277782e-18
-#&gt; polBlocks3                           9.142472e-18             3.213671e-02
-#&gt; polBlocks4                           7.155316e-17            -2.418984e-17
-#&gt; variety2                            -9.505009e-18             1.496842e-18
-#&gt; variety3                            -1.214083e-17             1.090188e-18
-#&gt; variety4                            -1.070763e-17             2.864456e-18
-#&gt; rawWeeks[, 1]                       -8.941227e-18            -2.204555e-18
-#&gt; rawWeeks[, 2]                        1.463551e-18             3.679549e-19
-#&gt; polBlocks1:rawWeeks[, 1]            -5.144202e-18             1.373283e-17
-#&gt; polBlocks2:rawWeeks[, 1]            -2.754575e-02            -4.712478e-18
-#&gt; polBlocks3:rawWeeks[, 1]            -3.469534e-20            -2.754575e-02
-#&gt; polBlocks4:rawWeeks[, 1]            -1.126041e-17             8.612261e-18
-#&gt; polBlocks1:rawWeeks[, 2]             1.550372e-18            -2.248039e-18
-#&gt; polBlocks2:rawWeeks[, 2]             4.590958e-03             4.134325e-19
-#&gt; polBlocks3:rawWeeks[, 2]             4.134325e-19             4.590958e-03
-#&gt; polBlocks4:rawWeeks[, 2]             9.302231e-19            -1.343656e-18
-#&gt; polBlocks1:polWeeks[, 3]            -2.351397e-17            -7.732480e-17
-#&gt; polBlocks2:polWeeks[, 3]            -1.808767e-17             6.782877e-17
-#&gt; polBlocks3:polWeeks[, 3]            -1.808767e-18            -2.170521e-17
-#&gt; polBlocks4:polWeeks[, 3]            -4.702795e-17             1.989644e-17
-#&gt; polBlocks1:polWeeks[, 4]            -2.690541e-17            -4.521918e-17
-#&gt; polBlocks2:polWeeks[, 4]            -4.048569e-12            -4.883671e-17
-#&gt; polBlocks3:polWeeks[, 4]            -2.713151e-17            -4.048598e-12
-#&gt; polBlocks4:polWeeks[, 4]             5.528045e-17             2.351397e-17
-#&gt; variety2:rawWeeks[, 1]               1.069467e-17            -8.622135e-19
-#&gt; variety3:rawWeeks[, 1]               1.075090e-17            -2.294550e-20
-#&gt; variety4:rawWeeks[, 1]               1.038542e-17            -1.903030e-18
-#&gt; variety2:rawWeeks[, 2]              -1.703342e-18             1.260969e-19
-#&gt; variety3:rawWeeks[, 2]              -1.670267e-18             1.033581e-20
-#&gt; variety4:rawWeeks[, 2]              -1.653730e-18             2.935371e-19
-#&gt;                          polBlocks4:rawWeeks[, 2] polBlocks1:polWeeks[, 3]
-#&gt; (Intercept)                          1.154900e-17            -3.598665e-17
-#&gt; polBlocks1                          -3.055401e-17             4.498766e-11
-#&gt; polBlocks2                           3.478929e-17            -2.354237e-16
-#&gt; polBlocks3                          -1.950918e-17            -6.321632e-16
-#&gt; polBlocks4                           3.213671e-02             9.356234e-16
-#&gt; variety2                            -1.599170e-17             2.957043e-17
-#&gt; variety3                            -1.410536e-17             3.138601e-17
-#&gt; variety4                            -1.665951e-17             7.748941e-17
-#&gt; rawWeeks[, 1]                       -4.522339e-18             2.141178e-17
-#&gt; rawWeeks[, 2]                        5.209249e-19            -3.235632e-18
-#&gt; polBlocks1:rawWeeks[, 1]             4.839756e-18            -1.499572e-11
-#&gt; polBlocks2:rawWeeks[, 1]            -1.467703e-17             1.594090e-16
-#&gt; polBlocks3:rawWeeks[, 1]             1.221996e-17             4.678278e-16
-#&gt; polBlocks4:rawWeeks[, 1]            -2.754575e-02            -4.005597e-16
-#&gt; polBlocks1:rawWeeks[, 2]             6.201487e-19            -3.956678e-17
-#&gt; polBlocks2:rawWeeks[, 2]             9.302231e-19            -2.351397e-17
-#&gt; polBlocks3:rawWeeks[, 2]            -1.343656e-18            -7.732480e-17
-#&gt; polBlocks4:rawWeeks[, 2]             4.590958e-03             5.516740e-17
-#&gt; polBlocks1:polWeeks[, 3]             5.516740e-17             1.285468e+00
-#&gt; polBlocks2:polWeeks[, 3]            -3.798411e-17            -4.842634e-16
-#&gt; polBlocks3:polWeeks[, 3]             4.341041e-17             1.210659e-16
-#&gt; polBlocks4:polWeeks[, 3]            -3.934069e-17            -1.513323e-16
-#&gt; polBlocks1:polWeeks[, 4]            -7.415945e-17            -1.513323e-16
-#&gt; polBlocks2:polWeeks[, 4]             6.873315e-17            -1.223067e-30
-#&gt; polBlocks3:polWeeks[, 4]            -7.235069e-18            -3.026646e-17
-#&gt; polBlocks4:polWeeks[, 4]            -4.048596e-12             2.723982e-16
-#&gt; variety2:rawWeeks[, 1]               6.124589e-18            -1.367006e-17
-#&gt; variety3:rawWeeks[, 1]               6.656263e-18            -2.147362e-17
-#&gt; variety4:rawWeeks[, 1]               8.578724e-18            -5.661731e-17
-#&gt; variety2:rawWeeks[, 2]              -6.532233e-19             2.213776e-18
-#&gt; variety3:rawWeeks[, 2]              -8.103277e-19             3.320663e-18
-#&gt; variety4:rawWeeks[, 2]              -1.116268e-18             8.855103e-18
-#&gt;                          polBlocks2:polWeeks[, 3] polBlocks3:polWeeks[, 3]
-#&gt; (Intercept)                          1.885796e-17             2.639065e-16
-#&gt; polBlocks1                           1.472848e-16            -4.857868e-17
-#&gt; polBlocks2                           4.498778e-11            -9.463747e-18
-#&gt; polBlocks3                           4.954673e-16             4.498771e-11
-#&gt; polBlocks4                          -7.438124e-16             6.191278e-16
-#&gt; variety2                            -7.712221e-17            -2.873198e-16
-#&gt; variety3                            -1.950410e-17            -4.001464e-16
-#&gt; variety4                            -1.825635e-17            -2.999181e-16
-#&gt; rawWeeks[, 1]                       -4.734836e-18            -2.150366e-16
-#&gt; rawWeeks[, 2]                        5.062606e-19             3.501540e-17
-#&gt; polBlocks1:rawWeeks[, 1]            -1.670694e-16             3.225661e-17
-#&gt; polBlocks2:rawWeeks[, 1]            -1.499586e-11             1.540045e-17
-#&gt; polBlocks3:rawWeeks[, 1]            -4.085777e-16            -1.499583e-11
-#&gt; polBlocks4:rawWeeks[, 1]             2.921095e-16            -2.981828e-16
-#&gt; polBlocks1:rawWeeks[, 2]             2.713151e-17            -5.821969e-18
-#&gt; polBlocks2:rawWeeks[, 2]            -1.808767e-17            -1.808767e-18
-#&gt; polBlocks3:rawWeeks[, 2]             6.782877e-17            -2.170521e-17
-#&gt; polBlocks4:rawWeeks[, 2]            -3.798411e-17             4.341041e-17
-#&gt; polBlocks1:polWeeks[, 3]            -4.842634e-16             1.210659e-16
-#&gt; polBlocks2:polWeeks[, 3]             1.285468e+00            -3.026646e-16
-#&gt; polBlocks3:polWeeks[, 3]            -3.026646e-16             1.285468e+00
-#&gt; polBlocks4:polWeeks[, 3]             6.053293e-17             1.702489e-16
-#&gt; polBlocks1:polWeeks[, 4]             1.210659e-16            -9.079939e-17
-#&gt; polBlocks2:polWeeks[, 4]             3.026646e-17            -1.513323e-17
-#&gt; polBlocks3:polWeeks[, 4]            -1.059326e-16             2.799648e-16
-#&gt; polBlocks4:polWeeks[, 4]            -3.915724e-16             2.345651e-16
-#&gt; variety2:rawWeeks[, 1]               5.692171e-17             2.348539e-16
-#&gt; variety3:rawWeeks[, 1]               7.416148e-18             3.279155e-16
-#&gt; variety4:rawWeeks[, 1]               6.724344e-18             2.496862e-16
-#&gt; variety2:rawWeeks[, 2]              -9.131825e-18            -3.846435e-17
-#&gt; variety3:rawWeeks[, 2]              -1.106888e-18            -5.368406e-17
-#&gt; variety4:rawWeeks[, 2]              -8.301659e-19            -4.067813e-17
-#&gt;                          polBlocks4:polWeeks[, 3] polBlocks1:polWeeks[, 4]
-#&gt; (Intercept)                         -2.890082e-16            -3.310476e-16
-#&gt; polBlocks1                           7.078052e-16            -2.833945e-11
-#&gt; polBlocks2                          -5.105304e-16            -5.434707e-16
-#&gt; polBlocks3                           2.618160e-16             1.060888e-17
-#&gt; polBlocks4                           4.498750e-11            -4.635397e-16
-#&gt; variety2                             3.069301e-16             3.417410e-16
-#&gt; variety3                             2.996885e-16             3.348077e-16
-#&gt; variety4                             2.506831e-16             2.827011e-16
-#&gt; rawWeeks[, 1]                        2.060123e-16             1.976508e-16
-#&gt; rawWeeks[, 2]                       -3.085480e-17            -2.654417e-17
-#&gt; polBlocks1:rawWeeks[, 1]            -4.760687e-16             2.429111e-11
-#&gt; polBlocks2:rawWeeks[, 1]             3.335316e-16             2.586761e-16
-#&gt; polBlocks3:rawWeeks[, 1]            -1.536212e-16             2.124606e-16
-#&gt; polBlocks4:rawWeeks[, 1]            -1.499571e-11             4.845497e-16
-#&gt; polBlocks1:rawWeeks[, 2]             6.873315e-17            -4.048531e-12
-#&gt; polBlocks2:rawWeeks[, 2]            -4.702795e-17            -2.690541e-17
-#&gt; polBlocks3:rawWeeks[, 2]             1.989644e-17            -4.521918e-17
-#&gt; polBlocks4:rawWeeks[, 2]            -3.934069e-17            -7.415945e-17
-#&gt; polBlocks1:polWeeks[, 3]            -1.513323e-16            -1.513323e-16
-#&gt; polBlocks2:polWeeks[, 3]             6.053293e-17             1.210659e-16
-#&gt; polBlocks3:polWeeks[, 3]             1.702489e-16            -9.079939e-17
-#&gt; polBlocks4:polWeeks[, 3]             1.285468e+00             4.993967e-16
-#&gt; polBlocks1:polWeeks[, 4]             4.993967e-16             1.285468e+00
-#&gt; polBlocks2:polWeeks[, 4]            -3.329311e-16             2.935847e-15
-#&gt; polBlocks3:polWeeks[, 4]             1.286325e-16            -1.694922e-15
-#&gt; polBlocks4:polWeeks[, 4]            -1.626822e-16             2.008937e-15
-#&gt; variety2:rawWeeks[, 1]              -2.229964e-16            -2.051617e-16
-#&gt; variety3:rawWeeks[, 1]              -2.223357e-16            -1.966663e-16
-#&gt; variety4:rawWeeks[, 1]              -1.745943e-16            -1.585894e-16
-#&gt; variety2:rawWeeks[, 2]               3.376008e-17             2.767220e-17
-#&gt; variety3:rawWeeks[, 2]               3.386385e-17             2.628859e-17
-#&gt; variety4:rawWeeks[, 2]               2.576973e-17             2.020070e-17
-#&gt;                          polBlocks2:polWeeks[, 4] polBlocks3:polWeeks[, 4]
-#&gt; (Intercept)                          2.449717e-16            -1.408599e-16
-#&gt; polBlocks1                          -8.396920e-16             5.052814e-16
-#&gt; polBlocks2                          -2.833987e-11            -4.630917e-16
-#&gt; polBlocks3                          -6.344903e-16            -2.834024e-11
-#&gt; polBlocks4                           4.224204e-16            -1.780359e-17
-#&gt; variety2                            -2.345251e-16             1.280361e-16
-#&gt; variety3                            -2.788577e-16             1.310417e-16
-#&gt; variety4                            -2.330017e-16             1.167075e-16
-#&gt; rawWeeks[, 1]                       -1.347606e-16             8.622484e-17
-#&gt; rawWeeks[, 2]                        1.694000e-17            -1.121657e-17
-#&gt; polBlocks1:rawWeeks[, 1]             4.816145e-16            -2.812569e-16
-#&gt; polBlocks2:rawWeeks[, 1]             2.429140e-11             2.195033e-16
-#&gt; polBlocks3:rawWeeks[, 1]             3.615055e-16             2.429160e-11
-#&gt; polBlocks4:rawWeeks[, 1]            -4.423612e-16             6.053171e-17
-#&gt; polBlocks1:rawWeeks[, 2]            -6.149808e-17             3.617534e-17
-#&gt; polBlocks2:rawWeeks[, 2]            -4.048569e-12            -2.713151e-17
-#&gt; polBlocks3:rawWeeks[, 2]            -4.883671e-17            -4.048598e-12
-#&gt; polBlocks4:rawWeeks[, 2]             6.873315e-17            -7.235069e-18
-#&gt; polBlocks1:polWeeks[, 3]            -1.223067e-30            -3.026646e-17
-#&gt; polBlocks2:polWeeks[, 3]             3.026646e-17            -1.059326e-16
-#&gt; polBlocks3:polWeeks[, 3]            -1.513323e-17             2.799648e-16
-#&gt; polBlocks4:polWeeks[, 3]            -3.329311e-16             1.286325e-16
-#&gt; polBlocks1:polWeeks[, 4]             2.935847e-15            -1.694922e-15
-#&gt; polBlocks2:polWeeks[, 4]             1.285468e+00             1.301458e-15
-#&gt; polBlocks3:polWeeks[, 4]             1.301458e-15             1.285468e+00
-#&gt; polBlocks4:polWeeks[, 4]            -1.921920e-15             9.533936e-16
-#&gt; variety2:rawWeeks[, 1]               1.248293e-16            -7.651362e-17
-#&gt; variety3:rawWeeks[, 1]               1.617440e-16            -8.172983e-17
-#&gt; variety4:rawWeeks[, 1]               1.255211e-16            -6.883459e-17
-#&gt; variety2:rawWeeks[, 2]              -1.521971e-17             9.685268e-18
-#&gt; variety3:rawWeeks[, 2]              -2.130759e-17             1.037707e-17
-#&gt; variety4:rawWeeks[, 2]              -1.549643e-17             8.163298e-18
-#&gt;                          polBlocks4:polWeeks[, 4] variety2:rawWeeks[, 1]
-#&gt; (Intercept)                          1.446723e-16           8.484091e-03
-#&gt; polBlocks1                          -4.762318e-16          -1.225092e-16
-#&gt; polBlocks2                           4.729624e-16           8.468943e-17
-#&gt; polBlocks3                           4.895394e-17          -4.097694e-17
-#&gt; polBlocks4                          -2.834045e-11           2.610897e-16
-#&gt; variety2                            -1.881960e-16          -1.696818e-02
-#&gt; variety3                            -1.200567e-16          -8.484091e-03
-#&gt; variety4                            -1.674992e-16          -8.484091e-03
-#&gt; rawWeeks[, 1]                       -1.132627e-16          -6.868074e-03
-#&gt; rawWeeks[, 2]                        1.705747e-17           1.101830e-03
-#&gt; polBlocks1:rawWeeks[, 1]             3.477462e-16           6.522606e-17
-#&gt; polBlocks2:rawWeeks[, 1]            -3.530843e-16          -6.277631e-17
-#&gt; polBlocks3:rawWeeks[, 1]            -1.111216e-16           7.091845e-18
-#&gt; polBlocks4:rawWeeks[, 1]             2.429164e-11          -5.010410e-17
-#&gt; polBlocks1:rawWeeks[, 2]            -5.064548e-17          -9.289001e-18
-#&gt; polBlocks2:rawWeeks[, 2]             5.528045e-17           1.069467e-17
-#&gt; polBlocks3:rawWeeks[, 2]             2.351397e-17          -8.622135e-19
-#&gt; polBlocks4:rawWeeks[, 2]            -4.048596e-12           6.124589e-18
-#&gt; polBlocks1:polWeeks[, 3]             2.723982e-16          -1.367006e-17
-#&gt; polBlocks2:polWeeks[, 3]            -3.915724e-16           5.692171e-17
-#&gt; polBlocks3:polWeeks[, 3]             2.345651e-16           2.348539e-16
-#&gt; polBlocks4:polWeeks[, 3]            -1.626822e-16          -2.229964e-16
-#&gt; polBlocks1:polWeeks[, 4]             2.008937e-15          -2.051617e-16
-#&gt; polBlocks2:polWeeks[, 4]            -1.921920e-15           1.248293e-16
-#&gt; polBlocks3:polWeeks[, 4]             9.533936e-16          -7.651362e-17
-#&gt; polBlocks4:polWeeks[, 4]             1.285468e+00           1.477695e-16
-#&gt; variety2:rawWeeks[, 1]               1.477695e-16           1.373615e-02
-#&gt; variety3:rawWeeks[, 1]               9.621622e-17           6.868074e-03
-#&gt; variety4:rawWeeks[, 1]               1.339058e-16           6.868074e-03
-#&gt; variety2:rawWeeks[, 2]              -2.269120e-17          -2.203660e-03
-#&gt; variety3:rawWeeks[, 2]              -1.438954e-17          -1.101830e-03
-#&gt; variety4:rawWeeks[, 2]              -2.047742e-17          -1.101830e-03
-#&gt;                          variety3:rawWeeks[, 1] variety4:rawWeeks[, 1]
-#&gt; (Intercept)                        8.484091e-03           8.484091e-03
-#&gt; polBlocks1                        -1.338315e-16          -1.410327e-16
-#&gt; polBlocks2                         8.575398e-17           8.827493e-17
-#&gt; polBlocks3                        -3.294556e-17          -4.098578e-17
-#&gt; polBlocks4                         2.623591e-16           2.805159e-16
-#&gt; variety2                          -8.484091e-03          -8.484091e-03
-#&gt; variety3                          -1.696818e-02          -8.484091e-03
-#&gt; variety4                          -8.484091e-03          -1.696818e-02
-#&gt; rawWeeks[, 1]                     -6.868074e-03          -6.868074e-03
-#&gt; rawWeeks[, 2]                      1.101830e-03           1.101830e-03
-#&gt; polBlocks1:rawWeeks[, 1]           7.090316e-17           7.076569e-17
-#&gt; polBlocks2:rawWeeks[, 1]          -6.200739e-17          -6.111968e-17
-#&gt; polBlocks3:rawWeeks[, 1]           8.606810e-19           1.177822e-17
-#&gt; polBlocks4:rawWeeks[, 1]          -5.133352e-17          -6.558812e-17
-#&gt; polBlocks1:rawWeeks[, 2]          -1.076578e-17          -1.043338e-17
-#&gt; polBlocks2:rawWeeks[, 2]           1.075090e-17           1.038542e-17
-#&gt; polBlocks3:rawWeeks[, 2]          -2.294550e-20          -1.903030e-18
-#&gt; polBlocks4:rawWeeks[, 2]           6.656263e-18           8.578724e-18
-#&gt; polBlocks1:polWeeks[, 3]          -2.147362e-17          -5.661731e-17
-#&gt; polBlocks2:polWeeks[, 3]           7.416148e-18           6.724344e-18
-#&gt; polBlocks3:polWeeks[, 3]           3.279155e-16           2.496862e-16
-#&gt; polBlocks4:polWeeks[, 3]          -2.223357e-16          -1.745943e-16
-#&gt; polBlocks1:polWeeks[, 4]          -1.966663e-16          -1.585894e-16
-#&gt; polBlocks2:polWeeks[, 4]           1.617440e-16           1.255211e-16
-#&gt; polBlocks3:polWeeks[, 4]          -8.172983e-17          -6.883459e-17
-#&gt; polBlocks4:polWeeks[, 4]           9.621622e-17           1.339058e-16
-#&gt; variety2:rawWeeks[, 1]             6.868074e-03           6.868074e-03
-#&gt; variety3:rawWeeks[, 1]             1.373615e-02           6.868074e-03
-#&gt; variety4:rawWeeks[, 1]             6.868074e-03           1.373615e-02
-#&gt; variety2:rawWeeks[, 2]            -1.101830e-03          -1.101830e-03
-#&gt; variety3:rawWeeks[, 2]            -2.203660e-03          -1.101830e-03
-#&gt; variety4:rawWeeks[, 2]            -1.101830e-03          -2.203660e-03
-#&gt;                          variety2:rawWeeks[, 2] variety3:rawWeeks[, 2]
-#&gt; (Intercept)                       -1.285468e-03          -1.285468e-03
-#&gt; polBlocks1                         1.860709e-17           2.049759e-17
-#&gt; polBlocks2                        -1.369022e-17          -1.351757e-17
-#&gt; polBlocks3                         6.728337e-18           5.503256e-18
-#&gt; polBlocks4                        -3.582404e-17          -3.653026e-17
-#&gt; variety2                           2.570937e-03           1.285468e-03
-#&gt; variety3                           1.285468e-03           2.570937e-03
-#&gt; variety4                           1.285468e-03           1.285468e-03
-#&gt; rawWeeks[, 1]                      1.101830e-03           1.101830e-03
-#&gt; rawWeeks[, 2]                     -1.836383e-04          -1.836383e-04
-#&gt; polBlocks1:rawWeeks[, 1]          -9.742250e-18          -1.070229e-17
-#&gt; polBlocks2:rawWeeks[, 1]           1.001949e-17           9.627814e-18
-#&gt; polBlocks3:rawWeeks[, 1]          -1.118575e-18          -2.087689e-19
-#&gt; polBlocks4:rawWeeks[, 1]           5.602119e-18           6.231670e-18
-#&gt; polBlocks1:rawWeeks[, 2]           1.372596e-18           1.620655e-18
-#&gt; polBlocks2:rawWeeks[, 2]          -1.703342e-18          -1.670267e-18
-#&gt; polBlocks3:rawWeeks[, 2]           1.260969e-19           1.033581e-20
-#&gt; polBlocks4:rawWeeks[, 2]          -6.532233e-19          -8.103277e-19
-#&gt; polBlocks1:polWeeks[, 3]           2.213776e-18           3.320663e-18
-#&gt; polBlocks2:polWeeks[, 3]          -9.131825e-18          -1.106888e-18
-#&gt; polBlocks3:polWeeks[, 3]          -3.846435e-17          -5.368406e-17
-#&gt; polBlocks4:polWeeks[, 3]           3.376008e-17           3.386385e-17
-#&gt; polBlocks1:polWeeks[, 4]           2.767220e-17           2.628859e-17
-#&gt; polBlocks2:polWeeks[, 4]          -1.521971e-17          -2.130759e-17
-#&gt; polBlocks3:polWeeks[, 4]           9.685268e-18           1.037707e-17
-#&gt; polBlocks4:polWeeks[, 4]          -2.269120e-17          -1.438954e-17
-#&gt; variety2:rawWeeks[, 1]            -2.203660e-03          -1.101830e-03
-#&gt; variety3:rawWeeks[, 1]            -1.101830e-03          -2.203660e-03
-#&gt; variety4:rawWeeks[, 1]            -1.101830e-03          -1.101830e-03
-#&gt; variety2:rawWeeks[, 2]             3.672767e-04           1.836383e-04
-#&gt; variety3:rawWeeks[, 2]             1.836383e-04           3.672767e-04
-#&gt; variety4:rawWeeks[, 2]             1.836383e-04           1.836383e-04
-#&gt;                          variety4:rawWeeks[, 2]
-#&gt; (Intercept)                       -1.285468e-03
-#&gt; polBlocks1                         2.165127e-17
-#&gt; polBlocks2                        -1.421509e-17
-#&gt; polBlocks3                         6.632603e-18
-#&gt; polBlocks4                        -3.939718e-17
-#&gt; variety2                           1.285468e-03
-#&gt; variety3                           1.285468e-03
-#&gt; variety4                           2.570937e-03
-#&gt; rawWeeks[, 1]                      1.101830e-03
-#&gt; rawWeeks[, 2]                     -1.836383e-04
-#&gt; polBlocks1:rawWeeks[, 1]          -1.069813e-17
-#&gt; polBlocks2:rawWeeks[, 1]           9.743829e-18
-#&gt; polBlocks3:rawWeeks[, 1]          -1.839491e-18
-#&gt; polBlocks4:rawWeeks[, 1]           8.497789e-18
-#&gt; polBlocks1:rawWeeks[, 2]           1.571043e-18
-#&gt; polBlocks2:rawWeeks[, 2]          -1.653730e-18
-#&gt; polBlocks3:rawWeeks[, 2]           2.935371e-19
-#&gt; polBlocks4:rawWeeks[, 2]          -1.116268e-18
-#&gt; polBlocks1:polWeeks[, 3]           8.855103e-18
-#&gt; polBlocks2:polWeeks[, 3]          -8.301659e-19
-#&gt; polBlocks3:polWeeks[, 3]          -4.067813e-17
-#&gt; polBlocks4:polWeeks[, 3]           2.576973e-17
-#&gt; polBlocks1:polWeeks[, 4]           2.020070e-17
-#&gt; polBlocks2:polWeeks[, 4]          -1.549643e-17
-#&gt; polBlocks3:polWeeks[, 4]           8.163298e-18
-#&gt; polBlocks4:polWeeks[, 4]          -2.047742e-17
-#&gt; variety2:rawWeeks[, 1]            -1.101830e-03
-#&gt; variety3:rawWeeks[, 1]            -1.101830e-03
-#&gt; variety4:rawWeeks[, 1]            -2.203660e-03
-#&gt; variety2:rawWeeks[, 2]             1.836383e-04
-#&gt; variety3:rawWeeks[, 2]             1.836383e-04
-#&gt; variety4:rawWeeks[, 2]             3.672767e-04</div><div class='input'><span class='no'>range</span><span class='kw'>=</span><span class='fu'>coef</span>(<span class='no'>quad_Wald</span>$<span class='no'>modelStruct</span>$<span class='no'>corStruct</span>,<span class='kw'>unconstrained</span><span class='kw'>=</span><span class='fl'>FALSE</span>)[<span class='fl'>1</span>]
-<span class='no'>nugget</span><span class='kw'>=</span><span class='fu'>coef</span>(<span class='no'>quad_Wald</span>$<span class='no'>modelStruct</span>$<span class='no'>corStruct</span>,<span class='kw'>unconstrained</span><span class='kw'>=</span><span class='fl'>FALSE</span>)[<span class='fl'>2</span>]
-<span class='no'>rho</span><span class='kw'>=</span>(<span class='fl'>1</span>-<span class='no'>nugget</span>)*<span class='fu'>exp</span>(-<span class='fl'>1</span>/<span class='no'>range</span>)
-<span class='fu'>cat</span>(<span class='st'>"Range ="</span>, <span class='no'>range</span>, <span class='st'>"\n"</span>)</div><div class='output co'>#&gt; Range = 2839879990 </div><div class='input'><span class='fu'>cat</span>(<span class='st'>"Nugget ="</span>, <span class='no'>nugget</span>, <span class='st'>"\n"</span>)</div><div class='output co'>#&gt; Nugget = 0.4605535 </div><div class='input'><span class='fu'>cat</span>(<span class='st'>"Correlation ="</span>, <span class='no'>rho</span>, <span class='st'>"\n"</span>)</div><div class='output co'>#&gt; Correlation = 0.5394465 </div><div class='input'><span class='fu'>plot</span>(<span class='no'>quad_Wald</span>,<span class='kw'>sub.caption</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"Residuals from quadratic regression model"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in (function (x, form = resid(., type = "pearson") ~ fitted(.),     abline, id = NULL, idLabels = NULL, idResType = c("pearson",         "normalized"), grid, ...) {    object &lt;- x    if (!inherits(form, "formula")) {        stop("'form' must be a formula")    }    allV &lt;- all.vars(asOneFormula(form, id, idLabels))    allV &lt;- allV[is.na(match(allV, c("T", "F", "TRUE", "FALSE")))]    if (length(allV) &gt; 0) {        data &lt;- getData(object)        if (is.null(data)) {            alist &lt;- lapply(as.list(allV), as.name)            names(alist) &lt;- allV            alist &lt;- c(list(quote(data.frame)), alist)            mode(alist) &lt;- "call"            data &lt;- eval(alist, sys.parent(1))        }        else {            if (any(naV &lt;- is.na(match(allV, names(data))))) {                stop(sprintf(ngettext(sum(naV), "%s not found in data",                   "%s not found in data"), allV[naV]), domain = NA)            }        }    }    else data &lt;- NULL    if (inherits(data, "groupedData")) {        ff &lt;- formula(data)        rF &lt;- deparse(getResponseFormula(ff)[[2]])        cF &lt;- c_deparse(getCovariateFormula(ff)[[2]])        lbs &lt;- attr(data, "labels")        unts &lt;- attr(data, "units")        if (!is.null(lbs$x))             cL &lt;- paste(lbs$x, unts$x)        else cF &lt;- NULL        if (!is.null(lbs$y))             rL &lt;- paste(lbs$y, unts$y)        else rF &lt;- NULL    }    else {        rF &lt;- cF &lt;- NULL    }    dots &lt;- list(...)    if (length(dots) &gt; 0)         args &lt;- dots    else args &lt;- list()    data &lt;- as.list(c(as.list(data), . = list(object)))    covF &lt;- getCovariateFormula(form)    .x &lt;- eval(covF[[2]], data)    if (!is.numeric(.x)) {        stop("covariate must be numeric")    }    argForm &lt;- ~.x    argData &lt;- data.frame(.x = .x, check.names = FALSE)    if (is.null(xlab &lt;- attr(.x, "label"))) {        xlab &lt;- deparse(covF[[2]])        if (!is.null(cF) &amp;&amp; (xlab == cF))             xlab &lt;- cL        else if (!is.null(rF) &amp;&amp; (xlab == rF))             xlab &lt;- rL    }    if (is.null(args$xlab))         args$xlab &lt;- xlab    respF &lt;- getResponseFormula(form)    if (!is.null(respF)) {        .y &lt;- eval(respF[[2]], data)        if (is.null(ylab &lt;- attr(.y, "label"))) {            ylab &lt;- deparse(respF[[2]])            if (!is.null(cF) &amp;&amp; (ylab == cF))                 ylab &lt;- cL            else if (!is.null(rF) &amp;&amp; (ylab == rF))                 ylab &lt;- rL        }        argForm &lt;- .y ~ .x        argData[, ".y"] &lt;- .y        if (is.null(args$ylab))             args$ylab &lt;- ylab    }    grpsF &lt;- getGroupsFormula(form)    if (!is.null(grpsF)) {        gr &lt;- splitFormula(grpsF, sep = "*")        for (i in seq_along(gr)) {            auxGr &lt;- all.vars(gr[[i]])            for (j in auxGr) {                argData[[j]] &lt;- eval(as.name(j), data)            }        }        if (length(argForm) == 2)             argForm &lt;- eval(parse(text = paste("~ .x |", deparse(grpsF[[2]]))))        else argForm &lt;- eval(parse(text = paste(".y ~ .x |",             deparse(grpsF[[2]]))))    }    args &lt;- c(list(argForm, data = argData), args)    if (is.null(args$cex))         args$cex &lt;- par("cex")    if (is.null(args$adj))         args$adj &lt;- par("adj")    if (!is.null(id)) {        idResType &lt;- match.arg(idResType)        id &lt;- switch(mode(id), numeric = {            if ((id &lt;= 0) || (id &gt;= 1)) {                stop("'id' must be between 0 and 1")            }            as.logical(abs(resid(object, type = idResType)) &gt;                 -qnorm(id/2))        }, call = eval(asOneSidedFormula(id)[[2]], data), stop("'id' can only be a formula or numeric"))        if (is.null(idLabels)) {            idLabels &lt;- getGroups(object)            if (length(idLabels) == 0)                 idLabels &lt;- 1:object$dims$N            idLabels &lt;- as.character(idLabels)        }        else {            if (mode(idLabels) == "call") {                idLabels &lt;- as.character(eval(asOneSidedFormula(idLabels)[[2]],                   data))            }            else if (is.vector(idLabels)) {                if (length(idLabels &lt;- unlist(idLabels)) != length(id)) {                  stop("'idLabels' of incorrect length")                }                idLabels &lt;- as.character(idLabels)            }            else {                stop("'idLabels' can only be a formula or a vector")            }        }    }    if (missing(abline)) {        if (missing(form)) {            abline &lt;- c(0, 0)        }        else {            abline &lt;- NULL        }    }    assign("abl", abline)    if (length(argForm) == 3) {        if (is.numeric(.y)) {            plotFun &lt;- "xyplot"            if (is.null(args$panel)) {                args &lt;- c(args, panel = list(function(x, y, subscripts,                   ...) {                  x &lt;- as.numeric(x)                  y &lt;- as.numeric(y)                  dots &lt;- list(...)                  if (grid) panel.grid()                  panel.xyplot(x, y, ...)                  if (any(ids &lt;- id[subscripts])) {                    ltext(x[ids], y[ids], idLabels[subscripts][ids],                       cex = dots$cex, adj = dots$adj)                  }                  if (!is.null(abl)) {                    if (length(abl) == 2) panel.abline(a = abl,                       ...) else panel.abline(h = abl, ...)                  }                }))            }        }        else {            plotFun &lt;- "bwplot"            if (is.null(args$panel)) {                args &lt;- c(args, panel = list(function(x, y, ...) {                  if (grid) panel.grid()                  panel.bwplot(x, y, ...)                  if (!is.null(abl)) {                    panel.abline(v = abl[1], ...)                  }                }))            }        }    }    else {        plotFun &lt;- "histogram"        if (is.null(args$panel)) {            args &lt;- c(args, panel = list(function(x, ...) {                if (grid) panel.grid()                panel.histogram(x, ...)                if (!is.null(abl)) {                  panel.abline(v = abl[1], ...)                }            }))        }    }    if (missing(grid)) {        if (plotFun == "xyplot")             grid &lt;- TRUE        else grid &lt;- FALSE    }    do.call(plotFun, as.list(args))})(x = quad_Wald, sub.caption = NA, main = "Residuals from quadratic regression model"): object 'quad_Wald' not found</span></div><div class='input'>
-<span class='co'>## *************************************************************************************</span>
-<span class='co'>## Section 5: Quadratic model for weeks-by-variety effects assuming full degree-4 model</span>
-<span class='co'>## for weeks and weeks-by-blocks effects</span>
-<span class='co'>## *************************************************************************************</span>
+#&gt; variety:rawWeeks[, 2]       3     8.219  0.0001</div><div class='input'>
+<span class='co'>##----fm4.7.Coef----</span>
+ <span class='no'>fm4.7.Coef</span></div><div class='output co'>#&gt; # A tibble: 32 x 5
+#&gt;    term          estimate std.error statistic  p.value
+#&gt;    &lt;chr&gt;            &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+#&gt;  1 (Intercept)    4.68       0.122     38.4   7.73e-48
+#&gt;  2 polBlocks1    -6.45       0.609    -10.6   5.13e-16
+#&gt;  3 polBlocks2    -1.26       0.609     -2.07  4.25e- 2
+#&gt;  4 polBlocks3    -0.110      0.609     -0.180 8.58e- 1
+#&gt;  5 polBlocks4     0.369      0.609      0.605 5.47e- 1
+#&gt;  6 variety2       0.785      0.172      4.56  2.23e- 5
+#&gt;  7 variety3       0.0732     0.172      0.425 6.72e- 1
+#&gt;  8 variety4       0.501      0.172      2.91  4.92e- 3
+#&gt;  9 rawWeeks[, 1] -0.379      0.0829    -4.57  2.12e- 5
+#&gt; 10 rawWeeks[, 2] -0.00429    0.0136    -0.316 7.53e- 1
+#&gt; # ... with 22 more rows</div><div class='input'>
+<span class='co'>##----fm4.7.Par----</span>
+ <span class='no'>fm4.7.Par</span></div><div class='output co'>#&gt; # A tibble: 3 x 2
+#&gt;   Parameter   Value
+#&gt;   &lt;chr&gt;       &lt;dbl&gt;
+#&gt; 1 Range     2.84e+9
+#&gt; 2 Nugget    4.61e-1
+#&gt; 3 rho       5.39e-1</div><div class='input'>
+<span class='co'>##----fm4.7.Plot1----</span>
+<span class='fu'>plot</span>(<span class='no'>fm4.7.ACF</span>)</div><div class='img'><img src='example4-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'>##----fm4.7.Plot2----</span>
+<span class='fu'>plot</span>(<span class='no'>fm4.7</span>, <span class='kw'>sub.caption</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"Residuals from quadratic regression model"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in (function (x, form = resid(., type = "pearson") ~ fitted(.),     abline, id = NULL, idLabels = NULL, idResType = c("pearson",         "normalized"), grid, ...) {    object &lt;- x    if (!inherits(form, "formula")) {        stop("'form' must be a formula")    }    allV &lt;- all.vars(asOneFormula(form, id, idLabels))    allV &lt;- allV[is.na(match(allV, c("T", "F", "TRUE", "FALSE")))]    if (length(allV) &gt; 0) {        data &lt;- getData(object)        if (is.null(data)) {            alist &lt;- lapply(as.list(allV), as.name)            names(alist) &lt;- allV            alist &lt;- c(list(quote(data.frame)), alist)            mode(alist) &lt;- "call"            data &lt;- eval(alist, sys.parent(1))        }        else {            if (any(naV &lt;- is.na(match(allV, names(data))))) {                stop(sprintf(ngettext(sum(naV), "%s not found in data",                   "%s not found in data"), allV[naV]), domain = NA)            }        }    }    else data &lt;- NULL    if (inherits(data, "groupedData")) {        ff &lt;- formula(data)        rF &lt;- deparse(getResponseFormula(ff)[[2]])        cF &lt;- c_deparse(getCovariateFormula(ff)[[2]])        lbs &lt;- attr(data, "labels")        unts &lt;- attr(data, "units")        if (!is.null(lbs$x))             cL &lt;- paste(lbs$x, unts$x)        else cF &lt;- NULL        if (!is.null(lbs$y))             rL &lt;- paste(lbs$y, unts$y)        else rF &lt;- NULL    }    else {        rF &lt;- cF &lt;- NULL    }    dots &lt;- list(...)    if (length(dots) &gt; 0)         args &lt;- dots    else args &lt;- list()    data &lt;- as.list(c(as.list(data), . = list(object)))    covF &lt;- getCovariateFormula(form)    .x &lt;- eval(covF[[2]], data)    if (!is.numeric(.x)) {        stop("covariate must be numeric")    }    argForm &lt;- ~.x    argData &lt;- data.frame(.x = .x, check.names = FALSE)    if (is.null(xlab &lt;- attr(.x, "label"))) {        xlab &lt;- deparse(covF[[2]])        if (!is.null(cF) &amp;&amp; (xlab == cF))             xlab &lt;- cL        else if (!is.null(rF) &amp;&amp; (xlab == rF))             xlab &lt;- rL    }    if (is.null(args$xlab))         args$xlab &lt;- xlab    respF &lt;- getResponseFormula(form)    if (!is.null(respF)) {        .y &lt;- eval(respF[[2]], data)        if (is.null(ylab &lt;- attr(.y, "label"))) {            ylab &lt;- deparse(respF[[2]])            if (!is.null(cF) &amp;&amp; (ylab == cF))                 ylab &lt;- cL            else if (!is.null(rF) &amp;&amp; (ylab == rF))                 ylab &lt;- rL        }        argForm &lt;- .y ~ .x        argData[, ".y"] &lt;- .y        if (is.null(args$ylab))             args$ylab &lt;- ylab    }    grpsF &lt;- getGroupsFormula(form)    if (!is.null(grpsF)) {        gr &lt;- splitFormula(grpsF, sep = "*")        for (i in seq_along(gr)) {            auxGr &lt;- all.vars(gr[[i]])            for (j in auxGr) {                argData[[j]] &lt;- eval(as.name(j), data)            }        }        if (length(argForm) == 2)             argForm &lt;- eval(parse(text = paste("~ .x |", deparse(grpsF[[2]]))))        else argForm &lt;- eval(parse(text = paste(".y ~ .x |",             deparse(grpsF[[2]]))))    }    args &lt;- c(list(argForm, data = argData), args)    if (is.null(args$cex))         args$cex &lt;- par("cex")    if (is.null(args$adj))         args$adj &lt;- par("adj")    if (!is.null(id)) {        idResType &lt;- match.arg(idResType)        id &lt;- switch(mode(id), numeric = {            if ((id &lt;= 0) || (id &gt;= 1)) {                stop("'id' must be between 0 and 1")            }            as.logical(abs(resid(object, type = idResType)) &gt;                 -qnorm(id/2))        }, call = eval(asOneSidedFormula(id)[[2]], data), stop("'id' can only be a formula or numeric"))        if (is.null(idLabels)) {            idLabels &lt;- getGroups(object)            if (length(idLabels) == 0)                 idLabels &lt;- 1:object$dims$N            idLabels &lt;- as.character(idLabels)        }        else {            if (mode(idLabels) == "call") {                idLabels &lt;- as.character(eval(asOneSidedFormula(idLabels)[[2]],                   data))            }            else if (is.vector(idLabels)) {                if (length(idLabels &lt;- unlist(idLabels)) != length(id)) {                  stop("'idLabels' of incorrect length")                }                idLabels &lt;- as.character(idLabels)            }            else {                stop("'idLabels' can only be a formula or a vector")            }        }    }    if (missing(abline)) {        if (missing(form)) {            abline &lt;- c(0, 0)        }        else {            abline &lt;- NULL        }    }    assign("abl", abline)    if (length(argForm) == 3) {        if (is.numeric(.y)) {            plotFun &lt;- "xyplot"            if (is.null(args$panel)) {                args &lt;- c(args, panel = list(function(x, y, subscripts,                   ...) {                  x &lt;- as.numeric(x)                  y &lt;- as.numeric(y)                  dots &lt;- list(...)                  if (grid) panel.grid()                  panel.xyplot(x, y, ...)                  if (any(ids &lt;- id[subscripts])) {                    ltext(x[ids], y[ids], idLabels[subscripts][ids],                       cex = dots$cex, adj = dots$adj)                  }                  if (!is.null(abl)) {                    if (length(abl) == 2) panel.abline(a = abl,                       ...) else panel.abline(h = abl, ...)                  }                }))            }        }        else {            plotFun &lt;- "bwplot"            if (is.null(args$panel)) {                args &lt;- c(args, panel = list(function(x, y, ...) {                  if (grid) panel.grid()                  panel.bwplot(x, y, ...)                  if (!is.null(abl)) {                    panel.abline(v = abl[1], ...)                  }                }))            }        }    }    else {        plotFun &lt;- "histogram"        if (is.null(args$panel)) {            args &lt;- c(args, panel = list(function(x, ...) {                if (grid) panel.grid()                panel.histogram(x, ...)                if (!is.null(abl)) {                  panel.abline(v = abl[1], ...)                }            }))        }    }    if (missing(grid)) {        if (plotFun == "xyplot")             grid &lt;- TRUE        else grid &lt;- FALSE    }    do.call(plotFun, as.list(args))})(x = fm4.7, sub.caption = NA, main = "Residuals from quadratic regression model"): object 'fm4.7' not found</span></div><div class='input'>
+<span class='co'>##----fm4.8----</span>
+<span class='no'>fm4.8</span> <span class='kw'>&lt;-</span>  <span class='kw pkg'>nlme</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/gls'>gls</a></span>(
+  <span class='no'>y</span> ~ <span class='no'>Replicate</span> * (<span class='no'>rawWeeks</span>[,<span class='fl'>1</span>] + <span class='no'>rawWeeks</span>[,<span class='fl'>2</span>] + <span class='no'>polWeeks</span>[,<span class='fl'>3</span>] + <span class='no'>polWeeks</span>[,<span class='fl'>4</span>]) +
+    <span class='no'>variety</span> * (<span class='no'>rawWeeks</span>[,<span class='fl'>1</span>] + <span class='no'>rawWeeks</span>[,<span class='fl'>2</span>])
+  ,  <span class='kw'>corr</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/corExp'>corExp</a></span>(<span class='kw'>form</span> <span class='kw'>=</span> ~ <span class='no'>varweek</span> <span class='kw'>|</span> <span class='no'>factplot</span>, <span class='kw'>nugget</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>), <span class='no'>sorghum</span>)
+<span class='no'>fm4.8.ANOVA</span> <span class='kw'>&lt;-</span> <span class='fu'>anova</span>(<span class='no'>fm4.8</span>)
+<span class='no'>fm4.8.Coef</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>broom</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/broom/topics/tidy'>tidy</a></span>(<span class='no'>fm4.8</span>)
+<span class='no'>fm4.8.vcov</span> <span class='kw'>&lt;-</span> <span class='fu'>vcov</span>(<span class='no'>fm4.8</span>)
 
-<span class='co'>##  Model assuming a quadratic variety-by-weeks model and quartic blocks-by-weeks model</span>
-<span class='no'>quad_Wald</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/gls'>gls</a></span>(<span class='no'>y</span> ~ <span class='no'>Replicate</span> * (<span class='no'>rawWeeks</span>[,<span class='fl'>1</span>] + <span class='no'>rawWeeks</span>[,<span class='fl'>2</span>] + <span class='no'>polWeeks</span>[,<span class='fl'>3</span>] + <span class='no'>polWeeks</span>[,<span class='fl'>4</span>]) +
- <span class='no'>variety</span> * (<span class='no'>rawWeeks</span>[,<span class='fl'>1</span>] + <span class='no'>rawWeeks</span>[,<span class='fl'>2</span>]),
- <span class='kw'>corr</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/corExp'>corExp</a></span>(<span class='kw'>form</span> <span class='kw'>=</span> ~ <span class='no'>varweek</span> <span class='kw'>|</span> <span class='no'>factplot</span>, <span class='kw'>nugget</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>), <span class='no'>sorghum</span>)
-<span class='fu'>anova</span>(<span class='no'>quad_Wald</span>)</div><div class='output co'>#&gt; Denom. DF: 66 
+<span class='no'>fm4.8.Par</span> <span class='kw'>&lt;-</span>
+  <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/tibble/topics/tibble'>tibble</a></span>(
+    <span class='st'>"Parameter"</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"Range"</span>, <span class='st'>"Nugget"</span>, <span class='st'>"rho"</span>)
+    , <span class='st'>"Value"</span>     <span class='kw'>=</span> <span class='fu'>c</span>(
+      <span class='fu'>coef</span>(<span class='no'>fm4.8</span>$<span class='no'>modelStruct</span>$<span class='no'>corStruct</span>, <span class='kw'>unconstrained</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)[<span class='fl'>1</span>]
+      , <span class='fu'>coef</span>(<span class='no'>fm4.8</span>$<span class='no'>modelStruct</span>$<span class='no'>corStruct</span>, <span class='kw'>unconstrained</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)[<span class='fl'>2</span>]
+      , (<span class='fl'>1</span>-<span class='fu'>coef</span>(<span class='no'>fm4.8</span>$<span class='no'>modelStruct</span>$<span class='no'>corStruct</span>, <span class='kw'>unconstrained</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)[<span class='fl'>2</span>])*
+        <span class='fu'>exp</span>(-<span class='fl'>1</span>/<span class='fu'>coef</span>(<span class='no'>fm4.8</span>$<span class='no'>modelStruct</span>$<span class='no'>corStruct</span>, <span class='kw'>unconstrained</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)[<span class='fl'>1</span>])
+    )
+  )
+
+<span class='no'>fm4.8.ACF</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>nlme</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/ACF'>ACF</a></span>(<span class='no'>fm4.8</span>)
+
+<span class='co'>##----fm4.8.ANOVA----</span>
+ <span class='no'>fm4.8.ANOVA</span></div><div class='output co'>#&gt; Denom. DF: 66 
 #&gt;                         numDF   F-value p-value
 #&gt; (Intercept)                 1 21467.274  &lt;.0001
 #&gt; Replicate                   4    95.007  &lt;.0001
@@ -939,46 +576,34 @@ treatment factor levels. Journal of Agronomy and Crop Science. DOI: 10.1111/jac.
 #&gt; Replicate:polWeeks[, 3]     4     0.046  0.9959
 #&gt; Replicate:polWeeks[, 4]     4     1.398  0.2443
 #&gt; rawWeeks[, 1]:variety       3    22.388  &lt;.0001
-#&gt; rawWeeks[, 2]:variety       3    10.994  &lt;.0001</div><div class='input'><span class='fu'>summary</span>(<span class='no'>quad_Wald</span>)$<span class='no'>tTable</span></div><div class='output co'>#&gt;                                  Value  Std.Error      t-value      p-value
-#&gt; (Intercept)               5.4563709256 0.15488699  35.22807819 1.618451e-44
-#&gt; Replicate2               -0.3025000000 0.17317059  -1.74683241 8.531846e-02
-#&gt; Replicate3               -0.5690000000 0.17317059  -3.28577733 1.630811e-03
-#&gt; Replicate4               -1.1830000000 0.17317059  -6.83141403 3.226998e-09
-#&gt; Replicate5               -1.8385000000 0.17317059 -10.61669880 6.466089e-16
-#&gt; rawWeeks[, 1]            -0.4116647345 0.10163565  -4.05039718 1.369617e-04
-#&gt; rawWeeks[, 2]            -0.0093797082 0.01657588  -0.56586501 5.734045e-01
-#&gt; polWeeks[, 3]             0.3853731957 0.21654658   1.77963189 7.973997e-02
-#&gt; polWeeks[, 4]            -0.6855250855 0.21554311  -3.18045463 2.240765e-03
-#&gt; variety2                  0.7860386824 0.15488449   5.07499921 3.383669e-06
-#&gt; variety3                  0.0736155066 0.15488449   0.47529294 6.361474e-01
-#&gt; variety4                  0.5048621085 0.15488449   3.25960396 1.765811e-03
-#&gt; Replicate2:rawWeeks[, 1]  0.0510714286 0.11363285   0.44944249 6.545850e-01
-#&gt; Replicate3:rawWeeks[, 1] -0.0050000000 0.11363285  -0.04400136 9.650362e-01
-#&gt; Replicate4:rawWeeks[, 1]  0.1591785714 0.11363285   1.40081480 1.659538e-01
-#&gt; Replicate5:rawWeeks[, 1] -0.0362500000 0.11363285  -0.31900988 7.507265e-01
-#&gt; Replicate2:rawWeeks[, 2] -0.0064285714 0.01853248  -0.34688126 7.297841e-01
-#&gt; Replicate3:rawWeeks[, 2]  0.0100000000 0.01853248   0.53959307 5.912936e-01
-#&gt; Replicate4:rawWeeks[, 2] -0.0048214286 0.01853248  -0.26016094 7.955496e-01
-#&gt; Replicate5:rawWeeks[, 2]  0.0262500000 0.01853248   1.41643181 1.613518e-01
-#&gt; Replicate2:polWeeks[, 3] -0.1237436867 0.30624311  -0.40407011 6.874675e-01
-#&gt; Replicate3:polWeeks[, 3] -0.0707106781 0.30624311  -0.23089721 8.181089e-01
-#&gt; Replicate4:polWeeks[, 3] -0.0954594155 0.30624311  -0.31171123 7.562426e-01
-#&gt; Replicate5:polWeeks[, 3] -0.0883883476 0.30624311  -0.28862151 7.737756e-01
-#&gt; Replicate2:polWeeks[, 4]  0.2472166488 0.30482399   0.81101441 4.202724e-01
-#&gt; Replicate3:polWeeks[, 4]  0.4302905995 0.30482399   1.41160346 1.627639e-01
-#&gt; Replicate4:polWeeks[, 4]  0.5385314025 0.30482399   1.76669625 8.190275e-02
-#&gt; Replicate5:polWeeks[, 4]  0.6454358992 0.30482399   2.11740519 3.799754e-02
-#&gt; rawWeeks[, 1]:variety2    0.1061904452 0.10163454   1.04482630 2.999150e-01
-#&gt; rawWeeks[, 1]:variety3    0.6443759534 0.10163454   6.34012731 2.370086e-08
-#&gt; rawWeeks[, 1]:variety4    0.3862353965 0.10163454   3.80023738 3.176909e-04
-#&gt; rawWeeks[, 2]:variety2   -0.0009645354 0.01657574  -0.05818958 9.537734e-01
-#&gt; rawWeeks[, 2]:variety3   -0.0789766682 0.01657574  -4.76459388 1.078356e-05
-#&gt; rawWeeks[, 2]:variety4   -0.0503971066 0.01657574  -3.04041372 3.385900e-03</div><div class='input'><span class='no'>range</span><span class='kw'>=</span><span class='fu'>coef</span>(<span class='no'>quad_Wald</span>$<span class='no'>modelStruct</span>$<span class='no'>corStruct</span>,<span class='kw'>unconstrained</span><span class='kw'>=</span><span class='fl'>FALSE</span>)[<span class='fl'>1</span>]
-<span class='no'>nugget</span><span class='kw'>=</span><span class='fu'>coef</span>(<span class='no'>quad_Wald</span>$<span class='no'>modelStruct</span>$<span class='no'>corStruct</span>,<span class='kw'>unconstrained</span><span class='kw'>=</span><span class='fl'>FALSE</span>)[<span class='fl'>2</span>]
-<span class='no'>rho</span><span class='kw'>=</span>(<span class='fl'>1</span>-<span class='no'>nugget</span>)*<span class='fu'>exp</span>(-<span class='fl'>1</span>/<span class='no'>range</span>)
-<span class='fu'>cat</span>(<span class='st'>"Range ="</span>, <span class='no'>range</span>, <span class='st'>"\n"</span>)</div><div class='output co'>#&gt; Range = 42.75763 </div><div class='input'><span class='fu'>cat</span>(<span class='st'>"Nugget ="</span>, <span class='no'>nugget</span>, <span class='st'>"\n"</span>)</div><div class='output co'>#&gt; Nugget = 0.3586337 </div><div class='input'><span class='fu'>cat</span>(<span class='st'>"Correlation ="</span>, <span class='no'>rho</span>, <span class='st'>"\n"</span>)</div><div class='output co'>#&gt; Correlation = 0.6265403 </div><div class='input'><span class='fu'>plot</span>(<span class='no'>quad_Wald</span>,<span class='kw'>sub.caption</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"Quadratic treatment-by-weeks model with full
-blocks-by-weeks model"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in (function (x, form = resid(., type = "pearson") ~ fitted(.),     abline, id = NULL, idLabels = NULL, idResType = c("pearson",         "normalized"), grid, ...) {    object &lt;- x    if (!inherits(form, "formula")) {        stop("'form' must be a formula")    }    allV &lt;- all.vars(asOneFormula(form, id, idLabels))    allV &lt;- allV[is.na(match(allV, c("T", "F", "TRUE", "FALSE")))]    if (length(allV) &gt; 0) {        data &lt;- getData(object)        if (is.null(data)) {            alist &lt;- lapply(as.list(allV), as.name)            names(alist) &lt;- allV            alist &lt;- c(list(quote(data.frame)), alist)            mode(alist) &lt;- "call"            data &lt;- eval(alist, sys.parent(1))        }        else {            if (any(naV &lt;- is.na(match(allV, names(data))))) {                stop(sprintf(ngettext(sum(naV), "%s not found in data",                   "%s not found in data"), allV[naV]), domain = NA)            }        }    }    else data &lt;- NULL    if (inherits(data, "groupedData")) {        ff &lt;- formula(data)        rF &lt;- deparse(getResponseFormula(ff)[[2]])        cF &lt;- c_deparse(getCovariateFormula(ff)[[2]])        lbs &lt;- attr(data, "labels")        unts &lt;- attr(data, "units")        if (!is.null(lbs$x))             cL &lt;- paste(lbs$x, unts$x)        else cF &lt;- NULL        if (!is.null(lbs$y))             rL &lt;- paste(lbs$y, unts$y)        else rF &lt;- NULL    }    else {        rF &lt;- cF &lt;- NULL    }    dots &lt;- list(...)    if (length(dots) &gt; 0)         args &lt;- dots    else args &lt;- list()    data &lt;- as.list(c(as.list(data), . = list(object)))    covF &lt;- getCovariateFormula(form)    .x &lt;- eval(covF[[2]], data)    if (!is.numeric(.x)) {        stop("covariate must be numeric")    }    argForm &lt;- ~.x    argData &lt;- data.frame(.x = .x, check.names = FALSE)    if (is.null(xlab &lt;- attr(.x, "label"))) {        xlab &lt;- deparse(covF[[2]])        if (!is.null(cF) &amp;&amp; (xlab == cF))             xlab &lt;- cL        else if (!is.null(rF) &amp;&amp; (xlab == rF))             xlab &lt;- rL    }    if (is.null(args$xlab))         args$xlab &lt;- xlab    respF &lt;- getResponseFormula(form)    if (!is.null(respF)) {        .y &lt;- eval(respF[[2]], data)        if (is.null(ylab &lt;- attr(.y, "label"))) {            ylab &lt;- deparse(respF[[2]])            if (!is.null(cF) &amp;&amp; (ylab == cF))                 ylab &lt;- cL            else if (!is.null(rF) &amp;&amp; (ylab == rF))                 ylab &lt;- rL        }        argForm &lt;- .y ~ .x        argData[, ".y"] &lt;- .y        if (is.null(args$ylab))             args$ylab &lt;- ylab    }    grpsF &lt;- getGroupsFormula(form)    if (!is.null(grpsF)) {        gr &lt;- splitFormula(grpsF, sep = "*")        for (i in seq_along(gr)) {            auxGr &lt;- all.vars(gr[[i]])            for (j in auxGr) {                argData[[j]] &lt;- eval(as.name(j), data)            }        }        if (length(argForm) == 2)             argForm &lt;- eval(parse(text = paste("~ .x |", deparse(grpsF[[2]]))))        else argForm &lt;- eval(parse(text = paste(".y ~ .x |",             deparse(grpsF[[2]]))))    }    args &lt;- c(list(argForm, data = argData), args)    if (is.null(args$cex))         args$cex &lt;- par("cex")    if (is.null(args$adj))         args$adj &lt;- par("adj")    if (!is.null(id)) {        idResType &lt;- match.arg(idResType)        id &lt;- switch(mode(id), numeric = {            if ((id &lt;= 0) || (id &gt;= 1)) {                stop("'id' must be between 0 and 1")            }            as.logical(abs(resid(object, type = idResType)) &gt;                 -qnorm(id/2))        }, call = eval(asOneSidedFormula(id)[[2]], data), stop("'id' can only be a formula or numeric"))        if (is.null(idLabels)) {            idLabels &lt;- getGroups(object)            if (length(idLabels) == 0)                 idLabels &lt;- 1:object$dims$N            idLabels &lt;- as.character(idLabels)        }        else {            if (mode(idLabels) == "call") {                idLabels &lt;- as.character(eval(asOneSidedFormula(idLabels)[[2]],                   data))            }            else if (is.vector(idLabels)) {                if (length(idLabels &lt;- unlist(idLabels)) != length(id)) {                  stop("'idLabels' of incorrect length")                }                idLabels &lt;- as.character(idLabels)            }            else {                stop("'idLabels' can only be a formula or a vector")            }        }    }    if (missing(abline)) {        if (missing(form)) {            abline &lt;- c(0, 0)        }        else {            abline &lt;- NULL        }    }    assign("abl", abline)    if (length(argForm) == 3) {        if (is.numeric(.y)) {            plotFun &lt;- "xyplot"            if (is.null(args$panel)) {                args &lt;- c(args, panel = list(function(x, y, subscripts,                   ...) {                  x &lt;- as.numeric(x)                  y &lt;- as.numeric(y)                  dots &lt;- list(...)                  if (grid) panel.grid()                  panel.xyplot(x, y, ...)                  if (any(ids &lt;- id[subscripts])) {                    ltext(x[ids], y[ids], idLabels[subscripts][ids],                       cex = dots$cex, adj = dots$adj)                  }                  if (!is.null(abl)) {                    if (length(abl) == 2) panel.abline(a = abl,                       ...) else panel.abline(h = abl, ...)                  }                }))            }        }        else {            plotFun &lt;- "bwplot"            if (is.null(args$panel)) {                args &lt;- c(args, panel = list(function(x, y, ...) {                  if (grid) panel.grid()                  panel.bwplot(x, y, ...)                  if (!is.null(abl)) {                    panel.abline(v = abl[1], ...)                  }                }))            }        }    }    else {        plotFun &lt;- "histogram"        if (is.null(args$panel)) {            args &lt;- c(args, panel = list(function(x, ...) {                if (grid) panel.grid()                panel.histogram(x, ...)                if (!is.null(abl)) {                  panel.abline(v = abl[1], ...)                }            }))        }    }    if (missing(grid)) {        if (plotFun == "xyplot")             grid &lt;- TRUE        else grid &lt;- FALSE    }    do.call(plotFun, as.list(args))})(x = quad_Wald, sub.caption = NA, main = "Quadratic treatment-by-weeks model with full\nblocks-by-weeks model"): object 'quad_Wald' not found</span></div><div class='input'>
-
+#&gt; rawWeeks[, 2]:variety       3    10.994  &lt;.0001</div><div class='input'>
+<span class='co'>##----fm4.8.Coef----</span>
+ <span class='no'>fm4.8.Coef</span></div><div class='output co'>#&gt; # A tibble: 34 x 5
+#&gt;    term          estimate std.error statistic  p.value
+#&gt;    &lt;chr&gt;            &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+#&gt;  1 (Intercept)    5.46       0.155     35.2   1.62e-44
+#&gt;  2 Replicate2    -0.302      0.173     -1.75  8.53e- 2
+#&gt;  3 Replicate3    -0.569      0.173     -3.29  1.63e- 3
+#&gt;  4 Replicate4    -1.18       0.173     -6.83  3.23e- 9
+#&gt;  5 Replicate5    -1.84       0.173    -10.6   6.47e-16
+#&gt;  6 rawWeeks[, 1] -0.412      0.102     -4.05  1.37e- 4
+#&gt;  7 rawWeeks[, 2] -0.00938    0.0166    -0.566 5.73e- 1
+#&gt;  8 polWeeks[, 3]  0.385      0.217      1.78  7.97e- 2
+#&gt;  9 polWeeks[, 4] -0.686      0.216     -3.18  2.24e- 3
+#&gt; 10 variety2       0.786      0.155      5.07  3.38e- 6
+#&gt; # ... with 24 more rows</div><div class='input'>
+<span class='co'>##----fm4.8.Par----</span>
+ <span class='no'>fm4.8.Par</span></div><div class='output co'>#&gt; # A tibble: 3 x 2
+#&gt;   Parameter  Value
+#&gt;   &lt;chr&gt;      &lt;dbl&gt;
+#&gt; 1 Range     42.8  
+#&gt; 2 Nugget     0.359
+#&gt; 3 rho        0.627</div><div class='input'>
+<span class='co'>##----fm4.8.Plot1----</span>
+<span class='fu'>plot</span>(<span class='no'>fm4.8.ACF</span>)</div><div class='img'><img src='example4-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'>##----fm4.8.Plot2----</span>
+<span class='fu'>plot</span>(<span class='no'>fm4.8</span>,<span class='kw'>sub.caption</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"Quadratic treatment-by-weeks model with full
+blocks-by-weeks model"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in (function (x, form = resid(., type = "pearson") ~ fitted(.),     abline, id = NULL, idLabels = NULL, idResType = c("pearson",         "normalized"), grid, ...) {    object &lt;- x    if (!inherits(form, "formula")) {        stop("'form' must be a formula")    }    allV &lt;- all.vars(asOneFormula(form, id, idLabels))    allV &lt;- allV[is.na(match(allV, c("T", "F", "TRUE", "FALSE")))]    if (length(allV) &gt; 0) {        data &lt;- getData(object)        if (is.null(data)) {            alist &lt;- lapply(as.list(allV), as.name)            names(alist) &lt;- allV            alist &lt;- c(list(quote(data.frame)), alist)            mode(alist) &lt;- "call"            data &lt;- eval(alist, sys.parent(1))        }        else {            if (any(naV &lt;- is.na(match(allV, names(data))))) {                stop(sprintf(ngettext(sum(naV), "%s not found in data",                   "%s not found in data"), allV[naV]), domain = NA)            }        }    }    else data &lt;- NULL    if (inherits(data, "groupedData")) {        ff &lt;- formula(data)        rF &lt;- deparse(getResponseFormula(ff)[[2]])        cF &lt;- c_deparse(getCovariateFormula(ff)[[2]])        lbs &lt;- attr(data, "labels")        unts &lt;- attr(data, "units")        if (!is.null(lbs$x))             cL &lt;- paste(lbs$x, unts$x)        else cF &lt;- NULL        if (!is.null(lbs$y))             rL &lt;- paste(lbs$y, unts$y)        else rF &lt;- NULL    }    else {        rF &lt;- cF &lt;- NULL    }    dots &lt;- list(...)    if (length(dots) &gt; 0)         args &lt;- dots    else args &lt;- list()    data &lt;- as.list(c(as.list(data), . = list(object)))    covF &lt;- getCovariateFormula(form)    .x &lt;- eval(covF[[2]], data)    if (!is.numeric(.x)) {        stop("covariate must be numeric")    }    argForm &lt;- ~.x    argData &lt;- data.frame(.x = .x, check.names = FALSE)    if (is.null(xlab &lt;- attr(.x, "label"))) {        xlab &lt;- deparse(covF[[2]])        if (!is.null(cF) &amp;&amp; (xlab == cF))             xlab &lt;- cL        else if (!is.null(rF) &amp;&amp; (xlab == rF))             xlab &lt;- rL    }    if (is.null(args$xlab))         args$xlab &lt;- xlab    respF &lt;- getResponseFormula(form)    if (!is.null(respF)) {        .y &lt;- eval(respF[[2]], data)        if (is.null(ylab &lt;- attr(.y, "label"))) {            ylab &lt;- deparse(respF[[2]])            if (!is.null(cF) &amp;&amp; (ylab == cF))                 ylab &lt;- cL            else if (!is.null(rF) &amp;&amp; (ylab == rF))                 ylab &lt;- rL        }        argForm &lt;- .y ~ .x        argData[, ".y"] &lt;- .y        if (is.null(args$ylab))             args$ylab &lt;- ylab    }    grpsF &lt;- getGroupsFormula(form)    if (!is.null(grpsF)) {        gr &lt;- splitFormula(grpsF, sep = "*")        for (i in seq_along(gr)) {            auxGr &lt;- all.vars(gr[[i]])            for (j in auxGr) {                argData[[j]] &lt;- eval(as.name(j), data)            }        }        if (length(argForm) == 2)             argForm &lt;- eval(parse(text = paste("~ .x |", deparse(grpsF[[2]]))))        else argForm &lt;- eval(parse(text = paste(".y ~ .x |",             deparse(grpsF[[2]]))))    }    args &lt;- c(list(argForm, data = argData), args)    if (is.null(args$cex))         args$cex &lt;- par("cex")    if (is.null(args$adj))         args$adj &lt;- par("adj")    if (!is.null(id)) {        idResType &lt;- match.arg(idResType)        id &lt;- switch(mode(id), numeric = {            if ((id &lt;= 0) || (id &gt;= 1)) {                stop("'id' must be between 0 and 1")            }            as.logical(abs(resid(object, type = idResType)) &gt;                 -qnorm(id/2))        }, call = eval(asOneSidedFormula(id)[[2]], data), stop("'id' can only be a formula or numeric"))        if (is.null(idLabels)) {            idLabels &lt;- getGroups(object)            if (length(idLabels) == 0)                 idLabels &lt;- 1:object$dims$N            idLabels &lt;- as.character(idLabels)        }        else {            if (mode(idLabels) == "call") {                idLabels &lt;- as.character(eval(asOneSidedFormula(idLabels)[[2]],                   data))            }            else if (is.vector(idLabels)) {                if (length(idLabels &lt;- unlist(idLabels)) != length(id)) {                  stop("'idLabels' of incorrect length")                }                idLabels &lt;- as.character(idLabels)            }            else {                stop("'idLabels' can only be a formula or a vector")            }        }    }    if (missing(abline)) {        if (missing(form)) {            abline &lt;- c(0, 0)        }        else {            abline &lt;- NULL        }    }    assign("abl", abline)    if (length(argForm) == 3) {        if (is.numeric(.y)) {            plotFun &lt;- "xyplot"            if (is.null(args$panel)) {                args &lt;- c(args, panel = list(function(x, y, subscripts,                   ...) {                  x &lt;- as.numeric(x)                  y &lt;- as.numeric(y)                  dots &lt;- list(...)                  if (grid) panel.grid()                  panel.xyplot(x, y, ...)                  if (any(ids &lt;- id[subscripts])) {                    ltext(x[ids], y[ids], idLabels[subscripts][ids],                       cex = dots$cex, adj = dots$adj)                  }                  if (!is.null(abl)) {                    if (length(abl) == 2) panel.abline(a = abl,                       ...) else panel.abline(h = abl, ...)                  }                }))            }        }        else {            plotFun &lt;- "bwplot"            if (is.null(args$panel)) {                args &lt;- c(args, panel = list(function(x, y, ...) {                  if (grid) panel.grid()                  panel.bwplot(x, y, ...)                  if (!is.null(abl)) {                    panel.abline(v = abl[1], ...)                  }                }))            }        }    }    else {        plotFun &lt;- "histogram"        if (is.null(args$panel)) {            args &lt;- c(args, panel = list(function(x, ...) {                if (grid) panel.grid()                panel.histogram(x, ...)                if (!is.null(abl)) {                  panel.abline(v = abl[1], ...)                }            }))        }    }    if (missing(grid)) {        if (plotFun == "xyplot")             grid &lt;- TRUE        else grid &lt;- FALSE    }    do.call(plotFun, as.list(args))})(x = fm4.8, sub.caption = NA, main = "Quadratic treatment-by-weeks model with full\nblocks-by-weeks model"): object 'fm4.8' not found</span></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -991,6 +616,14 @@ blocks-by-weeks model"</span>)</div><div class='output co'>#&gt; <span class='er
       
       <li><a href="#examples">Examples</a></li>
     </ul>
+
+    <h2>Author</h2>
+    
+<ol>
+<li><p>Rodney N. Edmondson (<a href='mailto:rodney.edmondson@gmail.com'>rodney.edmondson@gmail.com</a>)</p></li>
+<li><p>Hans-Peter Piepho (<a href='mailto:piepho@uni-hohenheim.de'>piepho@uni-hohenheim.de</a>)</p></li>
+<li><p>Muhammad Yaseen (<a href='mailto:myaseen208@gmail.com'>myaseen208@gmail.com</a>)</p></li>
+</ol>
 
   </div>
 </div>

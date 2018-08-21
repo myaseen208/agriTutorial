@@ -27,55 +27,76 @@
 #'
 #' \code{\link[agriTutorial]{agriTutorial}}: return to home page if you want to select a different example \cr
 #'
-#' @references
-#' Petersen, R.G. (1994). Agricultural field experiments. Design and analysis. New York: Marcel Dekker.
+#' @author
+#' \enumerate{
+#'          \item Rodney N. Edmondson (\email{rodney.edmondson@@gmail.com})
+#'          \item Hans-Peter Piepho (\email{piepho@@uni-hohenheim.de})
+#'          \item Muhammad Yaseen (\email{myaseen208@@gmail.com})
+#'          }
+#' 
 #'
-#' Piepho, H. P, and Edmondson. R. N. (2018). A tutorial on the statistical analysis of factorial experiments with qualitative and quantitative
-#' treatment factor levels. Journal of Agronomy and Crop Science. DOI: 10.1111/jac.12267.
-#' \href{http://onlinelibrary.wiley.com/doi/10.1111/jac.12267/full}{Early View}
+#'
+#' @references
+#' \enumerate{
+#'          \item  Petersen, R. G. (1994). \emph{Agricultural Field Experiments: Design and Analysis}. CRC Press.
+#'          \item  Kenward, M. G., & Roger, J. H. (1997). Small sample inference for fixed effects from restricted maximum likelihood. \emph{Biometrics},  \strong{53}, 983–997.
+#'          \item Piepho, H., & Edmondson, R. (2018). A tutorial on the Statistical Analysis of Factorial Experiments with Qualitative and Quantitative treatment factor levels. 
+#'                \emph{Journal of Agronomy and Crop Science.} (\url{https://onlinelibrary.wiley.com/doi/full/10.1111/jac.12267}).
+#'          }
+#' 
+#' @import broom broom.mixed dplyr emmeans ggfortify ggplot2 lmerTest magrittr nlme pbkrtest
+#'
 #'
 #' @examples
-#'
-#' ## *************************************************************************************
-#' ##                       How to run the code
-#' ## *************************************************************************************
-#'
-#' ## Either type example("example2") to run ALL the examples succesively
-#' ## or copy and paste examples sucessively, as required
-#'
-#' ## *************************************************************************************
-#' ##                         Options and required packages
-#' ## *************************************************************************************
-#'
+#' library(broom) 
+#' library(broom.mixed) 
+#' library(dplyr)
+#' library(emmeans) 
+#' library(ggfortify) 
+#' library(ggplot2)
+#' library(lmerTest) 
+#' library(magrittr) 
+#' library(nlme) 
+#' library(pbkrtest)
+#' 
 #' options(contrasts = c('contr.treatment', 'contr.poly'))
-#' ## ggplot2 MUST be installed
-#' require(ggplot2)
-#'
-#' ## *************************************************************************************
-#' ##         Polynomial analysis and graphical plots of factorial treatment effects
-#' ## *************************************************************************************
-#'
-#' N = poly((beet$nrate/100), degree = 4, raw = TRUE)
-#' colnames(N) = c("Linear_N", "Quadratic_N", "Cubic_N", "Quartic_N")
-#' beet = cbind(beet, N)
-#'
-#' ## Tables 4 and 5: Full polynomial analysis of variance based on raw polynomials
-#' anova(lm(yield ~ Replicate + Linear_N + Quadratic_N + Cubic_N + Quartic_N, data = beet))
-#'
-#' ##  Table 6: showing quadratic model coefficients with standard errors and confidence intervals
-#' quadratic = lm(yield ~ Replicate + Linear_N + Quadratic_N, data = beet)
-#' summary(quadratic)
-#' confint(quadratic, level = 0.95)
-#'
-#' par(mfrow = c(2, 2), oma = c(0, 0, 2, 0))
-#' plot(quadratic, sub.caption = NA)
-#' title(main = "Diagnostic plots for quadratic nitrogen effects model", outer = TRUE)
-#'
-#' ggplot(beet, aes(x = nrate, y = yield)) +
-#'  ggtitle("Fig 3 Yield versus N for sugar beet with 95% confidence band") +
-#'  geom_point(shape = 1) + stat_summary(fun.y = mean, geom = "point") +
-#'  geom_smooth(method = lm, formula = y ~ poly(x, 2)) + theme_bw()
-#'
-#' @importFrom ggplot2 ggplot
-#'
+#' 
+#' ##----fm2.1----
+#' fm2.1 <- lm(yield ~ Replicate + nrate + I(nrate^2) + I(nrate^3) + I(nrate^4), data = beet)
+#' fm2.1.ANOVA <- anova(fm2.1)
+#' 
+#' ##----fm2.1.ANOVA----
+#'  fm2.1.ANOVA
+#' 
+#' 
+#' ##----fm2.2----
+#' fm2.2 <- lm(yield ~ Replicate + nrate + I(nrate^2), data = beet)
+#' fm2.2.Coef <- summary(fm2.2)$coef
+#' 
+#' ##----fm2.2.Coef----
+#' fm2.2.Coef
+#' 
+#' ##----fm2.2.Coefs----
+#' fm2.2.Coef[1, 1] + sum(fm2.2.Coef[2:3, 1])/3
+#' fm2.2.Coef[4, 1]
+#' fm2.2.Coef[5, 1]
+#' 
+#' confint(fm2.2, level = 0.95)
+#' 
+#' ##----fm2.2.Plot1----
+#' ggplot2::autoplot(fm2.2)
+#' 
+#' ##----fm2.2.Plot2----
+#' ggplot(data = beet, mapping = aes(x = nrate, y = yield)) +
+#'   geom_point(shape = 1) + 
+#'   stat_summary(fun.y = mean, geom = "point") +
+#'   geom_smooth(method = lm, formula = y ~ poly(x, 2)) +
+#'   labs(
+#'     x = "Amont of nitrogen (kg)"
+#'     ,  y = "Yield"
+#'     , title = "Fig 3 Yield versus N for sugar beet with 95% confidence band"
+#'   ) +
+#'   theme_bw() 
+#' 
+#' 
 NULL
