@@ -20,10 +20,13 @@ Description: Example software for the analysis of data from designed
 	and the R analysis code is made available as example code.
 	The example code can be readily extended, as required.
 License: GPL (>= 2)
-Imports: broom, broom.mixed, dplyr, emmeans, ggfortify, ggplot2, lmerTest, magrittr, nlme, pbkrtest
+Imports: broom, broom.mixed, dplyr, emmeans, ggfortify, ggplot2, lmerTest, magrittr, nlme, pbkrtest, tibble, tidyr
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.0
 Suggests: R.rsp
 VignetteBuilder: R.rsp
 NeedsCompilation: no
+Author: Rodney Edmondson [aut, cre],
+  Hans-Peter Piepho [aut, ctb],
+  Muhammad Yaseen [aut, ctb]

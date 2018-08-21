@@ -103,6 +103,8 @@ library(lmerTest)
 library(magrittr) 
 library(nlme) 
 library(pbkrtest)
+library(tibble)
+library(tidyr)
 
 options(contrasts = c('contr.treatment', 'contr.poly'))
 

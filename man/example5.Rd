@@ -48,8 +48,8 @@ library(ggfortify)
 library(ggplot2)
 library(lmerTest) 
 library(magrittr) 
-library(nlme) 
 library(pbkrtest)
+library(tidyr)
 
 options(contrasts = c('contr.treatment', 'contr.poly'))
 
@@ -79,8 +79,8 @@ fm5.3 <- lm(log_yield ~ density * rowspacing + I(density^2) +
 fm5.3.Coef <- broom::tidy(fm5.3)
 turnip1 <- broom::augment(fm5.3, turnip)
 
-##----fm5.3.Cof----
-fm5.3.Cof
+##----fm5.3.Coef----
+fm5.3.Coef
 
 ##----fm5.3.Plot1----
 ggplot(data = turnip1, 

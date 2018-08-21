@@ -108,7 +108,17 @@
 #'                \emph{Journal of Agronomy and Crop Science.} (\url{https://onlinelibrary.wiley.com/doi/full/10.1111/jac.12267}).
 #'          }
 #' 
-#' @import broom broom.mixed dplyr emmeans ggfortify ggplot2 lmerTest magrittr nlme pbkrtest
+#' 
+#' @importFrom broom tidy glance augment
+#' @importFrom broom.mixed tidy glance augment
+#' @importFrom dplyr filter group_by ungroup select summarise collapse
+#' @importFrom emmeans emmeans contrast
+#' @importFrom lmerTest lmer
+#' @importFrom nlme  gls Variogram ACF 
+#' @importFrom pbkrtest PBmodcomp  
+#' @importFrom tidyr  spread
+#' @importFrom tibble tibble
+#' @import  ggfortify ggplot2 magrittr
 #'
 #'
 #' @examples
@@ -122,6 +132,8 @@
 #' library(magrittr) 
 #' library(nlme) 
 #' library(pbkrtest)
+#' library(tibble)
+#' library(tidyr)
 #' 
 #' options(contrasts = c('contr.treatment', 'contr.poly'))
 #' 

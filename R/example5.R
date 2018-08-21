@@ -52,8 +52,16 @@
 #'                \emph{Journal of Agronomy and Crop Science.} (\url{https://onlinelibrary.wiley.com/doi/full/10.1111/jac.12267}).
 #'          }
 #' 
-#' @import broom broom.mixed dplyr emmeans ggfortify ggplot2 lmerTest magrittr nlme pbkrtest
-#'
+#' 
+#' @importFrom broom tidy glance augment
+#' @importFrom broom.mixed tidy glance augment
+#' @importFrom dplyr filter group_by ungroup select summarise collapse
+#' @importFrom emmeans emmeans contrast
+#' @importFrom lmerTest lmer
+#' @importFrom pbkrtest PBmodcomp  
+#' @importFrom tidyr  spread
+#' @import  ggfortify ggplot2 magrittr
+#' 
 #'
 #' @examples
 #' library(broom) 
@@ -64,8 +72,8 @@
 #' library(ggplot2)
 #' library(lmerTest) 
 #' library(magrittr) 
-#' library(nlme) 
 #' library(pbkrtest)
+#' library(tidyr)
 #' 
 #' options(contrasts = c('contr.treatment', 'contr.poly'))
 #'
@@ -95,8 +103,8 @@
 #' fm5.3.Coef <- broom::tidy(fm5.3)
 #' turnip1 <- broom::augment(fm5.3, turnip)
 #' 
-#' ##----fm5.3.Cof----
-#' fm5.3.Cof
+#' ##----fm5.3.Coef----
+#' fm5.3.Coef
 #' 
 #' ##----fm5.3.Plot1----
 #' ggplot(data = turnip1, 

@@ -131,8 +131,15 @@
 #'          \item Piepho, H., & Edmondson, R. (2018). A tutorial on the Statistical Analysis of Factorial Experiments with Qualitative and Quantitative treatment factor levels. 
 #'                \emph{Journal of Agronomy and Crop Science.} (\url{https://onlinelibrary.wiley.com/doi/full/10.1111/jac.12267}).
 #'          }
-#' 
-#' @import broom broom.mixed dplyr emmeans ggfortify ggplot2 lmerTest magrittr nlme pbkrtest
+#'
+#' @importFrom broom tidy glance augment
+#' @importFrom broom.mixed tidy glance augment
+#' @importFrom dplyr filter group_by ungroup select summarise collapse
+#' @importFrom emmeans emmeans contrast
+#' @importFrom lmerTest lmer
+#' @importFrom pbkrtest PBmodcomp  
+#' @importFrom tidyr  spread
+#' @import  ggfortify ggplot2 magrittr
 #'
 #'
 #' @examples
@@ -144,8 +151,8 @@
 #' library(ggplot2)
 #' library(lmerTest) 
 #' library(magrittr) 
-#' library(nlme) 
 #' library(pbkrtest)
+#' library(tidyr)
 #' 
 #' options(contrasts = c('contr.treatment', 'contr.poly'))
 #' 
