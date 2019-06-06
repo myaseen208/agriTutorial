@@ -151,22 +151,30 @@
 #' fm3.4.Coef
 #' 
 #' ##----fm3.4.Plot1----
-#' ggplot(data = greenrice2, mapping = aes(x = Water, y = loguptake, color = Nitrogen, group = Nitrogen)) +
+#' ggplot(data = greenrice2, 
+#'  mapping = aes(x = Water, y = loguptake, color = Nitrogen, 
+#'           group = Nitrogen)) +
 #'   geom_point() +
 #'   geom_smooth(mapping = aes(y =.fitted), method = "loess")
 #' 
 #' ##----fm3.4.Plot2----
-#' ggplot(data = greenrice2, mapping = aes(x = Water, y = exp(loguptake), color = Nitrogen, group = Nitrogen)) +
+#' ggplot(data = greenrice2, 
+#'   mapping = aes(x = Water, y = exp(loguptake), 
+#'      color = Nitrogen, group = Nitrogen)) +
 #'   geom_point() +
 #'   geom_smooth(mapping = aes(y =.fitted), method = "loess")
 #' 
 #' ##----fm3.4.Plot3----
-#' ggplot(data = greenrice2, mapping = aes(x = Nitrogen, y = loguptake, color = Water, group = Water)) +
+#' ggplot(data = greenrice2, 
+#'    mapping = aes(x = Nitrogen, y = loguptake, 
+#'       color = Water, group = Water)) +
 #'   geom_point() +
 #'   geom_smooth(mapping = aes(y =.fitted), method = "loess")
 #' 
 #' ##----fm3.4.Plot4----
-#' ggplot(data = greenrice2, mapping = aes(x = Nitrogen, y = exp(loguptake), color = Water, group = Water)) +
+#' ggplot(data = greenrice2, 
+#'    mapping = aes(x = Nitrogen, y = exp(loguptake), 
+#'      color = Water, group = Water)) +
 #'   geom_point() +
 #'   geom_smooth(mapping = aes(y =.fitted), method = "loess")
 #' 
