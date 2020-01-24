@@ -21,8 +21,11 @@ Depends: R (>= 3.1)
 License: GPL-2 | GPL-3
 Encoding: UTF-8
 LazyData: true
-VignetteBuilder: R.rsp
-NeedsCompilation: no
+URL: https://github.com/myaseen208/agriTutorial
+     https://CRAN.R-project.org/package=agriTutorial
+     https://myaseen208.github.io/agriTutorial/
+BugReports: https://github.com/myaseen208/agriTutorial/issues
+Note: Department of Mathematics and Statistics, University of Agriculture Faisalabad, Faisalabad-Pakistan.
 Imports:
     broom,
     broom.mixed,
@@ -38,5 +41,6 @@ Imports:
     tidyr
 Suggests:
     R.rsp
-RdMacros: Rdpack
+VignetteBuilder: R.rsp
+NeedsCompilation: no
 RoxygenNote: 7.0.2

@@ -31,7 +31,6 @@ WIP](http://www.repostatus.org/badges/latest/inactive.svg)](http://www.repostatu
 [![lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable)
 [![Last-changedate](https://img.shields.io/badge/last%20change-2020--01--24-yellowgreen.svg)](https://github.com/myaseen208/agriTutorial)
 [![Rdoc](http://www.rdocumentation.org/badges/version/agriTutorial)](http://www.rdocumentation.org/packages/agriTutorial)
-[![Analytics](https://pro-pulsar-193905.appspot.com/UA-116716530-1/welcome-page)](https://github.com/myaseen208/google-analytics-beacon)
 
 -----
 
@@ -101,14 +100,14 @@ citation("agriTutorial")
 To cite the R package 'agriTutorial' in publications use:
 
   Rodney Edmondson, Hans-Peter Piepho, and Muhammad Yaseen (2020).
-  agriTutorial: Tutorial Analysis of Some Agricultural Experiments.R
+  agriTutorial: Tutorial Analysis of Some Agricultural Experiments. R
   package version 1.0.0 ,
   https://myaseen208.github.io/agriTutorial/https://cran.r-project.org/package=agriTutorial.
 
 A BibTeX entry for LaTeX users is
 
   @Manual{,
-    title = {agriTutorial: Detecting Structural Change with Heteroskedasticity},
+    title = {agriTutorial: Tutorial Analysis of Some Agricultural Experiments },
     author = {{Rodney Edmondson} and {Hans-Peter Piepho} and {Muhammad Yaseen}},
     year = {2020},
     note = {R package version 1.0.0},
