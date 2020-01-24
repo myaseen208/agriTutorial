@@ -69,7 +69,7 @@ browseVignettes(package = "agriTutorial")
 ```
 
 The vignette for the latest version is also available
-[online](https://myaseen208.github.io/agriTutorial/articles/IntroagriTutorial.pdf).
+[online](https://myaseen208.github.io/agriTutorial//articles/IntroagriTutorial.pdf).
 
 ## What’s new
 
