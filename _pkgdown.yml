@@ -1,0 +1,37 @@
+template:
+  params:
+    bootswatch: united
+    ganalytics: UA-116716530-2
+    docsearch:
+      api_key: bdafb7ea4490644e670f470ee3ef537f
+      index_name: agriTutorial
+
+development:
+  mode: unreleased
+
+url: https://myaseen208.github.io/agriTutorial/
+
+navbar:
+  title: agriTutorial
+  type: default
+  left:
+    - icon: fa-home fa-lg
+      text: Home
+      href: index.html
+    - icon: fa-code
+      text: Reference
+      href: reference/index.html
+    - icon: fa-file-o
+      text: Tutorial
+      menu:
+      - text: "Introduction to agriTutorial"
+        href: articles/IntroagriTutorial.pdf
+    - icon: fa-newspaper-o
+      text: News
+      href: news/index.html
+  right:
+    - icon: fa-github-alt
+      text: Github
+      href: https://github.com/myaseen208/agriTutorial
+
+reference:

@@ -1,0 +1,37 @@
+citHeader("To cite the R package 'agriTutorial' in publications use:")
+
+if(!exists("meta") || is.null(meta))
+meta <- packageDescription("agriTutorial")
+
+year <- sub(".*(2[[:digit:]]{3})-.*", "\\1", meta$Date)
+if (!length(year)) {
+ year <- format(packageDate("agriTutorial"), "%Y")
+ }
+
+vers <- paste("R package version", meta$Version)
+
+citEntry(
+  entry  = "Manual"
+, title  = "agriTutorial: Detecting Structural Change with Heteroskedasticity"
+, author = personList(
+  person(c("Rodney Edmondson"),  email = "rodney.edmondson@gmail.com", role = c("aut", "cre"))
+            , person(c("Hans-Peter",  "Piepho"),  email = "piepho@uni-hohenheim.de", role = c("aut", "ctb"))
+            , person(c("Muhammad", "Yaseen"),  email = "myaseen208@gmail.com", role = c("aut", "ctb"), comment = c(ORCID = "0000-0002-5923-1714"))
+            )
+, year = year
+, textVersion = paste(
+       "Rodney Edmondson, Hans-Peter Piepho, and Muhammad Yaseen ("
+      , year
+      , ").  agriTutorial: Tutorial Analysis of Some Agricultural Experiments."
+      , vers
+      , "
+      , "
+      , "https://myaseen208.github.io/agriTutorial/"
+      , "https://cran.r-project.org/package=agriTutorial"
+      , "."
+      , sep = "")
+      , note = {c(paste(vers), "https://myaseen208.github.io/agriTutorial/ " , "https://cran.r-project.org/package=agriTutorial")})
+
+citFooter("This free and open-source software implements academic
+research by the authors and co-workers. If you use it, please support
+the project by citing the package.")

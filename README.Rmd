@@ -1,0 +1,117 @@
+---
+output: rmarkdown::github_document
+---
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "",
+  fig.path = "inst/extdata/"
+)
+```
+
+## `agriTutorial`: Tutorial Analysis of Some Agricultural Experiments
+
+```{r,echo = FALSE, message = FALSE}
+devtools::load_all(".")
+```
+
+###### Version : [`r getNamespaceVersion("agriTutorial")`](https://myaseen208.github.io/agriTutorial/); Copyright (C) 2019-2020: [UAF](http://uaf.edu.pk//); License: [GPL-2|GPL-3](https://www.r-project.org/Licenses/)
+
+
+##### *Rodney Edmondson*^1^, *Hans-Peter Piepho*^2^ and *Muhammad Yaseen*^3^
+1. Rana House, Wellesbourne, UK (rodney.edmondson@gmail.com)
+2. Biostatistics Unit, Institute of Crop Science, University of Hohenheim, Stuttgart, Germany (piepho@uni-hohenheim.de)
+3. Department of Mathematics and Statistics, University of Agriculture Faisalabad, Pakistan (myaseen208@gmail.com).
+
+***
+
+[![minimal R version](https://img.shields.io/badge/R>%3D-3.5.0-6666ff.svg)](https://cran.r-project.org/)
+[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version-last-release/agriTutorial)](https://cran.r-project.org/package=agriTutorial)
+[![rstudio mirror downloads](https://cranlogs.r-pkg.org/badges/grand-total/agriTutorial?color=green)](https://CRAN.R-project.org/package=agriTutorial)
+<!-- [![packageversion](https://img.shields.io/badge/Package%20version-0.2.3.3-orange.svg)](https://github.com/myaseen208/agriTutorial) -->
+
+```{r, results='asis', echo=FALSE}
+dver <- ifelse(test = gsub("(.\\.)(\\d+)(\\..)", "", getNamespaceVersion("agriTutorial")) != "",
+               yes = getNamespaceVersion("agriTutorial"),
+               no = gsub("Version:\\s*", "", readLines(paste0("https://raw.githubusercontent.com/", "myaseen208/agriTutorial", "/master/DESCRIPTION"))[grep("Version:", readLines(paste0("https://raw.githubusercontent.com/", "myaseen208/agriTutorial", "/master/DESCRIPTION")))]))
+cat(paste("[![develVersion](https://img.shields.io/badge/devel%20version-", dver, "-orange.svg)](https://github.com/myaseen208/agriTutorial)", sep = ""))
+```
+
+<!-- [![GitHub Download Count](https://github-basic-badges.herokuapp.com/downloads/myaseen208/agriTutorial/total.svg)] -->
+[![Project Status: WIP](http://www.repostatus.org/badges/latest/inactive.svg)](http://www.repostatus.org/#inactive)
+[![lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable)
+[![Last-changedate](https://img.shields.io/badge/last%20change-`r gsub('-', '--', Sys.Date())`-yellowgreen.svg)](https://github.com/myaseen208/agriTutorial)
+[![Rdoc](http://www.rdocumentation.org/badges/version/agriTutorial)](http://www.rdocumentation.org/packages/agriTutorial)
+[![Analytics](https://pro-pulsar-193905.appspot.com/UA-116716530-1/welcome-page)](https://github.com/myaseen208/google-analytics-beacon)
+
+***
+
+## Description
+`r gsub("(<doi:)(.+)(>)", "[doi:\\2](https://doi.org/\\2)", gsub("\\n", " ", packageDescription("agriTutorial", fields = "Description")))`
+
+## Installation
+The package can be installed from CRAN as follows:
+
+```{r, eval=FALSE}
+install.packages("agriTutorial", dependencies = TRUE)
+```
+
+
+
+The development version can be installed from github as follows:
+
+```{r, eval=FALSE}
+if (!require("remotes")) install.packages("remotes")
+remotes::install_github("myaseen208/agriTutorial")
+```
+
+## Detailed tutorial
+For a detailed tutorial (vignette) on how to used this package type:
+
+```{r, eval=FALSE}
+browseVignettes(package = "agriTutorial")
+```
+
+The vignette for the latest version is also available [online](https://myaseen208.github.io/agriTutorial/articles/IntroagriTutorial.html).
+
+
+## What's new
+To know whats new in this version type:
+
+```{r, eval=FALSE}
+news(package = "agriTutorial")
+```
+
+## Links
+
+[CRAN page](https://cran.r-project.org/package=agriTutorial)
+
+[Github page](https://github.com/myaseen208/agriTutorial)
+
+[Documentation website](https://myaseen208.github.io/agriTutorial/)
+
+
+
+## Citing `agriTutorial`
+To cite the methods in the package use:
+
+```{r, eval = FALSE}
+citation("agriTutorial")
+```
+
+```{r, echo = FALSE}
+detach("package:agriTutorial", unload=TRUE)
+suppressPackageStartupMessages(library(agriTutorial))
+cit <- citation("agriTutorial")
+# yr <- format(Sys.Date(), "%Y")
+# cit[1]$year <- yr
+# oc <- class(cit)
+# 
+# cit <- unclass(cit)
+# attr(cit[[1]],"textVersion") <- gsub("\\(\\)",
+#                                      paste("\\(", yr, "\\)", sep = ""),
+#                                      attr(cit[[1]],"textVersion"))
+# class(cit) <- oc
+cit

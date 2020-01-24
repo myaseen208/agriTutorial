@@ -3,7 +3,6 @@
 \docType{package}
 \name{agriTutorial}
 \alias{agriTutorial}
-\alias{agriTutorial-package}
 \title{Tutorial Analysis of Agricultural Experiments}
 \description{
 The \code{agriTutorial} package provides R software for the analysis of

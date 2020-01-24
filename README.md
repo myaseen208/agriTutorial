@@ -1,72 +1,123 @@
-# agriTutorial: Tutorial Analysis of Some Agricultural Experiments
 
-## Introduction
+## `agriTutorial`: Tutorial Analysis of Some Agricultural Experiments
 
-The agriTutorial package provides R software for the analysis of five agricultural example data sets as discussed in the paper:
-*A tutorial on the statistical analysis of factorial experiments with qualitative and quantitative treatment factor levels* by Piepho and Edmondson (2018).
- 
-The example code produces statistical analysis for the five agricultural data sets in Piepho & Edmondson (2018) and also produces additional graphical analysis.
-The data for each example is provided as a data frame which loads automatically whenever the package is loaded and the code for each analysis is provided as a set of examples.
+###### Version : [1.0.0](https://myaseen208.github.io/agriTutorial/); Copyright (C) 2019-2020: [UAF](http://uaf.edu.pk//); License: [GPL-2|GPL-3](https://www.r-project.org/Licenses/)
 
-Printed output defaults to the device terminal window but can be diverted to a suitable text file by using a sink file command: see help(sink), if required. Similarly, graphical output defaults
-to the device graphics window but can be diverted to a suitable graphics device if required:
-see vignette for further details,
+##### *Rodney Edmondson*<sup>1</sup>, *Hans-Peter Piepho*<sup>2</sup> and *Muhammad Yaseen*<sup>3</sup>
 
-The example code demonstrates some basic methodology for the analysis of data from designed experiments but there are other methods available in R and it is straightforward to extend the example code by adding functionality from other packages. 
+1.  Rana House, Wellesbourne, UK (<rodney.edmondson@gmail.com>)
+2.  Biostatistics Unit, Institute of Crop Science, University of
+    Hohenheim, Stuttgart, Germany (<piepho@uni-hohenheim.de>)
+3.  Department of Mathematics and Statistics, University of Agriculture
+    Faisalabad, Pakistan (<myaseen208@gmail.com>).
 
-### Polynomials
+-----
 
-The polynomials used in this tutorial are either raw polynomials or orthogonal polynomials.
+[![minimal R
+version](https://img.shields.io/badge/R%3E%3D-3.5.0-6666ff.svg)](https://cran.r-project.org/)
+[![License: GPL
+v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version-last-release/agriTutorial)](https://cran.r-project.org/package=agriTutorial)
+[![rstudio mirror
+downloads](https://cranlogs.r-pkg.org/badges/grand-total/agriTutorial?color=green)](https://CRAN.R-project.org/package=agriTutorial)
+<!-- [![packageversion](https://img.shields.io/badge/Package%20version-0.2.3.3-orange.svg)](https://github.com/myaseen208/agriTutorial) -->
 
-A raw polynomial is a weighted sum of the powers and cross-products
-of a set of treatment or nuisance effect vectors.
+    Warning in readLines(paste0("https://raw.githubusercontent.com/",
+    "myaseen208/agriTutorial", : incomplete final line found on 'https://
+    raw.githubusercontent.com/myaseen208/agriTutorial/master/DESCRIPTION'
+    
+    Warning in readLines(paste0("https://raw.githubusercontent.com/",
+    "myaseen208/agriTutorial", : incomplete final line found on 'https://
+    raw.githubusercontent.com/myaseen208/agriTutorial/master/DESCRIPTION'
 
-An orthogonal polynomial is a weighted sum of orthogonal combinations of the powers and cross-products
-of a set of treatment or nuisance effect vectors.
+[![develVersion](https://img.shields.io/badge/devel%20version-0.1.5-orange.svg)](https://github.com/myaseen208/agriTutorial)
 
-Raw polynomials have a direct interpretation as a fitted polynomial model but can be numerically unstable whereas orthogonal polynomials are numerically stable but give coefficients which are linear combinations of the required polynomial model coefficients and are difficult to interpret.
+<!-- [![GitHub Download Count](https://github-basic-badges.herokuapp.com/downloads/myaseen208/agriTutorial/total.svg)] -->
 
-Raw polynomials are the polynomials of choice for most analyses but sometimes orthogonal polynomials can be useful when, for example, fitting higher-degree polynomials in a long series of repeated measures (see example 4).
+[![Project Status:
+WIP](http://www.repostatus.org/badges/latest/inactive.svg)](http://www.repostatus.org/#inactive)
+[![lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable)
+[![Last-changedate](https://img.shields.io/badge/last%20change-2020--01--24-yellowgreen.svg)](https://github.com/myaseen208/agriTutorial)
+[![Rdoc](http://www.rdocumentation.org/badges/version/agriTutorial)](http://www.rdocumentation.org/packages/agriTutorial)
+[![Analytics](https://pro-pulsar-193905.appspot.com/UA-116716530-1/welcome-page)](https://github.com/myaseen208/google-analytics-beacon)
 
-### Functional marginality
+-----
 
-Polynomial expansions are based on a Taylor series expansion and normally must include all polynomial terms up to and including the maximum degree of the expansion.
-This is the property of functional marginality and applies to any polynomial or response surface model including models with polynomial interaction effects (Nelder, 2000). In this tutorial,
-all polynomial and response surface models will be assumed to conform with the requirements of functional marginality.
+## Description
 
-### Packages
-
-The example code depends on a number of R packages each of which must be installed on the user machine before the example code can be properly executed. The required packages are lmerTest, emmeans, pbkrtest, lattice, nlme and ggplot2, all of which should install automatically. If, for any reason, packages need to be installed by hand, this can be done by using install.packages("PackageName").
-
-NB. It is important to keep packages updated using the update.packages() command.
-
-## Examples
-
-* **example1** : split-plot design with one quantitative and one qualitative treatment factor\cr
-
-* **example2** : block design with one qualitative treatment factor\cr 
-
-* **example3** : response surface design with two quantitative treatment factors\cr
-
-* **example4** : repeated measures design with one quantitative treatment factor\cr
-
-* **example5** : block design with transformed quantitative treatment levels\cr
-
-
-## References
-1. Piepho, H. P, and Edmondson. R. N. (2018). A tutorial on the statistical analysis of factorial experiments with qualitative and quantitative treatment factor levels. Journal of Agronomy and Crop Science. DOI: 10.1111/jac.12267.
-
-
-2. Nelder, J. A. (2000). Functional marginality and response-surface fitting. Journal of Applied Statistics, 26, 109-122.
-
-
+Example software for the analysis of data from designed experiments,
+especially agricultural crop experiments. The basics of the analysis of
+designed experiments are discussed using real examples from agricultural
+field trials. A range of statistical methods using a range of R
+statistical packages are exemplified . The experimental data is made
+available as separate data sets for each example and the R analysis code
+is made available as example code. The example code can be readily
+extended, as required.
 
 ## Installation
-Use **CRAN** to install the package:
 
-```{r}
-install.packages("agriTutorial")
+The package can be installed from CRAN as follows:
+
+``` r
+install.packages("agriTutorial", dependencies = TRUE)
 ```
 
-## License
-This package is free and open source software, licensed under GPL.
+The development version can be installed from github as follows:
+
+``` r
+if (!require("remotes")) install.packages("remotes")
+remotes::install_github("myaseen208/agriTutorial")
+```
+
+## Detailed tutorial
+
+For a detailed tutorial (vignette) on how to used this package type:
+
+``` r
+browseVignettes(package = "agriTutorial")
+```
+
+The vignette for the latest version is also available
+[online](https://myaseen208.github.io/agriTutorial/articles/IntroagriTutorial.html).
+
+## What’s new
+
+To know whats new in this version type:
+
+``` r
+news(package = "agriTutorial")
+```
+
+## Links
+
+[CRAN page](https://cran.r-project.org/package=agriTutorial)
+
+[Github page](https://github.com/myaseen208/agriTutorial)
+
+[Documentation website](https://myaseen208.github.io/agriTutorial/)
+
+## Citing `agriTutorial`
+
+To cite the methods in the package use:
+
+``` r
+citation("agriTutorial")
+```
+
+``` 
+
+To cite package 'agriTutorial' in publications use:
+
+  Rodney Edmondson, Hans-Peter Piepho and Muhammad Yaseen (2019).
+  agriTutorial: Tutorial Analysis of Some Agricultural Experiments. R
+  package version 0.1.5.
+
+A BibTeX entry for LaTeX users is
+
+  @Manual{,
+    title = {agriTutorial: Tutorial Analysis of Some Agricultural Experiments},
+    author = {{Rodney Edmondson} and {Hans-Peter Piepho} and {Muhammad Yaseen}},
+    year = {2019},
+    note = {R package version 0.1.5},
+  }
+```

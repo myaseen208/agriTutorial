@@ -8,36 +8,47 @@
 
 <title>Tutorial Analysis of Agricultural Experiments — agriTutorial • agriTutorial</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/united/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.1/css/all.min.css" integrity="sha256-PbSmjxuVAzJ6FPvNYsrXygfGhNJYyZ2GktDbkMBqQZg=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.1/css/v4-shims.min.css" integrity="sha256-A6jcAdwFD48VMjlI3GDxUd+eCQa7/KWy6G9oe/ovaPA=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script>
 
 
+<!-- docsearch -->
+<script src="../docsearch.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
+<link href="../docsearch.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+
+
 
 <meta property="og:title" content="Tutorial Analysis of Agricultural Experiments — agriTutorial" />
-
 <meta property="og:description" content="The agriTutorial package provides R software for the analysis of
  five agricultural example data sets as discussed in the paper:
  'A tutorial on the statistical analysis of factorial experiments with qualitative
  and quantitative treatment factor levels' by Piepho and Edmondson (2018). See:
  Early View" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -49,6 +60,17 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-116716530-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-116716530-2');
+</script>
 
 
   </head>
@@ -67,7 +89,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">agriTutorial</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">1.0.0</span>
       </span>
     </div>
 
@@ -77,25 +99,60 @@
   <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
      
+    Home
   </a>
 </li>
 <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../reference/index.html">
+    <span class="fa fa-code"></span>
+     
+    Reference
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-file-o"></span>
+     
+    Tutorial
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/IntroagriTutorial.pdf">Introduction to agriTutorial</a>
+    </li>
+  </ul>
 </li>
 <li>
-  <a href="../news/index.html">Changelog</a>
+  <a href="../news/index.html">
+    <span class="fa fa-newspaper-o"></span>
+     
+    News
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/myaseen208/agriTutorial">
+    <span class="fa fa-github-alt"></span>
+     
+    Github
+  </a>
 </li>
       </ul>
       
-      <ul class="nav navbar-nav navbar-right">
-        
-      </ul>
+      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
+        <div class="form-group">
+          <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
+        </div>
+      </form>
       
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -107,16 +164,15 @@
     </div>
 
     <div class="ref-description">
-    
     <p>The <code>agriTutorial</code> package provides R software for the analysis of
  five agricultural example data sets as discussed in the paper:
  'A tutorial on the statistical analysis of factorial experiments with qualitative
  and quantitative treatment factor levels' by Piepho and Edmondson (2018). See:
  <a href='http://onlinelibrary.wiley.com/doi/10.1111/jac.12267/full'>Early View</a></p>
-    
     </div>
 
-        
+
+
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><strong>Code</strong><br /></p>
@@ -126,7 +182,7 @@
  automatically whenever the package is loaded and the code for each analysis is provided
  as a set of examples.</p>
 <p>Printed output defaults to the device terminal window but can be diverted to a suitable
-text file by using a sink file command: see <code><a href='https://www.rdocumentation.org/packages/utils/topics/help'>help(sink)</a></code>, if required. Similarly, graphical output defaults
+text file by using a sink file command: see <code><a href='https://rdrr.io/r/utils/help.html'>help(sink)</a></code>, if required. Similarly, graphical output defaults
 to the device graphics window but can be diverted to a suitable graphics device if required:
 see <code>vignette('agriTutorial')</code> for further details,</p>
 <p>The example code demonstrates some basic methodology for the analysis of data from designed
@@ -157,7 +213,7 @@ functional marginality.</p>
 <p>The example code depends on a number of R packages each of which must be installed on the user machine before
 the example code can be properly executed. The required packages are lmerTest, emmeans, pbkrtest, lattice, nlme and
 ggplot2, all of which should install automatically. If, for any reason, packages need to be installed by hand,
-this can be done by using <code><a href='https://www.rdocumentation.org/packages/utils/topics/install.packages'>install.packages("package name")</a></code>.</p>
+this can be done by using <code><a href='https://rdrr.io/r/utils/install.packages.html'>install.packages("package name")</a></code>.</p>
 <p>NB. It is important to keep packages updated using the update.packages() command.</p>
 <p><strong>Examples:</strong></p>
 <ol>
@@ -172,7 +228,7 @@ quantitative treatment factor<br /></p></li>
 <li><p><code><a href='example5.html'>example5</a></code> : block design with transformed
 quantitative treatment levels<br /></p></li>
 </ol>
-    
+
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Piepho, H. P, and Edmondson. R. N. (2018). A tutorial on the statistical analysis of factorial experiments with qualitative and quantitative
@@ -180,20 +236,18 @@ treatment factor levels. Journal of Agronomy and Crop Science. DOI: 10.1111/jac.
 <a href='http://onlinelibrary.wiley.com/doi/10.1111/jac.12267/full'>Early View</a></p>
 <p>Taylor series. From Wikipedia, the free encyclopedia https://en.wikipedia.org/wiki/Taylor_series</p>
 <p>Nelder, J. A. (2000). Functional marginality and response-surface fitting. Journal of Applied Statistics, 26, 109-122.</p>
-    
 
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      
       <li><a href="#details">Details</a></li>
-
       <li><a href="#references">References</a></li>
-          </ul>
+    </ul>
 
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -201,13 +255,33 @@ treatment factor levels. Journal of Agronomy and Crop Science. DOI: 10.1111/jac.
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
 </div>
+
       </footer>
    </div>
 
   
+<script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script>
+<script>
+  docsearch({
+    
+    
+    apiKey: 'bdafb7ea4490644e670f470ee3ef537f',
+    indexName: 'agriTutorial',
+    inputSelector: 'input#search-input.form-control',
+    transformData: function(hits) {
+      return hits.map(function (hit) {
+        hit.url = updateHitURL(hit);
+        return hit;
+      });
+    }
+  });
+</script>
+
+
 
   </body>
 </html>
+
 
