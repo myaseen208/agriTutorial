@@ -74,7 +74,7 @@ For a detailed tutorial (vignette) on how to used this package type:
 browseVignettes(package = "agriTutorial")
 ```
 
-The vignette for the latest version is also available [online](https://myaseen208.github.io/agriTutorial//articles/IntroagriTutorial.pdf).
+The vignette for the latest version is also available [online](https://myaseen208.github.io/agriTutorial/articles/IntroagriTutorial.pdf).
 
 
 ## What's new
