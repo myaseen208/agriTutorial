@@ -7,6 +7,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "",
   fig.path = "inst/extdata/"
+  , warning = FALSE
 )
 ```
 
@@ -16,7 +17,7 @@ knitr::opts_chunk$set(
 devtools::load_all(".")
 ```
 
-###### Version : [`r getNamespaceVersion("agriTutorial")`](https://myaseen208.github.io/agriTutorial/); Copyright (C) 2019-2020: [UAF](http://uaf.edu.pk//); License: [GPL-2|GPL-3](https://www.r-project.org/Licenses/)
+###### Version : [`r getNamespaceVersion("agriTutorial")`](https://myaseen208.github.io/agriTutorial/); Copyright (C) 2019-2020:; License: [GPL-2|GPL-3](https://www.r-project.org/Licenses/)
 
 
 ##### *Rodney Edmondson*^1^, *Hans-Peter Piepho*^2^ and *Muhammad Yaseen*^3^
@@ -74,7 +75,7 @@ For a detailed tutorial (vignette) on how to used this package type:
 browseVignettes(package = "agriTutorial")
 ```
 
-The vignette for the latest version is also available [online](https://myaseen208.github.io/agriTutorial/articles/IntroagriTutorial.html).
+The vignette for the latest version is also available [online](https://myaseen208.github.io/agriTutorial/articles/IntroagriTutorial.pdf).
 
 
 ## What's new

@@ -12,7 +12,7 @@ vers <- paste("R package version", meta$Version)
 
 citEntry(
   entry  = "Manual"
-, title  = "agriTutorial: Detecting Structural Change with Heteroskedasticity"
+, title  = "agriTutorial: Tutorial Analysis of Some Agricultural Experiments "
 , author = personList(
   person(c("Rodney Edmondson"),  email = "rodney.edmondson@gmail.com", role = c("aut", "cre"))
             , person(c("Hans-Peter",  "Piepho"),  email = "piepho@uni-hohenheim.de", role = c("aut", "ctb"))
@@ -22,7 +22,7 @@ citEntry(
 , textVersion = paste(
        "Rodney Edmondson, Hans-Peter Piepho, and Muhammad Yaseen ("
       , year
-      , ").  agriTutorial: Tutorial Analysis of Some Agricultural Experiments."
+      , ").  agriTutorial: Tutorial Analysis of Some Agricultural Experiments. "
       , vers
       , "
       , "

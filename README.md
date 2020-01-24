@@ -1,7 +1,7 @@
 
 ## `agriTutorial`: Tutorial Analysis of Some Agricultural Experiments
 
-###### Version : [1.0.0](https://myaseen208.github.io/agriTutorial/); Copyright (C) 2019-2020: [UAF](http://uaf.edu.pk//); License: [GPL-2|GPL-3](https://www.r-project.org/Licenses/)
+###### Version : [1.0.0](https://myaseen208.github.io/agriTutorial/); Copyright (C) 2019-2020:; License: [GPL-2|GPL-3](https://www.r-project.org/Licenses/)
 
 ##### *Rodney Edmondson*<sup>1</sup>, *Hans-Peter Piepho*<sup>2</sup> and *Muhammad Yaseen*<sup>3</sup>
 
@@ -22,15 +22,7 @@ v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org
 downloads](https://cranlogs.r-pkg.org/badges/grand-total/agriTutorial?color=green)](https://CRAN.R-project.org/package=agriTutorial)
 <!-- [![packageversion](https://img.shields.io/badge/Package%20version-0.2.3.3-orange.svg)](https://github.com/myaseen208/agriTutorial) -->
 
-    Warning in readLines(paste0("https://raw.githubusercontent.com/",
-    "myaseen208/agriTutorial", : incomplete final line found on 'https://
-    raw.githubusercontent.com/myaseen208/agriTutorial/master/DESCRIPTION'
-    
-    Warning in readLines(paste0("https://raw.githubusercontent.com/",
-    "myaseen208/agriTutorial", : incomplete final line found on 'https://
-    raw.githubusercontent.com/myaseen208/agriTutorial/master/DESCRIPTION'
-
-[![develVersion](https://img.shields.io/badge/devel%20version-0.1.5-orange.svg)](https://github.com/myaseen208/agriTutorial)
+[![develVersion](https://img.shields.io/badge/devel%20version-1.0.0-orange.svg)](https://github.com/myaseen208/agriTutorial)
 
 <!-- [![GitHub Download Count](https://github-basic-badges.herokuapp.com/downloads/myaseen208/agriTutorial/total.svg)] -->
 
@@ -78,7 +70,7 @@ browseVignettes(package = "agriTutorial")
 ```
 
 The vignette for the latest version is also available
-[online](https://myaseen208.github.io/agriTutorial/articles/IntroagriTutorial.html).
+[online](https://myaseen208.github.io/agriTutorial/articles/IntroagriTutorial.pdf).
 
 ## What’s new
 
@@ -106,18 +98,25 @@ citation("agriTutorial")
 
 ``` 
 
-To cite package 'agriTutorial' in publications use:
+To cite the R package 'agriTutorial' in publications use:
 
-  Rodney Edmondson, Hans-Peter Piepho and Muhammad Yaseen (2019).
-  agriTutorial: Tutorial Analysis of Some Agricultural Experiments. R
-  package version 0.1.5.
+  Rodney Edmondson, Hans-Peter Piepho, and Muhammad Yaseen (2020).
+  agriTutorial: Tutorial Analysis of Some Agricultural Experiments.R
+  package version 1.0.0 ,
+  https://myaseen208.github.io/agriTutorial/https://cran.r-project.org/package=agriTutorial.
 
 A BibTeX entry for LaTeX users is
 
   @Manual{,
-    title = {agriTutorial: Tutorial Analysis of Some Agricultural Experiments},
+    title = {agriTutorial: Detecting Structural Change with Heteroskedasticity},
     author = {{Rodney Edmondson} and {Hans-Peter Piepho} and {Muhammad Yaseen}},
-    year = {2019},
-    note = {R package version 0.1.5},
+    year = {2020},
+    note = {R package version 1.0.0},
+    note = {https://myaseen208.github.io/agriTutorial/ },
+    note = {https://cran.r-project.org/package=agriTutorial},
   }
+
+This free and open-source software implements academic research by the
+authors and co-workers. If you use it, please support the project by
+citing the package.
 ```

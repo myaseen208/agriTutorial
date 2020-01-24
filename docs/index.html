@@ -119,8 +119,8 @@
 <div id="agritutorial-tutorial-analysis-of-some-agricultural-experiments" class="section level2">
 <h2 class="hasAnchor">
 <a href="#agritutorial-tutorial-analysis-of-some-agricultural-experiments" class="anchor"></a><code>agriTutorial</code>: Tutorial Analysis of Some Agricultural Experiments</h2>
-<div id="version-1-0-0-copyright-c-2019-2020-uaf-license-gpl-2gpl-3" class="section level6">
-<h6>Version : <a href="https://myaseen208.github.io/agriTutorial/">1.0.0</a>; Copyright (C) 2019-2020: <a href="http://uaf.edu.pk//">UAF</a>; License: <a href="https://www.r-project.org/Licenses/">GPL-2|GPL-3</a>
+<div id="version-1-0-0-copyright-c-2019-2020-license-gpl-2gpl-3" class="section level6">
+<h6>Version : <a href="https://myaseen208.github.io/agriTutorial/">1.0.0</a>; Copyright (C) 2019-2020:; License: <a href="https://www.r-project.org/Licenses/">GPL-2|GPL-3</a>
 </h6>
 </div>
 <div id="rodney-edmondson1-hans-peter-piepho2-and-muhammad-yaseen3" class="section level5">
@@ -133,14 +133,7 @@
 <li>Department of Mathematics and Statistics, University of Agriculture Faisalabad, Pakistan (<a href="mailto:myaseen208@gmail.com" class="email">myaseen208@gmail.com</a>).</li>
 </ol>
 <hr>
-<div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">Warning <span class="cf">in</span> <span class="kw"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="st">"https://raw.githubusercontent.com/"</span>,</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="st">"myaseen208/agriTutorial"</span>, <span class="op">:</span><span class="st"> </span>incomplete final line found on <span class="st">'https://</span></a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="st">raw.githubusercontent.com/myaseen208/agriTutorial/master/DESCRIPTION'</span></a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb1-5" data-line-number="5">Warning <span class="cf">in</span> <span class="kw"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="st">"https://raw.githubusercontent.com/"</span>,</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="st">"myaseen208/agriTutorial"</span>, <span class="op">:</span><span class="st"> </span>incomplete final line found on <span class="st">'https://</span></a>
-<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="st">raw.githubusercontent.com/myaseen208/agriTutorial/master/DESCRIPTION'</span></a></code></pre></div>
-<p><a href="https://github.com/myaseen208/agriTutorial"><img src="https://img.shields.io/badge/devel%20version-0.1.5-orange.svg" alt="develVersion"></a></p>
+<p><a href="https://github.com/myaseen208/agriTutorial"><img src="https://img.shields.io/badge/devel%20version-1.0.0-orange.svg" alt="develVersion"></a></p>
 <!-- [![GitHub Download Count](https://github-basic-badges.herokuapp.com/downloads/myaseen208/agriTutorial/total.svg)] -->
 <p><a href="http://www.repostatus.org/#inactive"><img src="http://www.repostatus.org/badges/latest/inactive.svg" alt="Project Status: WIP"></a> <a href="https://www.tidyverse.org/lifecycle/#stable"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="lifecycle"></a> <a href="https://github.com/myaseen208/agriTutorial"><img src="https://img.shields.io/badge/last%20change-2020--01--24-yellowgreen.svg" alt="Last-changedate"></a> <a href="http://www.rdocumentation.org/packages/agriTutorial"><img src="http://www.rdocumentation.org/badges/version/agriTutorial" alt="Rdoc"></a> <a href="https://github.com/myaseen208/google-analytics-beacon"><img src="https://pro-pulsar-193905.appspot.com/UA-116716530-1/welcome-page" alt="Analytics"></a></p>
 <hr>
@@ -155,23 +148,23 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>The package can be installed from CRAN as follows:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"agriTutorial"</span>, <span class="dt">dependencies =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"agriTutorial"</span>, <span class="dt">dependencies =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <p>The development version can be installed from github as follows:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="cf">if</span> (<span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span>(<span class="st">"remotes"</span>)) <span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"remotes"</span>)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">remotes<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/remotes/man/install_github.html">install_github</a></span>(<span class="st">"myaseen208/agriTutorial"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="cf">if</span> (<span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span>(<span class="st">"remotes"</span>)) <span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"remotes"</span>)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">remotes<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/remotes/man/install_github.html">install_github</a></span>(<span class="st">"myaseen208/agriTutorial"</span>)</a></code></pre></div>
 </div>
 <div id="detailed-tutorial" class="section level2">
 <h2 class="hasAnchor">
 <a href="#detailed-tutorial" class="anchor"></a>Detailed tutorial</h2>
 <p>For a detailed tutorial (vignette) on how to used this package type:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/browseVignettes.html">browseVignettes</a></span>(<span class="dt">package =</span> <span class="st">"agriTutorial"</span>)</a></code></pre></div>
-<p>The vignette for the latest version is also available <a href="https://myaseen208.github.io/agriTutorial/articles/IntroagriTutorial.html">online</a>.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/browseVignettes.html">browseVignettes</a></span>(<span class="dt">package =</span> <span class="st">"agriTutorial"</span>)</a></code></pre></div>
+<p>The vignette for the latest version is also available <a href="https://myaseen208.github.io/agriTutorial/articles/IntroagriTutorial.pdf">online</a>.</p>
 </div>
 <div id="whats-new" class="section level2">
 <h2 class="hasAnchor">
 <a href="#whats-new" class="anchor"></a>What’s new</h2>
 <p>To know whats new in this version type:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/news.html">news</a></span>(<span class="dt">package =</span> <span class="st">"agriTutorial"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/news.html">news</a></span>(<span class="dt">package =</span> <span class="st">"agriTutorial"</span>)</a></code></pre></div>
 </div>
 <div id="links" class="section level2">
 <h2 class="hasAnchor">
@@ -185,22 +178,29 @@
 <a href="#citing-agritutorial" class="anchor"></a>Citing <code>agriTutorial</code>
 </h2>
 <p>To cite the methods in the package use:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/citation.html">citation</a></span>(<span class="st">"agriTutorial"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/citation.html">citation</a></span>(<span class="st">"agriTutorial"</span>)</a></code></pre></div>
 <pre><code>
-To cite package 'agriTutorial' in publications use:
+To cite the R package 'agriTutorial' in publications use:
 
-  Rodney Edmondson, Hans-Peter Piepho and Muhammad Yaseen (2019).
-  agriTutorial: Tutorial Analysis of Some Agricultural Experiments. R
-  package version 0.1.5.
+  Rodney Edmondson, Hans-Peter Piepho, and Muhammad Yaseen (2020).
+  agriTutorial: Tutorial Analysis of Some Agricultural Experiments.R
+  package version 1.0.0 ,
+  https://myaseen208.github.io/agriTutorial/https://cran.r-project.org/package=agriTutorial.
 
 A BibTeX entry for LaTeX users is
 
   @Manual{,
-    title = {agriTutorial: Tutorial Analysis of Some Agricultural Experiments},
+    title = {agriTutorial: Detecting Structural Change with Heteroskedasticity},
     author = {{Rodney Edmondson} and {Hans-Peter Piepho} and {Muhammad Yaseen}},
-    year = {2019},
-    note = {R package version 0.1.5},
-  }</code></pre>
+    year = {2020},
+    note = {R package version 1.0.0},
+    note = {https://myaseen208.github.io/agriTutorial/ },
+    note = {https://cran.r-project.org/package=agriTutorial},
+  }
+
+This free and open-source software implements academic research by the
+authors and co-workers. If you use it, please support the project by
+citing the package.</code></pre>
 </div>
 
   </div>
