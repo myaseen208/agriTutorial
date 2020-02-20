@@ -4,7 +4,7 @@ Title: Tutorial Analysis of Some Agricultural Experiments
 Version: 1.0.0
 Authors@R: c(
               person(c("Rodney", "Edmondson"),  email = "rodney.edmondson@gmail.com", role = c("aut", "cre"))
-            , person(c("Hans-Peter",  "Piepho"),  email = "piepho@uni-hohenheim.de", role = c("aut", "ctb"))
+            , person(c("Hans-Peter",  "Piepho"),  email = "piepho@uni-hohenheim.de", role = c("aut", "ctb"), comment = c(ORCID = "0000-0001-7813-2992"))
             , person(c("Muhammad", "Yaseen"),  email = "myaseen208@gmail.com", role = c("aut", "ctb"), comment = c(ORCID = "0000-0002-5923-1714"))
             )
 Maintainer: Rodney Edmondson <rodney.edmondson@gmail.com>
