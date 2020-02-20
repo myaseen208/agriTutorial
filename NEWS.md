@@ -2,6 +2,8 @@
 ## New Features 
 
 * Added Vignettes
+* Developed package website
+* Removed dependencies of archived R package **pbkrtest**
 
 
 

@@ -115,7 +115,6 @@
 #' @importFrom emmeans emmeans contrast
 #' @importFrom lmerTest lmer
 #' @importFrom nlme  gls Variogram ACF 
-#' @importFrom pbkrtest PBmodcomp  
 #' @importFrom tidyr  spread
 #' @importFrom tibble tibble
 #' @import  ggfortify ggplot2 magrittr
@@ -131,7 +130,6 @@
 #' library(lmerTest) 
 #' library(magrittr) 
 #' library(nlme) 
-#' library(pbkrtest)
 #' library(tibble)
 #' library(tidyr)
 #' 

@@ -53,7 +53,6 @@ library(ggfortify)
 library(ggplot2)
 library(lmerTest) 
 library(magrittr) 
-library(pbkrtest)
 library(tidyr)
 
 options(contrasts = c('contr.treatment', 'contr.poly'))

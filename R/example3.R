@@ -64,7 +64,6 @@
 #' @importFrom dplyr filter group_by ungroup select summarise collapse
 #' @importFrom emmeans emmeans contrast
 #' @importFrom lmerTest lmer
-#' @importFrom pbkrtest PBmodcomp  
 #' @importFrom tidyr  spread
 #' @import  ggfortify ggplot2 magrittr
 #' 
@@ -78,7 +77,6 @@
 #' library(ggplot2)
 #' library(lmerTest) 
 #' library(magrittr) 
-#' library(pbkrtest)
 #' library(tidyr)
 #' 
 #' options(contrasts = c('contr.treatment', 'contr.poly'))

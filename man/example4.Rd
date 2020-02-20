@@ -102,7 +102,6 @@ library(ggplot2)
 library(lmerTest) 
 library(magrittr) 
 library(nlme) 
-library(pbkrtest)
 library(tibble)
 library(tidyr)
 
